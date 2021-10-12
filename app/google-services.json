@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1079061143725",
+    "project_id": "test-next-7ea45",
+    "storage_bucket": "test-next-7ea45.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079061143725:android:83a01a26ca3e974b646624",
+        "android_client_info": {
+          "package_name": "test.next"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079061143725-2ehgnnoa2p2a1bun8otln09qu4g990qc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfVLM-wWypuJY3Nfl5iwMJGp9YT-B6JFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079061143725-2ehgnnoa2p2a1bun8otln09qu4g990qc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
