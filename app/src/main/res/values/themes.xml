@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.ShiftSchedulePlus" parent="Theme.AppCompat.Light">
-        <item name="android:actionBarStyle">@style/Theme.ShiftSchedulePlus</item>
         <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:actionBarStyle">@style/Toolbar</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">#233040</item>
         <item name="colorPrimaryVariant">@color/colorPrimary</item>
@@ -17,5 +17,11 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
+    </style>
+    <style name="Toolbar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <!-- <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item> -->
+        <item name="android:background">@color/white</item>
     </style>
 </resources>

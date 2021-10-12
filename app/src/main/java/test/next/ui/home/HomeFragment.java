@@ -2,15 +2,20 @@ package test.next.ui.home;
 
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -103,6 +108,7 @@ public class HomeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Date date = calendarStateAdapter.feedsList.get(24);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(setTitle(date.getMonth(), date.getYear()));
+
     }
 
     String setTitle(int month, int year)
