@@ -108,7 +108,10 @@ public class HomeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Date date = calendarStateAdapter.feedsList.get(24);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(setTitle(date.getMonth(), date.getYear()));
-
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu, null);
+        drawable = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(drawable, Color.WHITE);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(drawable);
     }
 
     String setTitle(int month, int year)

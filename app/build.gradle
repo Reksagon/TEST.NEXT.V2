@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "test.next"
-        minSdk 22
+        minSdk 23
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -50,4 +50,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+    //Datepicker
+    implementation 'com.github.OzcanAlasalvar:DatePicker:1.0.4'
+    //Edittext
+    implementation 'com.github.thomhurst:ExpandableHintText:1.0.0'
 }
