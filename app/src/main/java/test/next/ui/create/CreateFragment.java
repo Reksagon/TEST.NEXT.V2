@@ -15,20 +15,29 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.ozcanalasalvar.library.utils.DateUtils;
-import com.ozcanalasalvar.library.view.datePicker.DatePicker;
-import com.ozcanalasalvar.library.view.popup.DatePickerPopup;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.skydoves.powerspinner.PowerSpinnerView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import test.next.R;
+import test.next.constant.AccountConst;
+import test.next.constant.Shifts;
 import test.next.databinding.FragmentCreateBinding;
 
 public class CreateFragment extends Fragment {
 
     private CreateViewModel createViewModel;
     private FragmentCreateBinding binding;
+    private boolean exist = false;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +69,118 @@ public class CreateFragment extends Fragment {
             }
         });
 
+//        DatabaseReference databaseReference = FirebaseDatabase
+//                .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+//                .getReference()
+//                .child("Users/" + AccountConst.account.getId() + "/Shifts");
+        //databaseReference.push().setValue(new Shifts("TestName1", "TestStart1", "TestEnd1", "TestColor1"));
+        //databaseReference.child(AccountConst.account.getId()).setValue(new Shifts("1","2", "3", "4"));
+//        databaseReference.child(AccountConst.account.getId()).child("Shifts").child("TestName1").
+//                setValue(new Shifts("TestName1", "TestStart1", "TestEnd1", "TestColor1"));
+//        databaseReference.child(AccountConst.account.getId()).child("Shifts").child("TestName2").
+//                setValue(new Shifts("TestName2", "TestStart2", "TestEnd2", "TestColor2"));
+
+
+        Task<DataSnapshot> dataSnapshotTask =  FirebaseDatabase
+                .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                .getReference()
+                .child("Users/").get();
+        dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                for(DataSnapshot child : task.getResult().getChildren())
+                {
+                    if(child.getKey().toString().equals(AccountConst.account.getId()))
+                        exist = true;
+                }
+                if(!exist)
+                {
+                    DatabaseReference databaseReference = FirebaseDatabase
+                            .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getId() + "/Shifts");
+                    databaseReference.push()
+                            .setValue(new Shifts("TestName1", "TestStart1", "TestEnd1", "TestColor1"));
+                    databaseReference.push()
+                            .setValue(new Shifts("TestName2", "TestStart2", "TestEnd2", "TestColor2"));
+                    databaseReference.push()
+                            .setValue(new Shifts("TestName3", "TestStart3", "TestEnd3", "TestColor3"));
+                    databaseReference.push()
+                            .setValue(new Shifts("TestName4", "TestStart4", "TestEnd4", "TestColor4"));
+                }
+
+              }
+        });
+
+
+
+//        Task<DataSnapshot> dataSnapshotTask =  databaseReference.get();
+//        dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                for(DataSnapshot child : task.getResult().getChildren())
+//                {
+//                    Shifts str1 = child.getValue(Shifts.class);
+//                    str1.getColor();
+//                }
+//              }
+//        });
+
+//        FirebaseDatabase
+//                .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+//                .getReference()
+//                .child("Users/").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                boolean exist = false;
+//
+//                for(DataSnapshot child : snapshot.getChildren())
+//                {
+//
+//                    if(child.getKey().toString().equals(AccountConst.account.getId()))
+//                        exist = true;
+//                }
+//
+//                if(!exist)
+//                {
+//                    //databaseReference.child(AccountConst.account.getId()).child("Shifts").setValue(new Shifts("1","2", "3", "4"));
+//
+////                    Shifts[] shifts = {new Shifts("TestName1", "TestStart1", "TestEnd1", "TestColor1"),
+////                            new Shifts("TestName2", "TestStart2", "TestEnd2", "TestColor2"),
+////                            new Shifts("TestName3", "TestStart3", "TestEnd3", "TestColor3"),
+////                            new Shifts("TestName4", "TestStart4", "TestEnd4", "TestColor4")
+////
+////                    };
+////                    databaseReference.child("Users").child(AccountConst.account.getId()).child("Shifts");
+////
+////                    //Account account = new Account(AccountConst.account.getId());
+////                    databaseReference.push().setValue(new Shifts("1", "2", "3", "4"));
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("AAA");
+        arrayList.add("BBB");
+        binding.spinner.setItems(arrayList);
 
         return root;
     }
