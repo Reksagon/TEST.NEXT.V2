@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:orientation="horizontal">
+
+    <com.skydoves.powerspinner.PowerSpinnerView
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_weight="0.5"
+        android:background="#233040"
+        android:gravity="center"
+        android:hint="Shift"
+        android:padding="10dp"
+        android:textColor="@color/white_update"
+        android:textColorHint="@color/colorText"
+        android:textSize="14.5sp"
+        app:spinner_arrow_gravity="end"
+        app:spinner_arrow_padding="8dp"
+        app:spinner_divider_color="@color/colorPrimaryVariant"
+        app:spinner_divider_show="true"
+        app:spinner_divider_size="0.4dp"
+        app:spinner_popup_animation="dropdown"
+        app:spinner_popup_background="@color/colorPrimaryVariant"
+        app:spinner_popup_elevation="14dp" />
+
+    <com.skydoves.powerspinner.PowerSpinnerView
+        android:id="@+id/spinner2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#233040"
+        android:gravity="center"
+        android:hint="Count"
+        android:padding="10dp"
+        android:textColor="@color/white_update"
+        android:textColorHint="@color/colorText"
+        android:textSize="14.5sp"
+        app:spinner_arrow_gravity="end"
+        app:spinner_arrow_padding="8dp"
+        app:spinner_divider_color="@color/colorPrimaryVariant"
+        app:spinner_divider_show="true"
+        app:spinner_divider_size="0.4dp"
+        app:spinner_popup_animation="dropdown"
+        app:spinner_popup_background="@color/colorPrimaryVariant"
+        app:spinner_popup_elevation="14dp" />
+
+</LinearLayout>

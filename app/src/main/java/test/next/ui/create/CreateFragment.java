@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -38,7 +41,9 @@ public class CreateFragment extends Fragment {
     private CreateViewModel createViewModel;
     private FragmentCreateBinding binding;
     private boolean exist = false;
-
+    private ArrayList<Shifts> shifts;
+    private ShiftsAdapter adapter;
+    private ArrayList<Integer> count_shifts = new ArrayList<>(), count_days = new ArrayList<>();
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         createViewModel =
@@ -80,7 +85,6 @@ public class CreateFragment extends Fragment {
 //        databaseReference.child(AccountConst.account.getId()).child("Shifts").child("TestName2").
 //                setValue(new Shifts("TestName2", "TestStart2", "TestEnd2", "TestColor2"));
 
-
         Task<DataSnapshot> dataSnapshotTask =  FirebaseDatabase
                 .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
                 .getReference()
@@ -108,12 +112,57 @@ public class CreateFragment extends Fragment {
                     databaseReference.push()
                             .setValue(new Shifts("TestName4", "TestStart4", "TestEnd4", "TestColor4"));
                 }
+                else
+                {
+                    Task<DataSnapshot> getShiftsTask = FirebaseDatabase
+                            .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getId() + "/Shifts").get();
+                    getShiftsTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            shifts = new ArrayList<>();
+                            for(DataSnapshot child : task.getResult().getChildren())
+                            {
+                                Shifts str1 = child.getValue(Shifts.class);
+                                shifts.add(str1);
+                            }
+                            count_shifts.add(-1);
+                            count_days.add(-1);
+                            adapter = new ShiftsAdapter(shifts, count_shifts, count_days);
+                            adapter.setCount(1);
+                            LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
+                            linearLayout.setOrientation(RecyclerView.VERTICAL);
+                            binding.shiftsView.setLayoutManager(linearLayout);
+                            binding.shiftsView.setAdapter(adapter);
+                        }
+                    });
+
+                }
 
               }
         });
 
 
+        binding.plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.AddShift(-1);
+                adapter.AddDay(-1);
+                adapter.setCount(adapter.getCount()+1);
+            }
+        });
 
+        binding.minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(adapter.getCount() != 1) {
+                    adapter.RemoveShift();
+                    adapter.RemoveDay();
+                    adapter.setCount(adapter.getCount() - 1);
+                }
+            }
+        });
 //        Task<DataSnapshot> dataSnapshotTask =  databaseReference.get();
 //        dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
 //            @Override
@@ -176,11 +225,6 @@ public class CreateFragment extends Fragment {
 //
 //            }
 //        });
-
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("AAA");
-        arrayList.add("BBB");
-        binding.spinner.setItems(arrayList);
 
         return root;
     }
