@@ -15,6 +15,9 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,8 +36,11 @@ import java.util.Calendar;
 
 import test.next.R;
 import test.next.constant.AccountConst;
+import test.next.constant.Schedule;
+import test.next.constant.ScheduleDay;
 import test.next.constant.Shifts;
 import test.next.databinding.FragmentCreateBinding;
+import test.next.ui.home.HomeFragment;
 
 public class CreateFragment extends Fragment {
 
@@ -161,6 +167,38 @@ public class CreateFragment extends Fragment {
                     adapter.RemoveDay();
                     adapter.setCount(adapter.getCount() - 1);
                 }
+            }
+        });
+
+        binding.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<Shifts> shifts_send = new ArrayList<>();
+                ArrayList<Integer> days_send = new ArrayList<>();
+                for(PowerSpinnerView view1 : adapter.getShifts_schedule())
+                {
+                    if(view1.getSelectedIndex() != -1)
+                        shifts_send.add(shifts.get(view1.getSelectedIndex()));
+                }
+
+                for(PowerSpinnerView view1 : adapter.getDays_schedule())
+                {
+                    if(view1.getSelectedIndex() != -1)
+                        days_send.add(view1.getSelectedIndex() + 1);
+                }
+
+                shifts_send.remove(0);
+                days_send.remove(0);
+
+                String[] split = binding.date.getText().split("/");
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.YEAR, Integer.parseInt(split[0]));
+                calendar.set(Calendar.MONTH, Integer.parseInt(split[1]));
+                calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(split[2]));
+                Schedule schedule = new Schedule(shifts_send, days_send,calendar);
+                HomeFragment.schedule = schedule;
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                navController.navigate(R.id.nav_home);
             }
         });
 //        Task<DataSnapshot> dataSnapshotTask =  databaseReference.get();

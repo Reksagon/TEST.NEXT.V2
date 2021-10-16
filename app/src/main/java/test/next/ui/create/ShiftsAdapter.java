@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.skydoves.powerspinner.OnSpinnerItemSelectedListener;
 import com.skydoves.powerspinner.PowerSpinnerView;
 
 import java.util.ArrayList;
@@ -22,11 +24,29 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ShiftsAdap
     private int count = 1;
     List<Integer> selected_shift;
     List<Integer> selected_day;
+    List<PowerSpinnerView> shifts_schedule = new ArrayList<>();
+    List<PowerSpinnerView> days_schedule = new ArrayList<>();
 
     public ShiftsAdapter(List<Shifts> shifts, List<Integer> selected_shift,List<Integer> selected_day ) {
         this.shifts = shifts;
         this.selected_shift = selected_shift;
         this.selected_day = selected_day;
+    }
+
+    public List<PowerSpinnerView> getShifts_schedule() {
+        return shifts_schedule;
+    }
+
+    public void setShifts_schedule(List<PowerSpinnerView> shifts_schedule) {
+        this.shifts_schedule = shifts_schedule;
+    }
+
+    public List<PowerSpinnerView> getDays_schedule() {
+        return days_schedule;
+    }
+
+    public void setDays_schedule(List<PowerSpinnerView> days_schedule) {
+        this.days_schedule = days_schedule;
     }
 
     @NonNull
@@ -114,6 +134,9 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ShiftsAdap
 
             if(select_day != -1)
                 spinner_day.selectItemByIndex(select_day);
+
+            shifts_schedule.add(spinner_shift);
+            days_schedule.add(spinner_day);
         }
     }
 

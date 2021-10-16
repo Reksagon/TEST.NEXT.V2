@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import test.next.R;
+import test.next.constant.Schedule;
 import test.next.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
@@ -33,6 +34,7 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
     private CalendarStateAdapter calendarStateAdapter;
+    public static Schedule schedule = null;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

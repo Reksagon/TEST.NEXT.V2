@@ -30,6 +30,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -48,6 +58,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -66,6 +86,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -84,6 +114,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -102,6 +142,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -120,6 +170,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -138,6 +198,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>
@@ -165,6 +235,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -183,6 +263,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -201,6 +291,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -219,6 +319,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -237,6 +347,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -255,6 +375,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -273,6 +403,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>
@@ -300,6 +440,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -318,6 +468,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -336,6 +496,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -354,6 +524,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -372,6 +552,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift19"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -390,6 +580,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -408,6 +608,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift21"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>
@@ -435,6 +645,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -453,6 +673,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift23"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -471,6 +701,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift24"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -489,6 +729,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift25"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -507,6 +757,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift26"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -525,6 +785,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift27"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -543,6 +813,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift28"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>
@@ -570,6 +850,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift29"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -588,6 +878,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift30"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -606,6 +906,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift31"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -624,6 +934,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift32"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -642,6 +962,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift33"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -660,6 +990,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift34"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -678,6 +1018,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift35"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>
@@ -705,6 +1055,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift36"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -723,6 +1083,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift37"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -741,6 +1111,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift38"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -759,6 +1139,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift39"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -777,6 +1167,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift40"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -795,6 +1195,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift41"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -813,6 +1223,16 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day_shift42"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:text="Ночная смена"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>

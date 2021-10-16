@@ -1,9 +1,14 @@
 package test.next.ui.calendar;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,17 +16,29 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import test.next.R;
+import test.next.constant.Schedule;
+import test.next.constant.ScheduleDay;
 import test.next.databinding.CalendarFragmentBinding;
 
 public class CalendarKD extends Fragment {
     private CalendarViewModel mViewModel;
     CalendarFragmentBinding binding;
-    TextView[] days;
+    TextView[] days, shifts;
     Calendar calendar;
     public int m, y;
+    ArrayList<ScheduleDay> dayArrayList = null;
+
+    public static CalendarKD newInstance(Date date, ArrayList<ScheduleDay> dayArrayList) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, date.getMonth());
+        calendar.set(Calendar.YEAR, date.getYear());
+        return new CalendarKD(calendar, dayArrayList);
+    }
 
     public static CalendarKD newInstance(Date date) {
         Calendar calendar = Calendar.getInstance();
@@ -29,7 +46,6 @@ public class CalendarKD extends Fragment {
         calendar.set(Calendar.YEAR, date.getYear());
         return new CalendarKD(calendar);
     }
-
     public static CalendarKD newInstance(Date date, int month) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, date.getMonth());
@@ -42,7 +58,11 @@ public class CalendarKD extends Fragment {
     {
         this.calendar = calendar;
     }
-
+    public CalendarKD(Calendar calendar, ArrayList<ScheduleDay> dayArrayList)
+    {
+        this.calendar = calendar;
+        this.dayArrayList = dayArrayList;
+    }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -50,6 +70,7 @@ public class CalendarKD extends Fragment {
         binding = CalendarFragmentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         findDays();
+        findShifts();
         setDays();
         m = calendar.get(Calendar.MONTH);
         y = calendar.get(Calendar.YEAR);
@@ -77,6 +98,21 @@ public class CalendarKD extends Fragment {
                 binding.day40Text, binding.day41Text, binding.day42Text };
         this.days = days;
     }
+
+    void findShifts()
+    {
+        TextView[] shifts = {binding.dayShift1, binding.dayShift2, binding.dayShift3, binding.dayShift4,
+                binding.dayShift5, binding.dayShift6, binding.dayShift7, binding.dayShift8, binding.dayShift9,
+                binding.dayShift10, binding.dayShift11, binding.dayShift12, binding.dayShift13, binding.dayShift14,
+                binding.dayShift15, binding.dayShift16, binding.dayShift17, binding.dayShift18, binding.dayShift19,
+                binding.dayShift20, binding.dayShift21, binding.dayShift22, binding.dayShift23, binding.dayShift24,
+                binding.dayShift25, binding.dayShift26, binding.dayShift27, binding.dayShift28, binding.dayShift29,
+                binding.dayShift30, binding.dayShift31, binding.dayShift32, binding.dayShift33,binding.dayShift34,
+                binding.dayShift35, binding.dayShift36, binding.dayShift37, binding.dayShift38, binding.dayShift39,
+                binding.dayShift40, binding.dayShift41, binding.dayShift42 };
+        this.shifts = shifts;
+    }
+
     public void setDays()
     {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -107,14 +143,33 @@ public class CalendarKD extends Fragment {
     {
         int i = day;
 
-        for(int dd = 1; dd <= day_of_month; i++, dd++)
+        Calendar tmp = Calendar.getInstance();
+
+        for(int dd = 1, sh = 0; dd <= day_of_month; i++, dd++)
         {
             days[i-1].setText(String.valueOf(dd));
+            if(dd == tmp.get(Calendar.DAY_OF_MONTH)
+                    && tmp.get(Calendar.MONTH) == calendar.get(Calendar.MONTH)
+                    && tmp.get(Calendar.YEAR) == calendar.get(Calendar.YEAR))
+            {
+                days[i-1].setBackgroundResource(R.drawable.textview_desidgn);
+                days[i-1].setTextColor(Color.WHITE);
+            }
+            if(dayArrayList != null && sh < dayArrayList.size())
+            {
+                if(dayArrayList.get(sh).getDay() == dd) {
+                    shifts[i - 1].setVisibility(View.VISIBLE);
+                    shifts[i - 1].setText(dayArrayList.get(sh).getShift().getName());
+                    sh++;
+                }
+            }
         }
+
         for(int j = i, dd = 1; j < days.length+1; j++, dd++)
         {
             days[j-1].setText(String.valueOf(dd));
             days[j-1].setAlpha(0.5f);
+
         }
 
         Calendar temp = Calendar.getInstance();

@@ -9,9 +9,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import test.next.constant.ScheduleDay;
 import test.next.ui.calendar.CalendarKD;
 
 public class CalendarStateAdapter extends FragmentStateAdapter {
@@ -56,6 +58,12 @@ public class CalendarStateAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        if(HomeFragment.schedule != null)
+        {
+
+            ArrayList<ScheduleDay> days = HomeFragment.schedule.getMonth(feedsList.get(position).getMonth()+1, feedsList.get(position).getYear());
+            return CalendarKD.newInstance(feedsList.get(position),days);
+        }
         return CalendarKD.newInstance(feedsList.get(position));
     }
 
