@@ -19,11 +19,13 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import test.next.R;
 import test.next.constant.Schedule;
 import test.next.constant.ScheduleDay;
 import test.next.databinding.CalendarFragmentBinding;
+import test.next.ui.home.HomeFragment;
 
 public class CalendarKD extends Fragment {
     private CalendarViewModel mViewModel;
@@ -71,7 +73,11 @@ public class CalendarKD extends Fragment {
         View root = binding.getRoot();
         findDays();
         findShifts();
-        setDays();
+        try {
+            setDays();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         m = calendar.get(Calendar.MONTH);
         y = calendar.get(Calendar.YEAR);
         return root;
@@ -98,7 +104,6 @@ public class CalendarKD extends Fragment {
                 binding.day40Text, binding.day41Text, binding.day42Text };
         this.days = days;
     }
-
     void findShifts()
     {
         TextView[] shifts = {binding.dayShift1, binding.dayShift2, binding.dayShift3, binding.dayShift4,
@@ -112,9 +117,7 @@ public class CalendarKD extends Fragment {
                 binding.dayShift40, binding.dayShift41, binding.dayShift42 };
         this.shifts = shifts;
     }
-
-    public void setDays()
-    {
+    public void setDays() throws InterruptedException {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         switch(calendar.get(Calendar.DAY_OF_WEEK))
         {
@@ -139,8 +142,7 @@ public class CalendarKD extends Fragment {
 
     }
 
-    void setCalendar(int day, int day_of_month)
-    {
+    void setCalendar(int day, int day_of_month) throws InterruptedException {
         int i = day;
 
         Calendar tmp = Calendar.getInstance();
@@ -160,25 +162,53 @@ public class CalendarKD extends Fragment {
                 if(dayArrayList.get(sh).getDay() == dd) {
                     shifts[i - 1].setVisibility(View.VISIBLE);
                     shifts[i - 1].setText(dayArrayList.get(sh).getShift().getName());
+                    shifts[i-1].setBackgroundColor(Color.parseColor(dayArrayList.get(sh).getShift().getColor()));
                     sh++;
                 }
             }
         }
 
+        Calendar calendar_tmp = calendar;
+        calendar_tmp.set(Calendar.MONTH, calendar_tmp.get(Calendar.MONTH) + 1);
+        ArrayList<ScheduleDay> schedule_plus = null;
+        if(HomeFragment.schedule != null) {
+            schedule_plus = HomeFragment.schedule.getMonth(calendar_tmp.get(Calendar.MONTH), calendar_tmp.get(Calendar.YEAR));
+        }
+
+        calendar_tmp.set(Calendar.MONTH, calendar_tmp.get(Calendar.MONTH) - 2);
         for(int j = i, dd = 1; j < days.length+1; j++, dd++)
         {
             days[j-1].setText(String.valueOf(dd));
-            days[j-1].setAlpha(0.5f);
+            days[j-1].setAlpha(0.3f);
 
+            if(schedule_plus != null  && dd <= schedule_plus.size()) {
+                if (schedule_plus.get(dd-1).getDay() == dd) {
+                    shifts[j - 1].setVisibility(View.VISIBLE);
+                    shifts[j - 1].setText(schedule_plus.get(dd-1).getShift().getName());
+                    shifts[j - 1].setBackgroundColor(Color.parseColor(schedule_plus.get(dd-1).getShift().getColor()));
+                    shifts[j - 1].setAlpha(0.3f);
+                }
+            }
         }
 
-        Calendar temp = Calendar.getInstance();
-        temp.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
+        ArrayList<ScheduleDay> schedule_minus = null;
+        if(HomeFragment.schedule != null) {
+            schedule_minus = HomeFragment.schedule.getMonth(calendar_tmp.get(Calendar.MONTH), calendar_tmp.get(Calendar.YEAR));
+        }
 
-        for(int ii = day-2, prev_month_day = temp.getActualMaximum(Calendar.DAY_OF_MONTH); ii >= 0; ii--, prev_month_day--)
+        for(int ii = day-2, prev_month_day = calendar_tmp.getActualMaximum(Calendar.DAY_OF_MONTH); ii >= 0; ii--, prev_month_day--)
         {
             days[ii].setText(String.valueOf(prev_month_day));
             days[ii].setAlpha(0.5f);
+
+            if(schedule_minus != null && prev_month_day <= schedule_minus.size()) {
+                if (schedule_minus.get(prev_month_day-1).getDay() == prev_month_day) {
+                    shifts[ii].setVisibility(View.VISIBLE);
+                    shifts[ii].setText(schedule_minus.get(prev_month_day-1).getShift().getName());
+                    shifts[ii].setBackgroundColor(Color.parseColor(schedule_minus.get(prev_month_day-1).getShift().getColor()));
+                    shifts[ii].setAlpha(0.3f);
+                }
+            }
         }
 
     }

@@ -110,13 +110,13 @@ public class CreateFragment extends Fragment {
                             .getReference()
                             .child("Users/" + AccountConst.account.getId() + "/Shifts");
                     databaseReference.push()
-                            .setValue(new Shifts("TestName1", "TestStart1", "TestEnd1", "TestColor1"));
+                            .setValue(new Shifts("TestName1", "TestStart1", "TestEnd1", "#eb3434"));
                     databaseReference.push()
-                            .setValue(new Shifts("TestName2", "TestStart2", "TestEnd2", "TestColor2"));
+                            .setValue(new Shifts("TestName2", "TestStart2", "TestEnd2", "#ebc634"));
                     databaseReference.push()
-                            .setValue(new Shifts("TestName3", "TestStart3", "TestEnd3", "TestColor3"));
+                            .setValue(new Shifts("TestName3", "TestStart3", "TestEnd3", "#96eb34"));
                     databaseReference.push()
-                            .setValue(new Shifts("TestName4", "TestStart4", "TestEnd4", "TestColor4"));
+                            .setValue(new Shifts("TestName4", "TestStart4", "TestEnd4", "#34ebba"));
                 }
                 else
                 {
@@ -193,10 +193,12 @@ public class CreateFragment extends Fragment {
                 String[] split = binding.date.getText().split("/");
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.YEAR, Integer.parseInt(split[0]));
-                calendar.set(Calendar.MONTH, Integer.parseInt(split[1]));
+                calendar.set(Calendar.MONTH, Integer.parseInt(split[1])-1);
                 calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(split[2]));
+
                 Schedule schedule = new Schedule(shifts_send, days_send,calendar);
                 HomeFragment.schedule = schedule;
+
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.nav_home);
             }

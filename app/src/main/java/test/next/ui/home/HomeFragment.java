@@ -1,15 +1,12 @@
 package test.next.ui.home;
 
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,11 +18,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import test.next.R;
+import test.next.constant.AccountConst;
 import test.next.constant.Schedule;
 import test.next.databinding.FragmentHomeBinding;
 
@@ -35,11 +38,11 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private CalendarStateAdapter calendarStateAdapter;
     public static Schedule schedule = null;
+    private Task<DataSnapshot> dataSnapshotTask;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -77,8 +80,44 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        new AsyncTask<Void, Void, Void>()
+        {
+            @Override
+            protected void onPostExecute(Void unused) {
+                homeViewModel =
+                        new ViewModelProvider(HomeFragment.this).get(HomeViewModel.class);
+                homeViewModel.getDataSnapshotMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Task<DataSnapshot>>() {
+                    @Override
+                    public void onChanged(@Nullable Task<DataSnapshot> task) {
+                        dataSnapshotTask = task;
+                    }
+                });
 
+                homeViewModel.getOnCompleteListenerMutableLiveData().observe(getViewLifecycleOwner(), new Observer<OnCompleteListener<DataSnapshot>>() {
+                    @Override
+                    public void onChanged(@Nullable OnCompleteListener<DataSnapshot> onCompleteListener) {
+                        dataSnapshotTask.addOnCompleteListener(onCompleteListener);
+                    }
+                });
+                super.onPostExecute(unused);
+            }
 
+            @Override
+            protected Void doInBackground(Void... voids) {
+                while (true)
+                {
+                    if(AccountConst.account != null)
+                        break;
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                return null;
+            }
+        }.execute();
 
 
         return root;
