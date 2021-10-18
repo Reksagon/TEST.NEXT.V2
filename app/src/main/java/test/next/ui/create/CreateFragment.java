@@ -3,6 +3,7 @@ package test.next.ui.create;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.skydoves.powerspinner.PowerSpinnerView;
 
+import org.apache.commons.lang3.SerializationUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,6 +44,7 @@ import test.next.R;
 import test.next.constant.AccountConst;
 import test.next.constant.Schedule;
 import test.next.constant.ScheduleDay;
+import test.next.constant.ScheduleFB;
 import test.next.constant.Shifts;
 import test.next.databinding.FragmentCreateBinding;
 import test.next.ui.home.HomeFragment;
@@ -198,6 +205,20 @@ public class CreateFragment extends Fragment {
 
                 Schedule schedule = new Schedule(shifts_send, days_send,calendar);
                 HomeFragment.schedule = schedule;
+
+                byte[] data = SerializationUtils.serialize(schedule);
+                String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+
+                ScheduleFB scheduleFB = new ScheduleFB(binding.nameSchedule.getText(), base64);
+
+
+                DatabaseReference databaseReference = FirebaseDatabase
+                        .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getId() + "/Scheduls");
+                databaseReference.push()
+                        .setValue(scheduleFB);
+
 
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.nav_home);

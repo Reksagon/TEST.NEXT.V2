@@ -1,9 +1,12 @@
 package test.next.constant;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Schedule {
+public class Schedule implements Serializable {
+
+
     ArrayList<ScheduleDay> scheduleDayArrayList = new ArrayList<>();
 
     public Schedule(ArrayList<Shifts> shifts, ArrayList<Integer> days, Calendar day)
@@ -25,11 +28,9 @@ public class Schedule {
 
         }
     }
-
     public ArrayList<ScheduleDay> getScheduleDayArrayList() {
         return scheduleDayArrayList;
     }
-
     public void setScheduleDayArrayList(ArrayList<ScheduleDay> scheduleDayArrayList) {
         this.scheduleDayArrayList = scheduleDayArrayList;
     }

@@ -1,6 +1,8 @@
 package test.next.constant;
 
-public class Shifts {
+import java.io.Serializable;
+
+public class Shifts implements Serializable {
     private String name;
     private String start, end;
     private String color;

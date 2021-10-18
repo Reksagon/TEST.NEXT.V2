@@ -15,6 +15,7 @@ import java.util.List;
 
 import test.next.constant.ScheduleDay;
 import test.next.ui.calendar.CalendarKD;
+import org.apache.commons.codec.binary.Base64;
 
 public class CalendarStateAdapter extends FragmentStateAdapter {
     public List<Date> feedsList;

@@ -1,6 +1,8 @@
 package test.next.constant;
 
-public class ScheduleDay {
+import java.io.Serializable;
+
+public class ScheduleDay implements Serializable {
     private int day, month, year;
     private Shifts shift;
 
