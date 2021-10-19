@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/expand_button"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorText"
+        android:elevation="6dp"
+        android:foreground="?selectableItemBackground"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="Tap to toggle expansion"
+        android:textColor="@color/colorPrimaryVariant"
+        android:textStyle="bold" />
+
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:id="@+id/expandable_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:el_duration="1000"
+        app:el_expanded="false">
+
+        <LinearLayout
+            android:id="@+id/content_shifts_set"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.tomlonghurst.expandablehinttext.ExpandableHintText
+                android:id="@+id/shift_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:hint="@string/name_shift"
+                android:textColor="@color/white_update"
+                app:floatingLabelColor="@android:color/white"
+                app:image="@drawable/icon_name"
+                app:imageColor="#1c242f"
+                app:textBoxColor="#801C242F">
+
+            </com.tomlonghurst.expandablehinttext.ExpandableHintText>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <com.tomlonghurst.expandablehinttext.ExpandableHintText
+                    android:id="@+id/shift_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:hint="@string/start_work"
+                    android:textColor="@color/white_update"
+                    app:floatingLabelColor="@android:color/white"
+                    app:image="@drawable/work"
+                    app:imageColor="#1c242f"
+                    app:textBoxColor="#801C242F">
+
+                </com.tomlonghurst.expandablehinttext.ExpandableHintText>
+
+                <com.tomlonghurst.expandablehinttext.ExpandableHintText
+                    android:id="@+id/shift_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_weight="1"
+                    android:hint="@string/end_work"
+                    android:textColor="@color/white_update"
+                    app:floatingLabelColor="@android:color/white"
+                    app:image="@drawable/work"
+                    app:imageColor="#1c242f"
+                    app:textBoxColor="#801C242F" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <com.tomlonghurst.expandablehinttext.ExpandableHintText
+                    android:id="@+id/shift_start_lanch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:hint="@string/start_lanch"
+                    android:textColor="@color/white_update"
+                    app:floatingLabelColor="@android:color/white"
+                    app:image="@drawable/lanch"
+                    app:imageColor="#1c242f"
+                    app:textBoxColor="#801C242F">
+
+                </com.tomlonghurst.expandablehinttext.ExpandableHintText>
+
+                <com.tomlonghurst.expandablehinttext.ExpandableHintText
+                    android:id="@+id/shift_end_lanch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_weight="1"
+                    android:hint="@string/end_lanch"
+                    android:textColor="@color/white_update"
+                    app:floatingLabelColor="@android:color/white"
+                    app:image="@drawable/lanch"
+                    app:imageColor="#1c242f"
+                    app:textBoxColor="#801C242F" />
+            </LinearLayout>
+
+            <com.tomlonghurst.expandablehinttext.ExpandableHintText
+                android:id="@+id/shift_color"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:hint="@string/color_picker"
+                android:textColor="@color/white_update"
+                app:floatingLabelColor="@android:color/white"
+                app:image="@drawable/color_pick"
+                app:imageColor="#1c242f"
+                app:textBoxColor="#801C242F">
+
+            </com.tomlonghurst.expandablehinttext.ExpandableHintText>
+
+            <CheckBox
+                android:id="@+id/day_off"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:minHeight="48dp"
+                android:text="@string/day_off"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </net.cachapa.expandablelayout.ExpandableLayout>
+</LinearLayout>

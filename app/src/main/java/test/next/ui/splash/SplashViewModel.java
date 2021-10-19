@@ -25,7 +25,8 @@ public class SplashViewModel extends ViewModel {
         return onCompleteListenerMutableLiveData;
     }
 
-    public SplashViewModel() throws InterruptedException {
+    void setSetting()
+    {
         dataSnapshotMutableLiveData = new MutableLiveData<>();
         onCompleteListenerMutableLiveData = new MutableLiveData<>();
 
@@ -52,16 +53,18 @@ public class SplashViewModel extends ViewModel {
                             .getReference()
                             .child("Users/" + AccountConst.account.getId() + "/Shifts");
                     databaseReference.push()
-                            .setValue(new Shifts("TestName1", "TestStart1", "TestEnd1", "#eb3434"));
+                            .setValue(new Shifts(1,"День", "00:00", "00:00", "#fcba03", false));
                     databaseReference.push()
-                            .setValue(new Shifts("TestName2", "TestStart2", "TestEnd2", "#ebc634"));
+                            .setValue(new Shifts(2,"Ночь", "00:00", "00:00", "#0339fc", false));
                     databaseReference.push()
-                            .setValue(new Shifts("TestName3", "TestStart3", "TestEnd3", "#96eb34"));
-                    databaseReference.push()
-                            .setValue(new Shifts("TestName4", "TestStart4", "TestEnd4", "#34ebba"));
+                            .setValue(new Shifts(3,"Выходной", "00:00", "00:00", "#00d4d0", true));
                 }
             }
         });
+    }
+
+    public SplashViewModel() {
+
 
     }
 }

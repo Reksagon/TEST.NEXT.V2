@@ -12,19 +12,19 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_create"
         android:name="test.next.ui.create.CreateFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_create" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="test.next.ui.slideshow.SlideshowFragment"
+        android:id="@+id/nav_shifts"
+        android:name="test.next.ui.shifts.ShiftsFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_shifts" />
     <fragment
         android:id="@+id/splash"
         android:name="test.next.ui.splash.Splash"
         android:label="splash_fragment"
-        tools:layout="@layout/splash_fragment" />
+        tools:layout="@layout/fragment_splash" />
 </navigation>

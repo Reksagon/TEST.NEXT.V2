@@ -1,0 +1,93 @@
+package test.next.ui.shifts;
+
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import test.next.R;
+import test.next.constant.AccountConst;
+import test.next.constant.Shifts;
+import test.next.databinding.FragmentShiftsBinding;
+import test.next.ui.create.ShiftsAdapter;
+
+public class ShiftsFragment extends Fragment {
+
+    private ShiftsViewModel slideshowViewModel;
+    private FragmentShiftsBinding binding;
+    private ArrayList<Shifts> shifts;
+    private ShiftsSettingsAdapter adapter;
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        slideshowViewModel =
+                new ViewModelProvider(this).get(ShiftsViewModel.class);
+
+        binding = FragmentShiftsBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+
+        Task<DataSnapshot> getShiftsTask = FirebaseDatabase
+                .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                .getReference()
+                .child("Users/" + AccountConst.account.getId() + "/Shifts").get();
+        getShiftsTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                shifts = new ArrayList<>();
+                for(DataSnapshot child : task.getResult().getChildren())
+                {
+                    Shifts str1 = child.getValue(Shifts.class);
+                    shifts.add(str1);
+                }
+
+                adapter = new ShiftsSettingsAdapter(shifts, getActivity());
+                LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
+                linearLayout.setOrientation(RecyclerView.VERTICAL);
+                binding.shiftsRecycler.setLayoutManager(linearLayout);
+                binding.shiftsRecycler.setAdapter(adapter);
+            }
+        });
+
+
+
+
+        return root;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu, null);
+        drawable = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(drawable, Color.WHITE);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(drawable);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+}

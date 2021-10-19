@@ -105,28 +105,11 @@ public class CreateFragment extends Fragment {
         dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                for(DataSnapshot child : task.getResult().getChildren())
-                {
-                    if(child.getKey().toString().equals(AccountConst.account.getId()))
+                for (DataSnapshot child : task.getResult().getChildren()) {
+                    if (child.getKey().toString().equals(AccountConst.account.getId()))
                         exist = true;
                 }
-                if(!exist)
-                {
-                    DatabaseReference databaseReference = FirebaseDatabase
-                            .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
-                            .getReference()
-                            .child("Users/" + AccountConst.account.getId() + "/Shifts");
-                    databaseReference.push()
-                            .setValue(new Shifts("TestName1", "TestStart1", "TestEnd1", "#eb3434"));
-                    databaseReference.push()
-                            .setValue(new Shifts("TestName2", "TestStart2", "TestEnd2", "#ebc634"));
-                    databaseReference.push()
-                            .setValue(new Shifts("TestName3", "TestStart3", "TestEnd3", "#96eb34"));
-                    databaseReference.push()
-                            .setValue(new Shifts("TestName4", "TestStart4", "TestEnd4", "#34ebba"));
-                }
-                else
-                {
+                if (exist) {
                     Task<DataSnapshot> getShiftsTask = FirebaseDatabase
                             .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
                             .getReference()
@@ -135,8 +118,7 @@ public class CreateFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
                             shifts = new ArrayList<>();
-                            for(DataSnapshot child : task.getResult().getChildren())
-                            {
+                            for (DataSnapshot child : task.getResult().getChildren()) {
                                 Shifts str1 = child.getValue(Shifts.class);
                                 shifts.add(str1);
                             }
@@ -153,7 +135,7 @@ public class CreateFragment extends Fragment {
 
                 }
 
-              }
+            }
         });
 
 
