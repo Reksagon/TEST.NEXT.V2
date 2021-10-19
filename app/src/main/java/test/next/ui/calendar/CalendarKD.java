@@ -171,8 +171,8 @@ public class CalendarKD extends Fragment {
         Calendar calendar_tmp = calendar;
         calendar_tmp.set(Calendar.MONTH, calendar_tmp.get(Calendar.MONTH) + 1);
         ArrayList<ScheduleDay> schedule_plus = null;
-        if(HomeFragment.schedule != null) {
-            schedule_plus = HomeFragment.schedule.getMonth(calendar_tmp.get(Calendar.MONTH), calendar_tmp.get(Calendar.YEAR));
+        if(HomeFragment.scheduls.size() > 0) {
+            schedule_plus = HomeFragment.scheduls.get(0).getMonth(calendar_tmp.get(Calendar.MONTH), calendar_tmp.get(Calendar.YEAR));
         }
 
         calendar_tmp.set(Calendar.MONTH, calendar_tmp.get(Calendar.MONTH) - 2);
@@ -192,8 +192,8 @@ public class CalendarKD extends Fragment {
         }
 
         ArrayList<ScheduleDay> schedule_minus = null;
-        if(HomeFragment.schedule != null) {
-            schedule_minus = HomeFragment.schedule.getMonth(calendar_tmp.get(Calendar.MONTH), calendar_tmp.get(Calendar.YEAR));
+        if(HomeFragment.scheduls.size() > 0) {
+            schedule_minus = HomeFragment.scheduls.get(0).getMonth(calendar_tmp.get(Calendar.MONTH), calendar_tmp.get(Calendar.YEAR));
         }
 
         for(int ii = day-2, prev_month_day = calendar_tmp.getActualMaximum(Calendar.DAY_OF_MONTH); ii >= 0; ii--, prev_month_day--)

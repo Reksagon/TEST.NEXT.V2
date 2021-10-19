@@ -152,7 +152,7 @@ public class Splash extends Fragment {
                             byte[] data2 = Base64.decode(data, Base64.DEFAULT);
                             Schedule schedule = SerializationUtils.deserialize(data2);
                             schedule.getScheduleDayArrayList();
-                            HomeFragment.schedule = schedule;
+                            HomeFragment.scheduls.add(schedule);
                         }
                         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                         navController.navigate(R.id.nav_home);

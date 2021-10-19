@@ -47,8 +47,8 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
     private CalendarStateAdapter calendarStateAdapter;
-    public static Schedule schedule = null;
-
+    public static ArrayList<Schedule> scheduls = new ArrayList<>();
+    public static int current_schedule = -1;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

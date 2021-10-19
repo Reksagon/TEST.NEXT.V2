@@ -25,4 +25,8 @@
     <string name="name_shift">Название смены</string>
     <string name="day_off">Выходной день</string>
     <string name="add_shift">Добавить смену</string>
+    <string name="choose_color">Выберите цвет</string>
+    <string name="cancel">Отмена</string>
+    <string name="change">Изменить</string>
+    <string name="success_shift">Смена успешно изменена!</string>
 </resources>

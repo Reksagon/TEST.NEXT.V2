@@ -185,14 +185,14 @@ public class CreateFragment extends Fragment {
                 calendar.set(Calendar.MONTH, Integer.parseInt(split[1])-1);
                 calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(split[2]));
 
-                Schedule schedule = new Schedule(shifts_send, days_send,calendar);
-                HomeFragment.schedule = schedule;
+                Schedule schedule = new Schedule(HomeFragment.scheduls.size() + 1, shifts_send, days_send,calendar, binding.nameSchedule.getText());
+                HomeFragment.scheduls.add(schedule);
+                HomeFragment.current_schedule = HomeFragment.scheduls.size() - 1;
 
                 byte[] data = SerializationUtils.serialize(schedule);
                 String base64 = Base64.encodeToString(data, Base64.DEFAULT);
 
-                ScheduleFB scheduleFB = new ScheduleFB(binding.nameSchedule.getText(), base64);
-
+                ScheduleFB scheduleFB = new ScheduleFB(String.valueOf(HomeFragment.scheduls.get(HomeFragment.current_schedule).getId()), base64);
 
                 DatabaseReference databaseReference = FirebaseDatabase
                         .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")

@@ -68,4 +68,8 @@ dependencies {
     implementation 'com.github.cachapa:ExpandableLayout:2.9.2'
     //Colorpicker
     implementation 'com.github.QuadFlask:colorpicker:0.0.15'
+    //Button
+    implementation 'io.github.nikartm:fit-button:2.0.0'
+    //Toast
+    implementation 'com.github.GrenderG:Toasty:1.5.2'
 }

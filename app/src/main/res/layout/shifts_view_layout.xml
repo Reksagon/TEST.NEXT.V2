@@ -146,6 +146,34 @@
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
 
+            <com.github.nikartm.button.FitButton
+                android:id="@+id/fbtn"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="10dp"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                app:fb_backgroundColor="@color/colorPrimaryVariant"
+                app:fb_cornerRadius="2dp"
+                app:fb_divColor="#fff"
+                app:fb_divHeight="40dp"
+                app:fb_divWidth="1dp"
+                app:fb_icon="@drawable/change"
+                app:fb_iconColor="#FFF"
+                app:fb_iconHeight="28dp"
+                app:fb_iconMarginEnd="16dp"
+                app:fb_iconMarginStart="20dp"
+                app:fb_iconPosition="left"
+                app:fb_iconWidth="28dp"
+                app:fb_rippleColor="#FBE9E7"
+                app:fb_shape="rectangle"
+                app:fb_text="@string/change"
+                app:fb_textColor="#FFF"
+                app:fb_textPaddingStart="16dp" />
+
         </LinearLayout>
 
     </net.cachapa.expandablelayout.ExpandableLayout>

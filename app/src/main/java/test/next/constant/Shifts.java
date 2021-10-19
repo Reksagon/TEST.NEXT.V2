@@ -12,6 +12,11 @@ public class Shifts implements Serializable {
     private String name;
     private String start, end, start_lanch, end_lanch;
     private String color;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private boolean offday;
 
     public boolean isOffday() {

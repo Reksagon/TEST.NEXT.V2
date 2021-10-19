@@ -1,15 +1,15 @@
 package test.next.constant;
 
 public class ScheduleFB {
-    String name;
+    String id;
     String data;
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getData() {
@@ -21,7 +21,7 @@ public class ScheduleFB {
     }
 
     public ScheduleFB(String name, String data) {
-        this.name = name;
+        this.id = name;
         this.data = data;
     }
 
