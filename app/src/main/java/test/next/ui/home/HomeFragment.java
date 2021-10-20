@@ -45,6 +45,7 @@ import test.next.R;
 import test.next.constant.AccountConst;
 import test.next.constant.Schedule;
 import test.next.constant.ScheduleFB;
+import test.next.constant.Shifts;
 import test.next.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
@@ -62,12 +63,11 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+
         calendarStateAdapter = new CalendarStateAdapter(getActivity().getSupportFragmentManager(), getLifecycle());
         calendarStateAdapter.feedsList = new ArrayList<>();
-
+        calendarStateAdapter.setShifts(AccountConst.shiftsArrayList);
         setFeedList();
-
-
         binding.viewPager.setAdapter(calendarStateAdapter);
         binding.viewPager.setCurrentItem(24, false);
 
@@ -94,7 +94,6 @@ public class HomeFragment extends Fragment {
                 super.onPageScrollStateChanged(state);
             }
         });
-
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true ) {
             @Override

@@ -144,6 +144,26 @@ public class CreateFragment extends Fragment {
                             linearLayout.setOrientation(RecyclerView.VERTICAL);
                             binding.shiftsView.setLayoutManager(linearLayout);
                             binding.shiftsView.setAdapter(adapter);
+
+                            binding.plus.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    adapter.AddShift(-1);
+                                    adapter.AddDay(-1);
+                                    adapter.setCount(adapter.getCount()+1);
+                                }
+                            });
+
+                            binding.minus.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if(adapter.getCount() != 1) {
+                                        adapter.RemoveShift();
+                                        adapter.RemoveDay();
+                                        adapter.setCount(adapter.getCount() - 1);
+                                    }
+                                }
+                            });
                         }
                     });
 
@@ -152,26 +172,6 @@ public class CreateFragment extends Fragment {
             }
         });
 
-
-        binding.plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter.AddShift(-1);
-                adapter.AddDay(-1);
-                adapter.setCount(adapter.getCount()+1);
-            }
-        });
-
-        binding.minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(adapter.getCount() != 1) {
-                    adapter.RemoveShift();
-                    adapter.RemoveDay();
-                    adapter.setCount(adapter.getCount() - 1);
-                }
-            }
-        });
 
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override

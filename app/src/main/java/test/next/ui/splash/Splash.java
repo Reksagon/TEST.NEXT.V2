@@ -46,6 +46,7 @@ import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import test.next.MainActivity;
@@ -53,6 +54,7 @@ import test.next.R;
 import test.next.constant.AccountConst;
 import test.next.constant.Schedule;
 import test.next.constant.ScheduleFB;
+import test.next.constant.Shifts;
 import test.next.databinding.ActivityMainBinding;
 import test.next.databinding.FragmentSplashBinding;
 import test.next.ui.home.HomeFragment;
@@ -137,6 +139,21 @@ public class Splash extends Fragment {
                     }
                 });
 
+
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getId() + "/Shifts").get().addOnCompleteListener(
+                        new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                AccountConst.shiftsArrayList = new ArrayList<>();
+                                for (DataSnapshot child : task.getResult().getChildren()) {
+                                    Shifts str1 = child.getValue(Shifts.class);
+                                    AccountConst.shiftsArrayList.add(str1);
+                                }
+                            }
+                        });
 
                 FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))

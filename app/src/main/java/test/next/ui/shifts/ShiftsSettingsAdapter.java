@@ -126,22 +126,47 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
             start_work.setClickable(false);
             start_work.setEnabled(false);
             start_work.setText(shift.getStart());
+            start_work.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setTime(start_work);
+                }
+            });
 
             end_work.setClickable(false);
             end_work.setEnabled(false);
             end_work.setText(shift.getEnd());
+            end_work.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setTime(end_work);
+                }
+            });
 
             start_lanch.setClickable(false);
             start_lanch.setEnabled(false);
             start_lanch.setText(shift.getStart_lanch());
+            start_lanch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setTime(start_lanch);
+                }
+            });
 
             end_lanch.setClickable(false);
             end_lanch.setEnabled(false);
             end_lanch.setText(shift.getEnd_lanch());
+            end_lanch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setTime(end_lanch);
+                }
+            });
 
             color_pick.setClickable(false);
             color_pick.setEnabled(false);
             color_pick.setText(shift.getColor());
+
 
             checkBox.setChecked(shift.isOffday());
 

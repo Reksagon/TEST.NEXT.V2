@@ -14,11 +14,17 @@ import java.util.Date;
 import java.util.List;
 
 import test.next.constant.ScheduleDay;
+import test.next.constant.Shifts;
 import test.next.ui.calendar.CalendarKD;
 import org.apache.commons.codec.binary.Base64;
 
 public class CalendarStateAdapter extends FragmentStateAdapter {
     public List<Date> feedsList;
+    private ArrayList<Shifts> shifts;
+
+    public void setShifts(ArrayList<Shifts> shifts) {
+        this.shifts = shifts;
+    }
 
     public CalendarStateAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
@@ -63,7 +69,7 @@ public class CalendarStateAdapter extends FragmentStateAdapter {
         {
 
             ArrayList<ScheduleDay> days = HomeFragment.scheduls.get(HomeFragment.current_schedule).getMonth(feedsList.get(position).getMonth(), feedsList.get(position).getYear());
-            return CalendarKD.newInstance(feedsList.get(position),days);
+            return CalendarKD.newInstance(feedsList.get(position),days, shifts);
         }
         return CalendarKD.newInstance(feedsList.get(position));
     }

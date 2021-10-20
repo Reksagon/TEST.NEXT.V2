@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/colorText"
+    android:orientation="vertical"
+    tools:context=".ui.calendar.DayCalendarDialogFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <com.tomlonghurst.expandablehinttext.ExpandableHintText
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_weight="1"
+        android:textColor="@color/white_update"
+        app:floatingLabelColor="@android:color/white"
+        app:image="@drawable/calendar"
+        app:imageColor="#1c242f"
+        app:textBoxColor="#801C242F">
+
+    </com.tomlonghurst.expandablehinttext.ExpandableHintText>
+
+    <com.skydoves.powerspinner.PowerSpinnerView
+        android:id="@+id/spinner3"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="25dp"
+        android:layout_weight="1"
+        android:background="@color/colorPrimaryVariant"
+        android:gravity="center"
+        android:hint="Shift"
+        android:minHeight="48dp"
+        android:padding="10dp"
+        android:textColor="@color/white_update"
+        android:textColorHint="@color/colorText"
+        android:textSize="16sp"
+        app:spinner_arrow_gravity="end"
+        app:spinner_arrow_padding="8dp"
+        app:spinner_divider_color="@color/colorPrimaryVariant"
+        app:spinner_divider_show="true"
+        app:spinner_divider_size="0.4dp"
+        app:spinner_popup_animation="dropdown"
+        app:spinner_popup_background="@color/colorPrimaryVariant"
+        app:spinner_popup_elevation="18dp" />
+
+    <LinearLayout
+        android:id="@+id/start_liner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <com.tomlonghurst.expandablehinttext.ExpandableHintText
+            android:id="@+id/shift_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:hint="@string/start_work"
+            android:textColor="@color/white_update"
+            app:floatingLabelColor="@android:color/white"
+            app:image="@drawable/work"
+            app:imageColor="#1c242f"
+            app:textBoxColor="#801C242F">
+
+        </com.tomlonghurst.expandablehinttext.ExpandableHintText>
+
+        <com.tomlonghurst.expandablehinttext.ExpandableHintText
+            android:id="@+id/shift_end"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="25dp"
+            android:layout_weight="1"
+            android:hint="@string/end_work"
+            android:textColor="@color/white_update"
+            app:floatingLabelColor="@android:color/white"
+            app:image="@drawable/work"
+            app:imageColor="#1c242f"
+            app:textBoxColor="#801C242F" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/end_liner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <com.tomlonghurst.expandablehinttext.ExpandableHintText
+            android:id="@+id/shift_start_lanch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:hint="@string/start_lanch"
+            android:textColor="@color/white_update"
+            app:floatingLabelColor="@android:color/white"
+            app:image="@drawable/lanch"
+            app:imageColor="#1c242f"
+            app:textBoxColor="#801C242F">
+
+        </com.tomlonghurst.expandablehinttext.ExpandableHintText>
+
+        <com.tomlonghurst.expandablehinttext.ExpandableHintText
+            android:id="@+id/shift_end_lanch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="25dp"
+            android:layout_weight="1"
+            android:hint="@string/end_lanch"
+            android:textColor="@color/white_update"
+            app:floatingLabelColor="@android:color/white"
+            app:image="@drawable/lanch"
+            app:imageColor="#1c242f"
+            app:textBoxColor="#801C242F" />
+    </LinearLayout>
+
+    <com.github.nikartm.button.FitButton
+        android:id="@+id/button_change"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
+        android:layout_weight="1"
+        android:enabled="true"
+        android:gravity="center_vertical"
+        app:fb_backgroundColor="@color/colorPrimaryVariant"
+        app:fb_cornerRadius="2dp"
+        app:fb_divColor="#fff"
+        app:fb_divHeight="40dp"
+        app:fb_divWidth="1dp"
+        app:fb_icon="@drawable/change"
+        app:fb_iconColor="#FFF"
+        app:fb_iconHeight="28dp"
+        app:fb_iconMarginEnd="16dp"
+        app:fb_iconMarginStart="20dp"
+        app:fb_iconPosition="left"
+        app:fb_iconWidth="28dp"
+        app:fb_rippleColor="#FBE9E7"
+        app:fb_shape="rectangle"
+        app:fb_text="@string/change"
+        app:fb_textColor="#FFF"
+        app:fb_textPaddingStart="16dp"
+        tools:ignore="TouchTargetSizeCheck" />
+
+</LinearLayout>

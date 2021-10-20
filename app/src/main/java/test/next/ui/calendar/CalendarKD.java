@@ -1,29 +1,28 @@
 package test.next.ui.calendar;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import test.next.R;
 import test.next.constant.Schedule;
 import test.next.constant.ScheduleDay;
+import test.next.constant.Shifts;
 import test.next.databinding.CalendarFragmentBinding;
 import test.next.ui.home.HomeFragment;
 
@@ -31,15 +30,17 @@ public class CalendarKD extends Fragment {
     private CalendarViewModel mViewModel;
     CalendarFragmentBinding binding;
     TextView[] days, shifts;
+    LinearLayout[] linearLayouts;
     Calendar calendar;
     public int m, y;
     ArrayList<ScheduleDay> dayArrayList = null;
+    ArrayList<Shifts> shifts_s;
 
-    public static CalendarKD newInstance(Date date, ArrayList<ScheduleDay> dayArrayList) {
+    public static CalendarKD newInstance(Date date, ArrayList<ScheduleDay> dayArrayList, ArrayList<Shifts> shifts) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, date.getMonth());
         calendar.set(Calendar.YEAR, date.getYear());
-        return new CalendarKD(calendar, dayArrayList);
+        return new CalendarKD(calendar, dayArrayList, shifts);
     }
 
     public static CalendarKD newInstance(Date date) {
@@ -60,10 +61,11 @@ public class CalendarKD extends Fragment {
     {
         this.calendar = calendar;
     }
-    public CalendarKD(Calendar calendar, ArrayList<ScheduleDay> dayArrayList)
+    public CalendarKD(Calendar calendar, ArrayList<ScheduleDay> dayArrayList, ArrayList<Shifts> shifts)
     {
         this.calendar = calendar;
         this.dayArrayList = dayArrayList;
+        this.shifts_s = shifts;
     }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -73,6 +75,7 @@ public class CalendarKD extends Fragment {
         View root = binding.getRoot();
         findDays();
         findShifts();
+        findLiner();
         try {
             setDays();
         } catch (InterruptedException e) {
@@ -90,6 +93,22 @@ public class CalendarKD extends Fragment {
     public Calendar getCalendar() {
         return calendar;
     }
+
+    void findLiner()
+    {
+        LinearLayout[] linearLayouts = {binding.day1, binding.day2, binding.day3, binding.day4,
+                binding.day5, binding.day6, binding.day7, binding.day8, binding.day9,
+                binding.day10, binding.day11, binding.day12, binding.day13, binding.day14,
+                binding.day15, binding.day16, binding.day17, binding.day18, binding.day19,
+                binding.day20, binding.day21, binding.day22, binding.day23, binding.day24,
+                binding.day25, binding.day26, binding.day27, binding.day28, binding.day29,
+                binding.day30, binding.day31, binding.day32, binding.day33,binding.day34,
+                binding.day35, binding.day36, binding.day37, binding.day38, binding.day39,
+                binding.day40, binding.day41, binding.day42 };
+
+        this.linearLayouts = linearLayouts;
+    }
+
 
     void findDays()
     {
@@ -142,6 +161,17 @@ public class CalendarKD extends Fragment {
 
     }
 
+    private View.OnClickListener getListener(ScheduleDay day){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                DayCalendarDialogFragment dayCalendarDialogFragment = DayCalendarDialogFragment.newInstance(day, shifts_s);
+                dayCalendarDialogFragment.show(fm, "fragment_edit_name");
+            }
+        };
+    }
+
     void setCalendar(int day, int day_of_month) throws InterruptedException {
         int i = day;
 
@@ -163,9 +193,12 @@ public class CalendarKD extends Fragment {
                     shifts[i - 1].setVisibility(View.VISIBLE);
                     shifts[i - 1].setText(dayArrayList.get(sh).getShift().getName());
                     shifts[i-1].setBackgroundColor(Color.parseColor(dayArrayList.get(sh).getShift().getColor()));
+                    linearLayouts[i-1].setOnClickListener(getListener(dayArrayList.get(sh)));
                     sh++;
                 }
             }
+
+
         }
 
         Calendar calendar_tmp = calendar;
