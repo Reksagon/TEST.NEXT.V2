@@ -1,5 +1,8 @@
 package test.next.ui.splash;
 
+import android.app.Activity;
+import android.util.Base64;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,10 +13,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import test.next.R;
 import test.next.constant.AccountConst;
 import test.next.constant.Shifts;
 
 public class SplashViewModel extends ViewModel {
+    Activity activity;
     private MutableLiveData<Task<DataSnapshot>> dataSnapshotMutableLiveData;
     private MutableLiveData<OnCompleteListener<DataSnapshot>> onCompleteListenerMutableLiveData;
 
@@ -25,14 +30,15 @@ public class SplashViewModel extends ViewModel {
         return onCompleteListenerMutableLiveData;
     }
 
-    void setSetting()
+    void setSetting(Activity activity)
     {
+        this.activity = activity;
         dataSnapshotMutableLiveData = new MutableLiveData<>();
         onCompleteListenerMutableLiveData = new MutableLiveData<>();
 
 
         Task<DataSnapshot> dataSnapshotTask =  FirebaseDatabase
-                .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                .getInstance(new String(Base64.decode(activity.getResources().getString(R.string.firebase), Base64.DEFAULT)))
                 .getReference()
                 .child("Users/").get();
         dataSnapshotMutableLiveData.setValue(dataSnapshotTask);

@@ -1,6 +1,7 @@
 package test.next.ui.create;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +28,13 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ShiftsAdap
     List<PowerSpinnerView> shifts_schedule = new ArrayList<>();
     List<PowerSpinnerView> days_schedule = new ArrayList<>();
 
+
     public ShiftsAdapter(List<Shifts> shifts, List<Integer> selected_shift,List<Integer> selected_day ) {
         this.shifts = shifts;
         this.selected_shift = selected_shift;
         this.selected_day = selected_day;
     }
+
 
     public List<PowerSpinnerView> getShifts_schedule() {
         return shifts_schedule;
@@ -59,7 +62,7 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ShiftsAdap
 
     @Override
     public void onBindViewHolder(@NonNull ShiftsAdapterVH holder, int position) {
-        holder.bind(shifts, selected_shift.get(position), selected_day.get(position));
+        holder.bind(shifts, selected_shift.get(position), selected_day.get(position), position);
     }
 
     public void AddShift(Integer num)
@@ -77,12 +80,14 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ShiftsAdap
     public void RemoveShift()
     {
         selected_shift.remove(selected_shift.size()-1);
+        shifts_schedule.remove(shifts_schedule.size()-1);
         notifyDataSetChanged();
     }
 
     public void RemoveDay()
     {
         selected_day.remove(selected_day.size()-1);
+        days_schedule.remove(days_schedule.size()-1);
         notifyDataSetChanged();
     }
 
@@ -108,8 +113,10 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ShiftsAdap
             super(itemView);
             spinner_shift = itemView.findViewById(R.id.spinner);
             spinner_day = itemView.findViewById(R.id.spinner2);
+            shifts_schedule.add(spinner_shift);
+            days_schedule.add(spinner_day);
         }
-        public void bind(List<Shifts> shifts, int select_shift, int select_day)
+        public void bind(List<Shifts> shifts, int select_shift, int select_day, int position)
         {
             List<String> strings = new ArrayList<>();
             for(Shifts shift : shifts)
@@ -135,8 +142,23 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ShiftsAdap
             if(select_day != -1)
                 spinner_day.selectItemByIndex(select_day);
 
-            shifts_schedule.add(spinner_shift);
-            days_schedule.add(spinner_day);
+
+
+            spinner_shift.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener<String>() {
+                @Override
+                public void onItemSelected(int i, @Nullable String s, int i1, String t1) {
+                    selected_shift.remove(position);
+                    selected_shift.add(position, i1);
+                }
+            });
+
+            spinner_day.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener<String>() {
+                @Override
+                public void onItemSelected(int i, @Nullable String s, int i1, String t1) {
+                    selected_day.remove(position);
+                    selected_day.add(position, i1);
+                }
+            });
         }
     }
 

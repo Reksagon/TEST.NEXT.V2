@@ -72,4 +72,6 @@ dependencies {
     implementation 'io.github.nikartm:fit-button:2.0.0'
     //Toast
     implementation 'com.github.GrenderG:Toasty:1.5.2'
+    //Checkbox
+    implementation 'net.igenius:customcheckbox:1.3'
 }

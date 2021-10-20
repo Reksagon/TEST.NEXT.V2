@@ -1,5 +1,6 @@
 package test.next.ui.home;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +20,8 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -91,6 +96,16 @@ public class HomeFragment extends Fragment {
         });
 
 
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true ) {
+            @Override
+            @MainThread
+            public void handleOnBackPressed() {
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startMain);
+            }
+        });
 
         return root;
     }

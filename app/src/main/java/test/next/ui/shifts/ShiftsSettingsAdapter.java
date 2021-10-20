@@ -7,7 +7,6 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +27,7 @@ import com.ozcanalasalvar.library.view.popup.TimePickerPopup;
 import com.tomlonghurst.expandablehinttext.ExpandableHintText;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
+import net.igenius.customcheckbox.CustomCheckBox;
 
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -91,7 +91,7 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
         ExpandableHintText name, start_work, end_work, start_lanch, end_lanch, color_pick;
         TextView button;
         LinearLayout content;
-        CheckBox checkBox;
+        CustomCheckBox checkBox;
         FitButton fbtn;
 
         public ShiftsSettingsAdapterVH(@NonNull View itemView) {
@@ -106,7 +106,7 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
             content = itemView.findViewById(R.id.content_shifts_set);
             button = itemView.findViewById(R.id.expand_button);
             checkBox = itemView.findViewById(R.id.day_off);
-            fbtn = itemView.findViewById(R.id.fbtn);
+            fbtn = itemView.findViewById(R.id.button_change);
         }
 
         public void bind(Shifts shift) {

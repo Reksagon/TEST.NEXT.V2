@@ -1,5 +1,6 @@
 package test.next.ui.splash;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -10,6 +11,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -85,7 +87,7 @@ public class Splash extends Fragment {
                 check = info != null && info.isConnectedOrConnecting();
                 if (check && AccountConst.account == null) {
                     signIn();
-                    mViewModel.setSetting();
+                    mViewModel.setSetting(getActivity());
                     getData().execute();
                 } else {
                     Toast.makeText(getActivity(), "No internet connection!", Toast.LENGTH_SHORT).show();
@@ -135,8 +137,22 @@ public class Splash extends Fragment {
                     }
                 });
 
+
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getId() + "/Settings/CurrentScheduls").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        Long num = task.getResult().getValue(Long.class);
+                        if(num != null)
+                            HomeFragment.current_schedule = Math.toIntExact(num);
+                    }
+                });
+
                 Task<DataSnapshot> databaseReference = FirebaseDatabase
-                        .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
                         .child("Users/" + AccountConst.account.getId() + "/Scheduls").get();
                 databaseReference.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -134,20 +135,42 @@
 
             </com.tomlonghurst.expandablehinttext.ExpandableHintText>
 
-            <CheckBox
-                android:id="@+id/day_off"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:minHeight="48dp"
-                android:text="@string/day_off"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <net.igenius.customcheckbox.CustomCheckBox
+                    android:id="@+id/day_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    android:text="@string/day_off"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    app:color_checked="#1c242f"
+                    app:color_unchecked="@color/colorPrimaryVariant"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingStart="10dp"
+                    android:text="@string/day_off"
+                    android:textColor="@color/colorPrimaryVariant"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <com.github.nikartm.button.FitButton
-                android:id="@+id/fbtn"
+                android:id="@+id/button_change"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:layout_marginStart="25dp"

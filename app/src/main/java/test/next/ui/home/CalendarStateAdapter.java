@@ -62,7 +62,7 @@ public class CalendarStateAdapter extends FragmentStateAdapter {
         if(HomeFragment.scheduls.size() > 0)
         {
 
-            ArrayList<ScheduleDay> days = HomeFragment.scheduls.get(0).getMonth(feedsList.get(position).getMonth(), feedsList.get(position).getYear());
+            ArrayList<ScheduleDay> days = HomeFragment.scheduls.get(HomeFragment.current_schedule).getMonth(feedsList.get(position).getMonth(), feedsList.get(position).getYear());
             return CalendarKD.newInstance(feedsList.get(position),days);
         }
         return CalendarKD.newInstance(feedsList.get(position));

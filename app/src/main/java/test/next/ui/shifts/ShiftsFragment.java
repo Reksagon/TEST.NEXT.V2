@@ -3,11 +3,14 @@ package test.next.ui.shifts;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +19,8 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,7 +54,7 @@ public class ShiftsFragment extends Fragment {
         View root = binding.getRoot();
 
         Task<DataSnapshot> getShiftsTask = FirebaseDatabase
-                .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                 .getReference()
                 .child("Users/" + AccountConst.account.getId() + "/Shifts").get();
         getShiftsTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -71,7 +76,14 @@ public class ShiftsFragment extends Fragment {
         });
 
 
-
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true ) {
+            @Override
+            @MainThread
+            public void handleOnBackPressed() {
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                navController.navigate(R.id.nav_home);
+            }
+        });
 
         return root;
     }

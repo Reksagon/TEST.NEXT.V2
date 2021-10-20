@@ -1,5 +1,7 @@
 package test.next.ui.create;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -8,7 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
@@ -40,6 +45,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import es.dmoral.toasty.Toasty;
 import test.next.R;
 import test.next.constant.AccountConst;
 import test.next.constant.Schedule;
@@ -57,6 +63,9 @@ public class CreateFragment extends Fragment {
     private ArrayList<Shifts> shifts;
     private ShiftsAdapter adapter;
     private ArrayList<Integer> count_shifts = new ArrayList<>(), count_days = new ArrayList<>();
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         createViewModel =
@@ -64,6 +73,14 @@ public class CreateFragment extends Fragment {
         binding = FragmentCreateBinding.inflate(inflater, container, false);
         createViewModel.setActivity(getActivity(), binding);
         View root = binding.getRoot();
+        sharedPreferences = getActivity().getSharedPreferences("ShiftSchedulePlus", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        if(sharedPreferences.getInt("Count_Shifts", 0) == 0) {
+            editor.putInt("Count_Shifts", 1);
+            editor.putInt("Shift1", -1);
+            editor.putInt("ShiftDay1", -1);
+            editor.commit();
+        }
 
         binding.date.setClickable(false);
         binding.date.setEnabled(false);
@@ -73,7 +90,7 @@ public class CreateFragment extends Fragment {
         binding.date.setText(formatted);
 
         createViewModel.CreateView();
-
+        startSet();
 
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu, null);
         drawable = DrawableCompat.wrap(drawable);
@@ -87,19 +104,9 @@ public class CreateFragment extends Fragment {
             }
         });
 
-//        DatabaseReference databaseReference = FirebaseDatabase
-//                .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
-//                .getReference()
-//                .child("Users/" + AccountConst.account.getId() + "/Shifts");
-        //databaseReference.push().setValue(new Shifts("TestName1", "TestStart1", "TestEnd1", "TestColor1"));
-        //databaseReference.child(AccountConst.account.getId()).setValue(new Shifts("1","2", "3", "4"));
-//        databaseReference.child(AccountConst.account.getId()).child("Shifts").child("TestName1").
-//                setValue(new Shifts("TestName1", "TestStart1", "TestEnd1", "TestColor1"));
-//        databaseReference.child(AccountConst.account.getId()).child("Shifts").child("TestName2").
-//                setValue(new Shifts("TestName2", "TestStart2", "TestEnd2", "TestColor2"));
 
         Task<DataSnapshot> dataSnapshotTask =  FirebaseDatabase
-                .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                 .getReference()
                 .child("Users/").get();
         dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -111,7 +118,7 @@ public class CreateFragment extends Fragment {
                 }
                 if (exist) {
                     Task<DataSnapshot> getShiftsTask = FirebaseDatabase
-                            .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                             .getReference()
                             .child("Users/" + AccountConst.account.getId() + "/Shifts").get();
                     getShiftsTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -122,10 +129,17 @@ public class CreateFragment extends Fragment {
                                 Shifts str1 = child.getValue(Shifts.class);
                                 shifts.add(str1);
                             }
-                            count_shifts.add(-1);
-                            count_days.add(-1);
+                            for(int i = 1; i <= sharedPreferences.getInt("Count_Shifts", 0); i++)
+                            {
+                                count_shifts.add(sharedPreferences.getInt("Shift" + String.valueOf(i), -1));
+                                count_days.add(sharedPreferences.getInt("ShiftDay" + String.valueOf(i), -1));
+                            }
+                            if(!sharedPreferences.getString("ShiftCalendar", "none").equals("none"))
+                            {
+                                binding.date.setText(sharedPreferences.getString("ShiftCalendar", "none"));
+                            }
                             adapter = new ShiftsAdapter(shifts, count_shifts, count_days);
-                            adapter.setCount(1);
+                            adapter.setCount(sharedPreferences.getInt("Count_Shifts", 0));
                             LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
                             linearLayout.setOrientation(RecyclerView.VERTICAL);
                             binding.shiftsView.setLayoutManager(linearLayout);
@@ -164,6 +178,7 @@ public class CreateFragment extends Fragment {
             public void onClick(View view) {
                 ArrayList<Shifts> shifts_send = new ArrayList<>();
                 ArrayList<Integer> days_send = new ArrayList<>();
+
                 for(PowerSpinnerView view1 : adapter.getShifts_schedule())
                 {
                     if(view1.getSelectedIndex() != -1)
@@ -176,8 +191,27 @@ public class CreateFragment extends Fragment {
                         days_send.add(view1.getSelectedIndex() + 1);
                 }
 
-                shifts_send.remove(0);
-                days_send.remove(0);
+                if(shifts_send.size() < 2 || days_send.size() < 2)
+                {
+                    Toasty.warning(getActivity(), getActivity().getResources().getString(R.string.info_shifts), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(binding.nameSchedule.getText().equals("") || binding.nameSchedule.getText() == null)
+                {
+                    Toasty.warning(getActivity(), getActivity().getResources().getString(R.string.info_name_scheduke), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                editor.putInt("Count_Shifts", adapter.selected_shift.size());
+                for(int i = 1; i <= adapter.selected_shift.size(); i++)
+                {
+                    editor.putInt("Shift" + String.valueOf(i), adapter.selected_shift.get(i-1));
+                    editor.putInt("ShiftDay" + String.valueOf(i), adapter.selected_day.get(i-1));
+                    editor.commit();
+                }
+
+                editor.putString("ShiftCalendar", binding.date.getText());
+                editor.commit();
 
                 String[] split = binding.date.getText().split("/");
                 Calendar calendar = Calendar.getInstance();
@@ -195,84 +229,38 @@ public class CreateFragment extends Fragment {
                 ScheduleFB scheduleFB = new ScheduleFB(String.valueOf(HomeFragment.scheduls.get(HomeFragment.current_schedule).getId()), base64);
 
                 DatabaseReference databaseReference = FirebaseDatabase
-                        .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
                         .child("Users/" + AccountConst.account.getId() + "/Scheduls");
                 databaseReference.push()
                         .setValue(scheduleFB);
 
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getId() + "/Settings/CurrentScheduls").setValue(HomeFragment.scheduls.size()-1);
 
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.nav_home);
             }
         });
-//        Task<DataSnapshot> dataSnapshotTask =  databaseReference.get();
-//        dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DataSnapshot> task) {
-//                for(DataSnapshot child : task.getResult().getChildren())
-//                {
-//                    Shifts str1 = child.getValue(Shifts.class);
-//                    str1.getColor();
-//                }
-//              }
-//        });
 
-//        FirebaseDatabase
-//                .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
-//                .getReference()
-//                .child("Users/").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                boolean exist = false;
-//
-//                for(DataSnapshot child : snapshot.getChildren())
-//                {
-//
-//                    if(child.getKey().toString().equals(AccountConst.account.getId()))
-//                        exist = true;
-//                }
-//
-//                if(!exist)
-//                {
-//                    //databaseReference.child(AccountConst.account.getId()).child("Shifts").setValue(new Shifts("1","2", "3", "4"));
-//
-////                    Shifts[] shifts = {new Shifts("TestName1", "TestStart1", "TestEnd1", "TestColor1"),
-////                            new Shifts("TestName2", "TestStart2", "TestEnd2", "TestColor2"),
-////                            new Shifts("TestName3", "TestStart3", "TestEnd3", "TestColor3"),
-////                            new Shifts("TestName4", "TestStart4", "TestEnd4", "TestColor4")
-////
-////                    };
-////                    databaseReference.child("Users").child(AccountConst.account.getId()).child("Shifts");
-////
-////                    //Account account = new Account(AccountConst.account.getId());
-////                    databaseReference.push().setValue(new Shifts("1", "2", "3", "4"));
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true ) {
+            @Override
+            @MainThread
+            public void handleOnBackPressed() {
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                navController.navigate(R.id.nav_home);
+            }
+        });
 
         return root;
     }
 
+    private void startSet() {
 
+    }
 
 
     @Override
