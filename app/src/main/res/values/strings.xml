@@ -35,7 +35,20 @@
     <string name="info_shifts">Должно быть две смены и более!</string>
     <string name="info_name_scheduke">Не указали имя графика!</string>
     <string name="schedule_succes">выбран!</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="juxtapose">Сопоставить</string>
+    <string name="select_scheduls">Выберите графики:</string>
+    <string name="name_warning">Максимальный размер имя графика 15 символов!</string>
+    <string name="jan">Январь</string>
+    <string name="feb">Февраль</string>
+    <string name="march">Март</string>
+    <string name="april">Апрель</string>
+    <string name="may">Май</string>
+    <string name="june">Июнь</string>
+    <string name="july">Июль</string>
+    <string name="august">Август</string>
+    <string name="sep">Сентябрь</string>
+    <string name="oct">Октябрь</string>
+    <string name="nov">Ноябрь</string>
+    <string name="dec">Декабрь</string>
 
 </resources>

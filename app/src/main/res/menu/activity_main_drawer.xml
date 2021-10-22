@@ -21,5 +21,10 @@
             android:id="@+id/nav_change"
             android:icon="@drawable/change"
             android:title="@string/change_fragment" />
+
+        <item
+            android:id="@+id/nav_jextapose"
+            android:icon="@drawable/change"
+            android:title="@string/juxtapose" />
     </group>
 </menu>

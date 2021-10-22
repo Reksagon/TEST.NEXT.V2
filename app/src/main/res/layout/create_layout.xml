@@ -27,7 +27,8 @@
         app:spinner_divider_size="0.4dp"
         app:spinner_popup_animation="dropdown"
         app:spinner_popup_background="@color/colorPrimaryVariant"
-        app:spinner_popup_elevation="14dp" />
+        app:spinner_popup_elevation="14dp"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <com.skydoves.powerspinner.PowerSpinnerView
         android:id="@+id/spinner2"
@@ -48,6 +49,7 @@
         app:spinner_divider_size="0.4dp"
         app:spinner_popup_animation="dropdown"
         app:spinner_popup_background="@color/colorPrimaryVariant"
-        app:spinner_popup_elevation="14dp" />
+        app:spinner_popup_elevation="14dp"
+        tools:ignore="TouchTargetSizeCheck" />
 
 </LinearLayout>

@@ -108,8 +108,6 @@ public class CalendarKD extends Fragment {
 
         this.linearLayouts = linearLayouts;
     }
-
-
     void findDays()
     {
         TextView[] days = {binding.day1Text, binding.day2Text, binding.day3Text, binding.day4Text,
@@ -160,7 +158,6 @@ public class CalendarKD extends Fragment {
         }
 
     }
-
     private View.OnClickListener getListener(ScheduleDay day){
         return new View.OnClickListener() {
             @Override
@@ -186,6 +183,7 @@ public class CalendarKD extends Fragment {
             {
                 days[i-1].setBackgroundResource(R.drawable.textview_desidgn);
                 days[i-1].setTextColor(Color.WHITE);
+                linearLayouts[i-1].setBackground(getActivity().getResources().getDrawable(R.drawable.back_day));
             }
             if(dayArrayList != null && sh < dayArrayList.size())
             {

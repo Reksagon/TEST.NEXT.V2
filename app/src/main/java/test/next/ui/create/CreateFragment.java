@@ -179,6 +179,12 @@ public class CreateFragment extends Fragment {
                 ArrayList<Shifts> shifts_send = new ArrayList<>();
                 ArrayList<Integer> days_send = new ArrayList<>();
 
+                if(binding.nameSchedule.getText().toString().length() > 15)
+                {
+                    Toasty.warning(getActivity(), getActivity().getResources().getString(R.string.name_warning),
+                            Toasty.LENGTH_SHORT).show();
+                    return;
+                }
                 for(PowerSpinnerView view1 : adapter.getShifts_schedule())
                 {
                     if(view1.getSelectedIndex() != -1)

@@ -17,7 +17,7 @@
         android:gravity="center_vertical"
         app:fb_backgroundColor="@color/colorPrimaryVariant"
         app:fb_cornerRadius="2dp"
-        app:fb_divColor="#fff"
+        app:fb_divColor="#FFFFFF"
         app:fb_divHeight="40dp"
         app:fb_divWidth="1dp"
         app:fb_icon="@drawable/unchecked"
@@ -30,7 +30,7 @@
         app:fb_rippleColor="#FBE9E7"
         app:fb_shape="rectangle"
         app:fb_text="@string/change"
-        app:fb_textColor="#FFF"
+        app:fb_textColor="#FFFFFF"
         app:fb_textPaddingStart="16dp" />
 
 </LinearLayout>

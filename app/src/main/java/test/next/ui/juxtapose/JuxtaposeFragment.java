@@ -1,14 +1,15 @@
-package test.next.ui.home;
+package test.next.ui.juxtapose;
 
-import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Base64;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.MainThread;
@@ -18,60 +19,41 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import org.apache.commons.lang3.SerializationUtils;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import test.next.R;
 import test.next.constant.AccountConst;
 import test.next.constant.Schedule;
-import test.next.constant.ScheduleFB;
-import test.next.constant.Shifts;
-import test.next.databinding.FragmentHomeBinding;
+import test.next.databinding.FragmentJuxtaposeBinding;
+import test.next.databinding.FragmentJuxtaposeDialogBinding;
+import test.next.ui.calendar.DayCalendarDialogFragment;
+import test.next.ui.changes.ChangeAdapter;
+import test.next.ui.home.CalendarStateAdapter;
 
-public class HomeFragment extends Fragment {
+public class JuxtaposeFragment extends Fragment implements JuxtaposeDialogFragment.DialogListener {
 
-    private HomeViewModel homeViewModel;
-    private FragmentHomeBinding binding;
-    private CalendarStateAdapter calendarStateAdapter;
-    public static ArrayList<Schedule> scheduls = new ArrayList<>();
-    public static int current_schedule = -1;
+    private FragmentJuxtaposeBinding binding;
+    private JuxtaposeStateAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentJuxtaposeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
-        calendarStateAdapter = new CalendarStateAdapter(getActivity().getSupportFragmentManager(), getLifecycle());
-        calendarStateAdapter.feedsList = new ArrayList<>();
-        calendarStateAdapter.setShifts(AccountConst.shiftsArrayList);
-        setFeedList();
-        binding.viewPager.setAdapter(calendarStateAdapter);
-        binding.viewPager.setCurrentItem(24, false);
-
-        binding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        FragmentManager fm = getFragmentManager();
+        JuxtaposeDialogFragment juxtaposeDialogFragment = new JuxtaposeDialogFragment();
+        juxtaposeDialogFragment.setTargetFragment(JuxtaposeFragment.this, 300);
+        juxtaposeDialogFragment.show(fm, "fragment_edit_name");
+        binding.juxtaposePager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
@@ -80,12 +62,11 @@ public class HomeFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
 
-                Date date = calendarStateAdapter.feedsList.get(position);
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(setTitle(date.getMonth(), date.getYear()));
-                if (position == calendarStateAdapter.feedsList.size() - 2) {
 
-                    calendarStateAdapter.AddEnd(new Date(date.getYear(), date.getMonth() + 2, 1));
-                }
+                if (position == adapter.monthFragments.size() - 2)
+                    adapter.Add();
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(setTitle(adapter.monthFragments.get(position).month,
+                        adapter.monthFragments.get(position).year));
 
 
             }
@@ -94,54 +75,24 @@ public class HomeFragment extends Fragment {
                 super.onPageScrollStateChanged(state);
             }
         });
-
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true ) {
             @Override
             @MainThread
             public void handleOnBackPressed() {
-                Intent startMain = new Intent(Intent.ACTION_MAIN);
-                startMain.addCategory(Intent.CATEGORY_HOME);
-                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(startMain);
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                navController.navigate(R.id.nav_home);
             }
         });
-
         return root;
     }
-
-    void setFeedList()
-    {
-        Calendar calendar = Calendar.getInstance();
-        Date date = new Date(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), 1);
-        for(int i = 24; i >= 1; i--)
-        {
-            setFeedListMonth(new Date(date.getYear(), date.getMonth() - i, 1));
-        }
-        setFeedListMonth(new Date(date.getYear(), date.getMonth(), 1));
-        for(int i = 1; i <= 24; i++)
-        {
-            setFeedListMonth(new Date(date.getYear(), date.getMonth() + i, 1));
-        }
-
-    }
-
-    private void setFeedListMonth(Date date)
-    {
-        calendarStateAdapter.feedsList.add(date);
-        calendarStateAdapter.notifyDataSetChanged();
-    }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Date date = calendarStateAdapter.feedsList.get(24);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(setTitle(date.getMonth(), date.getYear()));
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu, null);
         drawable = DrawableCompat.wrap(drawable);
         DrawableCompat.setTint(drawable, Color.WHITE);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(drawable);
     }
-
     String setTitle(int month, int year)
     {
         switch (month)
@@ -163,8 +114,9 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public void onFinishDialog(ArrayList<Schedule> schedules) {
+        adapter = new JuxtaposeStateAdapter(getActivity().getSupportFragmentManager(), getLifecycle());
+        binding.juxtaposePager.setAdapter(adapter);
+        adapter.setShifts(schedules);
     }
 }

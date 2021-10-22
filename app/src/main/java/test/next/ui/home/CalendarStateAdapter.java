@@ -38,17 +38,6 @@ public class CalendarStateAdapter extends FragmentStateAdapter {
         super(fragmentManager, lifecycle);
     }
 
-    public void AddBegin(Date date)
-    {
-        feedsList.add(0, date);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                notifyDataSetChanged();
-            }
-        }, 100);
-    }
 
     public void AddEnd(Date date)
     {
