@@ -1,0 +1,186 @@
+package test.next.ui.settings;
+
+import static android.app.Activity.RESULT_OK;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RemoteViews;
+import android.widget.Toast;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
+
+import net.igenius.customcheckbox.CustomCheckBox;
+
+import org.apache.commons.lang3.SerializationUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+import es.dmoral.toasty.Toasty;
+import test.next.R;
+import test.next.constant.AccountConst;
+import test.next.databinding.FragmentSettingsBinding;
+import test.next.ui.calendar.DayCalendarDialogFragment;
+import test.next.ui.home.HomeFragment;
+
+public class SettingsFragment extends Fragment {
+
+    private FragmentSettingsBinding binding;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentSettingsBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+        Start();
+        binding.buttonBackground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, 777);
+
+            }
+        });
+
+        binding.checkBoard.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getId() + "/Settings/Board").setValue(String.valueOf(isChecked));
+                AccountConst.board = isChecked;
+            }
+        });
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true ) {
+            @Override
+            @MainThread
+            public void handleOnBackPressed() {
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                navController.navigate(R.id.nav_home);
+            }
+        });
+        return root;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu, null);
+        drawable = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(drawable, Color.WHITE);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(drawable);
+    }
+
+    private void Start()
+    {
+        if(AccountConst.board)
+            binding.checkBoard.setChecked(true);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        Bitmap bitmap = null;
+
+        switch(requestCode) {
+            case 777:
+                if (resultCode == RESULT_OK) {
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    ProgressDialog progressDialog = new ProgressDialog();
+                    progressDialog.show(fm, "fragment_edit_name");
+
+                    AccountConst.background = bitmap;
+                    Bitmap finalBitmap = bitmap;
+                    new AsyncTask<Void, Void, Void>()
+                    {
+                        @Override
+                        protected void onPostExecute(Void unused) {
+                            Toasty.success(getActivity(), getActivity().getResources().getString(R.string.loading_succes), Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                            super.onPostExecute(unused);
+                        }
+
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                            finalBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                            byte[] byteArray = byteArrayOutputStream .toByteArray();
+
+                            String base64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ShiftSchedulePlus", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("Background", base64);
+                            editor.apply();
+                            return null;
+                        }
+                    }.execute();
+
+                }
+        }
+//        if (requestCode == 777 && resultCode == RESULT_OK && null != data) {
+//            Uri selectedImage = data.getData();
+//            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+//
+//            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+//                    filePathColumn, null, null, null);
+//            cursor.moveToFirst();
+//
+//            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//            String picturePath = cursor.getString(columnIndex);
+//            cursor.close();
+//
+//            Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+//            Drawable d = new BitmapDrawable(getResources(), bitmap);
+//            binding.settingsContent.setBackground(d);
+//
+//        }
+    }
+
+}

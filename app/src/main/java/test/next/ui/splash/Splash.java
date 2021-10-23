@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -80,6 +82,8 @@ public class Splash extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences("ShiftSchedulePlus", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
+
+
         Sprite doubleBounce = new CubeGrid();
         binding.spinKit.setIndeterminateDrawable(doubleBounce);
 
@@ -91,6 +95,17 @@ public class Splash extends Fragment {
             signIn();
             mViewModel.setSetting(getActivity());
             getData().execute();
+        }
+
+        if(!sharedPreferences.getString("Background", "default").equals("default"))
+        {
+            String base64Str = sharedPreferences.getString("Background", "default");
+            byte[] decodedBytes = Base64.decode(
+                    base64Str.substring(base64Str.indexOf(",")  + 1),
+                    Base64.DEFAULT
+            );
+            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+            AccountConst.background = bitmap;
         }
 
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -214,6 +229,19 @@ public class Splash extends Fragment {
                         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                         navController.navigate(R.id.nav_home);
                         MainActivity.binding.appBarMain.toolbar.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getId() + "/Settings/Board").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (task.getResult().getValue(String.class).equals("true"))
+                        {
+                            AccountConst.board = true;
+                        }
                     }
                 });
 

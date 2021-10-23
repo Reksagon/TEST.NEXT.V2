@@ -55,5 +55,9 @@
     <string name="name_schedule">Имя графика</string>
     <string name="success">Изменено!</string>
     <string name="splash">Для начала работы войдите в свой аккаунт для сохранения всех данных :)</string>
+    <string name="choose_backdround">Выбрать фон календаря</string>
+    <string name="loading">Загрузка</string>
+    <string name="loading_succes">Фон изменен!</string>
+    <string name="settings_board">Границы в календаре</string>
 
 </resources>

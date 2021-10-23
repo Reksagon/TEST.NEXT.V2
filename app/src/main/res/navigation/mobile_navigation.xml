@@ -41,4 +41,8 @@
         android:name="test.next.ui.statistics.StatisticsFragment"
         android:label="Статистика"
         tools:layout="@layout/fragment_statistics" />
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="test.next.ui.settings.SettingsFragment"
+        android:label="Settings" />
 </navigation>

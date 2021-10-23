@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/background_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/background" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.github.nikartm.button.FitButton
+                android:id="@+id/button_background"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_margin="25dp"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                app:fb_backgroundColor="@color/colorPrimaryVariant"
+                app:fb_cornerRadius="2dp"
+                app:fb_divColor="#fff"
+                app:fb_divHeight="40dp"
+                app:fb_divWidth="1dp"
+                app:fb_icon="@drawable/icon_background"
+                app:fb_iconColor="#FFF"
+                app:fb_iconHeight="28dp"
+                app:fb_iconMarginEnd="16dp"
+                app:fb_iconMarginStart="20dp"
+                app:fb_iconPosition="left"
+                app:fb_iconWidth="28dp"
+                app:fb_rippleColor="#FBE9E7"
+                app:fb_shape="rectangle"
+                app:fb_text="@string/choose_backdround"
+                app:fb_textColor="#FFF"
+                app:fb_textPaddingStart="16dp" >
+
+            </com.github.nikartm.button.FitButton>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingStart="25dp"
+                    android:text="@string/settings_board"
+                    android:textColor="@color/colorPrimaryVariant"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <net.igenius.customcheckbox.CustomCheckBox
+                    android:id="@+id/check_board"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="10dp"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    android:text="@string/day_off"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    app:color_checked="#1c242f"
+                    app:color_unchecked="@color/colorPrimaryVariant"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

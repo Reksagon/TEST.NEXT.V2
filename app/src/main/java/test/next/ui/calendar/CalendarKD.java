@@ -2,6 +2,7 @@ package test.next.ui.calendar;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +16,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import test.next.R;
+import test.next.constant.AccountConst;
 import test.next.constant.Schedule;
 import test.next.constant.ScheduleDay;
 import test.next.constant.Shifts;
@@ -36,6 +43,7 @@ public class CalendarKD extends Fragment {
     ArrayList<ScheduleDay> dayArrayList = null;
     ArrayList<Shifts> shifts_s;
 
+    boolean board = true;
     public static CalendarKD newInstance(Date date, ArrayList<ScheduleDay> dayArrayList, ArrayList<Shifts> shifts) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, date.getMonth());
@@ -83,6 +91,8 @@ public class CalendarKD extends Fragment {
         }
         m = calendar.get(Calendar.MONTH);
         y = calendar.get(Calendar.YEAR);
+
+
         return root;
     }
 
@@ -105,7 +115,11 @@ public class CalendarKD extends Fragment {
                 binding.day30, binding.day31, binding.day32, binding.day33,binding.day34,
                 binding.day35, binding.day36, binding.day37, binding.day38, binding.day39,
                 binding.day40, binding.day41, binding.day42 };
-
+        if(!AccountConst.board) {
+            for (int i = 0; i < linearLayouts.length; i++) {
+                linearLayouts[i].setBackground(null);
+            }
+        }
         this.linearLayouts = linearLayouts;
     }
     void findDays()
