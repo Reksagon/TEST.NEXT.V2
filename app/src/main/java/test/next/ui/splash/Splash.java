@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -32,6 +33,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.CubeGrid;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -65,6 +68,8 @@ public class Splash extends Fragment {
     private SplashViewModel mViewModel;
     private FragmentSplashBinding binding;
     private Task<DataSnapshot> dataSnapshotTask;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -72,8 +77,21 @@ public class Splash extends Fragment {
         mViewModel = new ViewModelProvider(this).get(SplashViewModel.class);
         binding = FragmentSplashBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        sharedPreferences = getActivity().getSharedPreferences("ShiftSchedulePlus", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
+        Sprite doubleBounce = new CubeGrid();
+        binding.spinKit.setIndeterminateDrawable(doubleBounce);
 
+        if(!sharedPreferences.getString("SignIN", "No").equals("No"))
+        {
+            binding.splashText.setVisibility(View.GONE);
+            binding.signIn.setVisibility(View.GONE);
+            binding.spinKit.setVisibility(View.VISIBLE);
+            signIn();
+            mViewModel.setSetting(getActivity());
+            getData().execute();
+        }
 
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
@@ -88,9 +106,15 @@ public class Splash extends Fragment {
                 Info();
                 check = info != null && info.isConnectedOrConnecting();
                 if (check && AccountConst.account == null) {
-                    signIn();
-                    mViewModel.setSetting(getActivity());
-                    getData().execute();
+                    binding.signIn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            signIn();
+                            mViewModel.setSetting(getActivity());
+                            getData().execute();
+                        }
+                    });
+
                 } else {
                     Toast.makeText(getActivity(), "No internet connection!", Toast.LENGTH_SHORT).show();
                 }
@@ -245,9 +269,16 @@ public class Splash extends Fragment {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
             if(account != null)
+            {
+                binding.splashText.setVisibility(View.GONE);
+                binding.signIn.setVisibility(View.GONE);
+                binding.spinKit.setVisibility(View.VISIBLE);
+                editor.putString("SignIN", "Yes");
+                editor.apply();
                 UpdateUI(account);
+            }
 
         } catch (ApiException | FileNotFoundException e) {
             Log.d("EROOR", e.toString());

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context=".ui.statistics.StatisticsFragment">
+
+    <com.github.nikartm.button.FitButton
+        android:id="@+id/schedule_stat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="0"
+        android:enabled="true"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        app:fb_backgroundColor="@color/colorPrimaryVariant"
+        app:fb_cornerRadius="2dp"
+        app:fb_divColor="#FFFFFF"
+        app:fb_divHeight="40dp"
+        app:fb_divWidth="1dp"
+        app:fb_icon="@drawable/calendar"
+        app:fb_iconColor="#FFF"
+        app:fb_iconHeight="28dp"
+        app:fb_iconMarginEnd="16dp"
+        app:fb_iconMarginStart="20dp"
+        app:fb_iconPosition="left"
+        app:fb_iconWidth="28dp"
+        app:fb_rippleColor="#FBE9E7"
+        app:fb_shape="rectangle"
+        app:fb_text="@string/change"
+        app:fb_textColor="#FFFFFF"
+        app:fb_textPaddingStart="16dp" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/stat_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

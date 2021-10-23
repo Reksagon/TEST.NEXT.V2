@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <com.tomlonghurst.expandablehinttext.ExpandableHintText
+                    android:id="@+id/text_shift"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/white_update"
+                    app:floatingLabelColor="@android:color/white"
+                    app:image="@drawable/icon_stat_shift"
+                    app:imageColor="#1c242f"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:textBoxColor="#801C242F" />
+
+                <com.tomlonghurst.expandablehinttext.ExpandableHintText
+                    android:id="@+id/text_count_day"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/white_update"
+                    app:floatingLabelColor="@android:color/white"
+                    app:image="@drawable/icon_day"
+                    app:imageColor="@color/colorPrimaryVariant"
+                    app:textBoxColor="#801C242F" />
+
+                <com.tomlonghurst.expandablehinttext.ExpandableHintText
+                    android:id="@+id/text_count_hour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/white_update"
+                    app:floatingLabelColor="@android:color/white"
+                    app:image="@drawable/icon_hour"
+                    app:imageColor="@color/colorPrimaryVariant"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:textBoxColor="#801C242F">
+
+                </com.tomlonghurst.expandablehinttext.ExpandableHintText>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/stat_shift_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <com.tomlonghurst.expandablehinttext.ExpandableHintText
+                    android:id="@+id/text_final_day"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/white_update"
+                    app:floatingLabelColor="@android:color/white"
+                    app:image="@drawable/icon_day"
+                    app:imageColor="@color/colorPrimaryVariant"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:textBoxColor="#801C242F" />
+
+                <com.tomlonghurst.expandablehinttext.ExpandableHintText
+                    android:id="@+id/text_final_hour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/white_update"
+                    app:floatingLabelColor="@android:color/white"
+                    app:image="@drawable/icon_hour"
+                    app:imageColor="@color/colorPrimaryVariant"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:textBoxColor="#801C242F">
+
+                </com.tomlonghurst.expandablehinttext.ExpandableHintText>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

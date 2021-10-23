@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import es.dmoral.toasty.Toasty;
 import test.next.R;
 import test.next.constant.Schedule;
 import test.next.databinding.FragmentJuxtaposeDialogBinding;
@@ -46,6 +47,11 @@ public class JuxtaposeDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 DialogListener listener = (DialogListener) getTargetFragment();
+                if(adapter.schedules.size() == 0)
+                {
+                    Toasty.warning(getActivity(), getActivity().getResources().getString(R.string.jux_war), Toasty.LENGTH_SHORT).show();
+                    return;
+                }
                 listener.onFinishDialog(adapter.schedules);
                 dismiss();
             }

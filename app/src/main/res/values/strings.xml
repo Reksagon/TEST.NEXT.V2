@@ -50,5 +50,10 @@
     <string name="oct">Октябрь</string>
     <string name="nov">Ноябрь</string>
     <string name="dec">Декабрь</string>
+    <string name="jux_war">Нужно выбрать хотя бы 1 график!</string>
+    <string name="statist">Статистика</string>
+    <string name="name_schedule">Имя графика</string>
+    <string name="success">Изменено!</string>
+    <string name="splash">Для начала работы войдите в свой аккаунт для сохранения всех данных :)</string>
 
 </resources>

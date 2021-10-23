@@ -24,7 +24,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.ozcanalasalvar.library.view.popup.TimePickerPopup;
 import com.skydoves.powerspinner.OnSpinnerItemSelectedListener;
+import com.tomlonghurst.expandablehinttext.ExpandableHintText;
 
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -109,6 +111,39 @@ public class DayCalendarDialogFragment extends DialogFragment {
         binding.shiftStartLanch.setText(scheduleDay.getShift().getStart_lanch());
         binding.shiftEndLanch.setText(scheduleDay.getShift().getEnd_lanch());
 
+        binding.shiftStart.setEnabled(false);
+        binding.shiftEnd.setEnabled(false);
+        binding.shiftStartLanch.setEnabled(false);
+        binding.shiftEndLanch.setEnabled(false);
+
+        binding.shiftStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTime(binding.shiftStart);
+            }
+        });
+        binding.shiftEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTime(binding.shiftEnd);
+            }
+        });
+
+        binding.shiftStartLanch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTime(binding.shiftStartLanch);
+            }
+        });
+
+        binding.shiftEndLanch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTime(binding.shiftEndLanch);
+            }
+
+        });
+
         if(scheduleDay.getShift().isOffday())
         {
             binding.startLiner.setVisibility(View.GONE);
@@ -132,7 +167,7 @@ public class DayCalendarDialogFragment extends DialogFragment {
                         break;
                     }
                 }
-                Toasty.success(getActivity(), "Success", Toasty.LENGTH_SHORT).show();
+                Toasty.success(getActivity(), getActivity().getResources().getString(R.string.success), Toasty.LENGTH_SHORT).show();
 
                 byte[] data = SerializationUtils.serialize(HomeFragment.scheduls.get(HomeFragment.current_schedule));
                 String base64 = Base64.encodeToString(data, Base64.DEFAULT);
@@ -176,5 +211,39 @@ public class DayCalendarDialogFragment extends DialogFragment {
         window.setGravity(Gravity.CENTER);
         // Call super onResume after sizing
         super.onResume();
+    }
+
+    public void setTime(ExpandableHintText textView)
+    {
+        String[] split = textView.getText().split(":");
+        int hour = 0, minute = 0;
+        if(split[0] != "")
+        {
+            hour = Integer.parseInt(split[0]);
+            minute = Integer.parseInt(split[1]);
+        }
+        TimePickerPopup timePickerPopup = new TimePickerPopup.Builder()
+                .from(getActivity())
+                .offset(3)
+                .textSize(17)
+                .setTime(hour, minute)
+                .listener(new TimePickerPopup.OnTimeSelectListener() {
+                    @Override
+                    public void onTimeSelected(com.ozcanalasalvar.library.view.timePicker.TimePicker timePicker, int hour, int minute) {
+                        String str = "";
+                        if(hour < 10)
+                            str += "0" + String.valueOf(hour) + ":";
+                        else
+                            str += String.valueOf(hour) + ":";
+
+                        if(minute < 10)
+                            str += "0" + String.valueOf(minute);
+                        else
+                            str += String.valueOf(minute) + ":";
+                        textView.setText(str);
+                    }
+                })
+                .build();
+        timePickerPopup.show();
     }
 }

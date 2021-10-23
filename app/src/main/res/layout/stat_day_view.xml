@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <com.tomlonghurst.expandablehinttext.ExpandableHintText
+        android:id="@+id/name_shift"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:clickable="false"
+        android:persistentDrawingCache="none"
+        android:textAlignment="center"
+        android:textColor="@color/white_update"
+        app:floatingLabelColor="@android:color/white"
+        app:imageColor="#1c242f"
+        app:readOnly="false"
+        app:textBoxColor="#801C242F">
+
+    </com.tomlonghurst.expandablehinttext.ExpandableHintText>
+
+    <com.tomlonghurst.expandablehinttext.ExpandableHintText
+        android:id="@+id/count_days"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:persistentDrawingCache="none"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryVariant"
+        app:floatingLabelColor="@android:color/white"
+        app:imageColor="#1c242f"
+        app:textBoxColor="@color/colorText">
+
+    </com.tomlonghurst.expandablehinttext.ExpandableHintText>
+
+    <com.tomlonghurst.expandablehinttext.ExpandableHintText
+        android:id="@+id/count_hours"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:persistentDrawingCache="none"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryVariant"
+        app:floatingLabelColor="@android:color/white"
+        app:imageColor="#1c242f"
+        app:textBoxColor="@color/colorText" />
+
+</LinearLayout>

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
-        android:hint="Name schedule"
+        android:hint="@string/name_schedule"
         android:textColor="@color/white_update"
         app:floatingLabelColor="@android:color/white"
         app:image="@drawable/icon_name"

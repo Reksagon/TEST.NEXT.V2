@@ -26,5 +26,10 @@
             android:id="@+id/nav_jextapose"
             android:icon="@drawable/change"
             android:title="@string/juxtapose" />
+
+        <item
+            android:id="@+id/nav_statistics"
+            android:icon="@drawable/change"
+            android:title="@string/statist" />
     </group>
 </menu>

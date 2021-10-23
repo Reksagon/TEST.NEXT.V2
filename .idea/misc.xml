@@ -26,12 +26,15 @@
         <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/layout/fragment_juxtapose_dialog.xml" value="0.24547101449275363" />
         <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/layout/fragment_shifts.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/layout/fragment_slideshow.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/layout/fragment_splash.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/layout/fragment_splash.xml" value="0.176" />
+        <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/layout/fragment_statistics.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/layout/juxtapose_month_view.xml" value="0.4" />
         <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/layout/nav_header_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/layout/shifts_view_layout.xml" value="0.264" />
         <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/layout/splash_fragment.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/menu/activity_main_drawer.xml" value="0.136" />
+        <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/layout/stat_day_view.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/layout/stat_month_view.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/menu/activity_main_drawer.xml" value="0.152" />
         <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/menu/main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ShiftSchedulePlus/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ShiftSchedulePlus/app/src/main/res/drawable/ic_launcher_background.xml" value="0.23854166666666668" />

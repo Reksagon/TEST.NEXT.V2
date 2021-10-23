@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
 
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -38,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_create, R.id.nav_shifts)
                 .setOpenableLayout(drawer)
                 .build();
+        FirebaseApp.initializeApp(this);
+        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory(
+                DebugAppCheckProviderFactory.getInstance());
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
