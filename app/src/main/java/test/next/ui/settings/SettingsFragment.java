@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -39,6 +40,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -69,6 +74,7 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         Start();
+
         binding.buttonBackground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,12 +96,92 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        binding.checkDaysOther.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getId() + "/Settings/DaysOther").setValue(String.valueOf(isChecked));
+                AccountConst.days_other = isChecked;
+            }
+        });
+
+        binding.colorPickTextShift.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ColorPickerDialogBuilder
+                        .with(getActivity())
+                        .setTitle(getActivity().getResources().getString(R.string.choose_color))
+                        .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                        .density(12)
+                        .setOnColorSelectedListener(new OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int selectedColor) {
+                            }
+                        })
+                        .setPositiveButton("OK", new ColorPickerClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                                binding.colorPickText.setBackgroundColor(selectedColor);
+                                AccountConst.text_color_shift = String.format("#%06X", (0xFFFFFF & selectedColor));
+                                FirebaseDatabase
+                                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                                        .getReference()
+                                        .child("Users/" + AccountConst.account.getId() + "/Settings/TextColorShift").setValue(AccountConst.text_color_calendar);
+                            }
+                        })
+                        .setNegativeButton(getActivity().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .build()
+                        .show();
+            }
+        });
+
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true ) {
             @Override
             @MainThread
             public void handleOnBackPressed() {
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.nav_home);
+            }
+        });
+
+        binding.colorPickText.setClickable(false);
+        binding.colorPickText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ColorPickerDialogBuilder
+                        .with(getActivity())
+                        .setTitle(getActivity().getResources().getString(R.string.choose_color))
+                        .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                        .density(12)
+                        .setOnColorSelectedListener(new OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int selectedColor) {
+                            }
+                        })
+                        .setPositiveButton("OK", new ColorPickerClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                                binding.colorPickText.setBackgroundColor(selectedColor);
+                                AccountConst.text_color_calendar = String.format("#%06X", (0xFFFFFF & selectedColor));
+                                FirebaseDatabase
+                                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                                        .getReference()
+                                        .child("Users/" + AccountConst.account.getId() + "/Settings/TextColorCalendar").setValue(AccountConst.text_color_calendar);
+                            }
+                        })
+                        .setNegativeButton(getActivity().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .build()
+                        .show();
             }
         });
         return root;
@@ -112,8 +198,10 @@ public class SettingsFragment extends Fragment {
 
     private void Start()
     {
-        if(AccountConst.board)
-            binding.checkBoard.setChecked(true);
+        binding.checkBoard.setChecked(AccountConst.board);
+        binding.checkDaysOther.setChecked(AccountConst.days_other);
+        binding.colorPickText.setBackgroundColor(Color.parseColor(AccountConst.text_color_calendar));
+        binding.colorPickTextShift.setBackgroundColor(Color.parseColor(AccountConst.text_color_shift));
     }
 
     @Override

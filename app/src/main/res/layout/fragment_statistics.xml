@@ -34,7 +34,6 @@
         app:fb_iconWidth="28dp"
         app:fb_rippleColor="#FBE9E7"
         app:fb_shape="rectangle"
-        app:fb_text="@string/change"
         app:fb_textColor="#FFFFFF"
         app:fb_textPaddingStart="16dp" />
 

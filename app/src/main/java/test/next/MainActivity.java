@@ -1,5 +1,6 @@
 package test.next;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -38,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_create, R.id.nav_shifts)
+                R.id.nav_home, R.id.nav_create, R.id.nav_shifts, R.id.nav_email, R.id.nav_change, R.id.nav_settings, R.id.nav_change,
+                R.id.nav_jextapose, R.id.nav_statistics)
                 .setOpenableLayout(drawer)
                 .build();
         FirebaseApp.initializeApp(this);
@@ -55,16 +57,11 @@ public class MainActivity extends AppCompatActivity {
         DrawableCompat.setTint(drawable, Color.WHITE);
         getSupportActionBar().setHomeAsUpIndicator(drawable);
 
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
+
 
     @Override
     public boolean onSupportNavigateUp() {

@@ -54,6 +54,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import me.wangyuwei.particleview.ParticleView;
 import test.next.MainActivity;
 import test.next.R;
 import test.next.constant.AccountConst;
@@ -83,30 +84,45 @@ public class Splash extends Fragment {
         editor = sharedPreferences.edit();
 
 
+        binding.splashText.setVisibility(View.GONE);
+        binding.signIn.setVisibility(View.GONE);
+
+        binding.splash.startAnim();
+        binding.splash.setOnParticleAnimListener(new ParticleView.ParticleAnimListener() {
+            @Override
+            public void onAnimationEnd() {
+                if(!sharedPreferences.getString("SignIN", "No").equals("No"))
+                {
+                    binding.splashText.setVisibility(View.GONE);
+                    binding.signIn.setVisibility(View.GONE);
+                    binding.spinKit.setVisibility(View.VISIBLE);
+                    signIn();
+                    mViewModel.setSetting(getActivity());
+                    getData().execute();
+                }
+                else
+                {
+                    binding.splashText.setVisibility(View.VISIBLE);
+                    binding.signIn.setVisibility(View.VISIBLE);
+                }
+
+                if(!sharedPreferences.getString("Background", "default").equals("default"))
+                {
+                    String base64Str = sharedPreferences.getString("Background", "default");
+                    byte[] decodedBytes = Base64.decode(
+                            base64Str.substring(base64Str.indexOf(",")  + 1),
+                            Base64.DEFAULT
+                    );
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                    AccountConst.background = bitmap;
+                }
+            }
+        });
 
         Sprite doubleBounce = new CubeGrid();
         binding.spinKit.setIndeterminateDrawable(doubleBounce);
 
-        if(!sharedPreferences.getString("SignIN", "No").equals("No"))
-        {
-            binding.splashText.setVisibility(View.GONE);
-            binding.signIn.setVisibility(View.GONE);
-            binding.spinKit.setVisibility(View.VISIBLE);
-            signIn();
-            mViewModel.setSetting(getActivity());
-            getData().execute();
-        }
 
-        if(!sharedPreferences.getString("Background", "default").equals("default"))
-        {
-            String base64Str = sharedPreferences.getString("Background", "default");
-            byte[] decodedBytes = Base64.decode(
-                    base64Str.substring(base64Str.indexOf(",")  + 1),
-                    Base64.DEFAULT
-            );
-            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-            AccountConst.background = bitmap;
-        }
 
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
@@ -238,13 +254,76 @@ public class Splash extends Fragment {
                         .child("Users/" + AccountConst.account.getId() + "/Settings/Board").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if (task.getResult().getValue(String.class).equals("true"))
+                        String check = task.getResult().getValue(String.class);
+                        if(check != null)
                         {
+                            if(check.equals("true"))
+                                AccountConst.board = true;
+                            else
+                                AccountConst.board = false;
+                        }
+                        else {
+                            task.getResult().getRef().setValue("true");
                             AccountConst.board = true;
                         }
                     }
                 });
 
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getId() + "/Settings/TextColorCalendar").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        String color = task.getResult().getValue(String.class);
+                        if(color != null)
+                            AccountConst.text_color_calendar = color;
+                        else {
+                            task.getResult().getRef().setValue("#FF000000");
+                            AccountConst.text_color_calendar = "#FF000000";
+                        }
+                    }
+                });
+
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getId() + "/Settings/DaysOther").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        String check = task.getResult().getValue(String.class);
+                        if(check != null)
+                        {
+                            if(check.equals("true"))
+                                AccountConst.days_other = true;
+                            else
+                                AccountConst.days_other = false;
+                        }
+                        else {
+                            task.getResult().getRef().setValue("false");
+                            AccountConst.days_other = false;
+                        }
+                    }
+                });
+
+
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getId() + "/Settings/TextColorShift").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        String color = task.getResult().getValue(String.class);
+                        if(color != null)
+                            AccountConst.text_color_shift = color;
+                        else {
+                            task.getResult().getRef().setValue("#FFFFFFFF");
+                            AccountConst.text_color_shift = "#FFFFFFFF";
+                        }
+                    }
+                });
                 super.onPostExecute(unused);
             }
 
@@ -286,10 +365,12 @@ public class Splash extends Fragment {
         TextView email = getActivity().findViewById(R.id.email_account);
         email.setText(account.getEmail());
         ImageView imageView = getActivity().findViewById(R.id.photo_account);
-        Glide.with(getActivity()).load(account.getPhotoUrl().toString())
-                .thumbnail(0.5f)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imageView);
+        if(account.getPhotoUrl() != null) {
+            Glide.with(getActivity()).load(account.getPhotoUrl().toString())
+                    .thumbnail(0.5f)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imageView);
+        }
         AccountConst.account = account;
     }
 

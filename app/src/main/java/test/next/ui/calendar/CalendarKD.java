@@ -133,6 +133,10 @@ public class CalendarKD extends Fragment {
                 binding.day30Text, binding.day31Text, binding.day32Text, binding.day33Text,binding.day34Text,
                 binding.day35Text, binding.day36Text, binding.day37Text, binding.day38Text, binding.day39Text,
                 binding.day40Text, binding.day41Text, binding.day42Text };
+        for(TextView textView : days)
+        {
+            textView.setTextColor(Color.parseColor(AccountConst.text_color_calendar));
+        }
         this.days = days;
     }
     void findShifts()
@@ -146,6 +150,10 @@ public class CalendarKD extends Fragment {
                 binding.dayShift30, binding.dayShift31, binding.dayShift32, binding.dayShift33,binding.dayShift34,
                 binding.dayShift35, binding.dayShift36, binding.dayShift37, binding.dayShift38, binding.dayShift39,
                 binding.dayShift40, binding.dayShift41, binding.dayShift42 };
+        for(TextView textView : shifts)
+        {
+            textView.setTextColor(Color.parseColor(AccountConst.text_color_shift));
+        }
         this.shifts = shifts;
     }
     public void setDays() throws InterruptedException {
@@ -223,16 +231,22 @@ public class CalendarKD extends Fragment {
         calendar_tmp.set(Calendar.MONTH, calendar_tmp.get(Calendar.MONTH) - 2);
         for(int j = i, dd = 1; j < days.length+1; j++, dd++)
         {
-            days[j-1].setText(String.valueOf(dd));
-            days[j-1].setAlpha(0.3f);
+            if(!AccountConst.days_other) {
+                days[j - 1].setText(String.valueOf(dd));
+                days[j - 1].setAlpha(0.3f);
 
-            if(schedule_plus != null  && dd <= schedule_plus.size()) {
-                if (schedule_plus.get(dd-1).getDay() == dd) {
-                    shifts[j - 1].setVisibility(View.VISIBLE);
-                    shifts[j - 1].setText(schedule_plus.get(dd-1).getShift().getName());
-                    shifts[j - 1].setBackgroundColor(Color.parseColor(schedule_plus.get(dd-1).getShift().getColor()));
-                    shifts[j - 1].setAlpha(0.3f);
+                if (schedule_plus != null && dd <= schedule_plus.size()) {
+                    if (schedule_plus.get(dd - 1).getDay() == dd) {
+                        shifts[j - 1].setVisibility(View.VISIBLE);
+                        shifts[j - 1].setText(schedule_plus.get(dd - 1).getShift().getName());
+                        shifts[j - 1].setBackgroundColor(Color.parseColor(schedule_plus.get(dd - 1).getShift().getColor()));
+                        shifts[j - 1].setAlpha(0.3f);
+                    }
                 }
+            }
+            else
+            {
+                days[j-1].setVisibility(View.GONE);
             }
         }
 
@@ -246,13 +260,19 @@ public class CalendarKD extends Fragment {
             days[ii].setText(String.valueOf(prev_month_day));
             days[ii].setAlpha(0.5f);
 
-            if(schedule_minus != null && prev_month_day <= schedule_minus.size()) {
-                if (schedule_minus.get(prev_month_day-1).getDay() == prev_month_day) {
-                    shifts[ii].setVisibility(View.VISIBLE);
-                    shifts[ii].setText(schedule_minus.get(prev_month_day-1).getShift().getName());
-                    shifts[ii].setBackgroundColor(Color.parseColor(schedule_minus.get(prev_month_day-1).getShift().getColor()));
-                    shifts[ii].setAlpha(0.3f);
+            if(!AccountConst.days_other) {
+                if (schedule_minus != null && prev_month_day <= schedule_minus.size()) {
+                    if (schedule_minus.get(prev_month_day - 1).getDay() == prev_month_day) {
+                        shifts[ii].setVisibility(View.VISIBLE);
+                        shifts[ii].setText(schedule_minus.get(prev_month_day - 1).getShift().getName());
+                        shifts[ii].setBackgroundColor(Color.parseColor(schedule_minus.get(prev_month_day - 1).getShift().getColor()));
+                        shifts[ii].setAlpha(0.3f);
+                    }
                 }
+            }
+            else
+            {
+                days[ii].setVisibility(View.GONE);
             }
         }
 

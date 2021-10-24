@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Date;
 
+import es.dmoral.toasty.Toasty;
 import test.next.R;
 import test.next.constant.Schedule;
 import test.next.databinding.FragmentChangeBinding;
@@ -49,7 +50,8 @@ public class ChangeFragment extends Fragment {
         binding = FragmentChangeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
+        if(HomeFragment.scheduls.size() == 0)
+            Toasty.info(getActivity(), getActivity().getResources().getString(R.string.warning_info), Toasty.LENGTH_SHORT).show();
         ArrayList<String> strings = new ArrayList<>();
         for(Schedule schedule : HomeFragment.scheduls)
         {

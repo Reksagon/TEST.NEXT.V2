@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">Shift Schedule Plus</string>
+    <string name="app_name">График смен Plus</string>
+    <string name="app_name2">График смен</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -8,6 +9,10 @@
     <string name="action_settings">Settings</string>
     <string name="firebase">aHR0cHM6Ly90ZXN0LW5leHQtN2VhNDUtZGVmYXVsdC1ydGRiLmZpcmViYXNlaW8uY29tLw==</string>
 
+
+    <string name="day_sh">День</string>
+    <string name="night_sh">Ночь</string>
+    <string name="offday_sh">Выходной</string>
     <string name="menu_home">Календарь</string>
     <string name="menu_gallery">Создать</string>
     <string name="menu_slideshow">Смены</string>
@@ -59,5 +64,15 @@
     <string name="loading">Загрузка</string>
     <string name="loading_succes">Фон изменен!</string>
     <string name="settings_board">Границы в календаре</string>
+    <string name="settings_text_color">Цвет текста</string>
+    <string name="settings">Настройки</string>
+    <string name="settings_days_other">Показывать дни только одного месяца</string>
+    <string name="email">Отправить пожелания</string>
+    <string name="email_text">Пишите сюда свои предложения! :)</string>
+    <string name="email_error">Почтовые клиенты не установлены! :(</string>
+    <string name="email_text_au">Приложение разработано с целью угодить всем пользователям :) Если нашли ошибку или у Вас есть предложения для улучшения, обязательно напишите мне. И в ближайшем обновлении сделаем :)\n\n
+    По вопросам сотрудничества так же сюда! Спасибо!</string>
+    <string name="warning_info">Еще нет созданных графиков!</string>
+    <string name="settings_color_shift">Цвет текста смен</string>
 
 </resources>

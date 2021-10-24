@@ -59,11 +59,11 @@ public class SplashViewModel extends ViewModel {
                             .getReference()
                             .child("Users/" + AccountConst.account.getId() + "/Shifts");
                     databaseReference.push()
-                            .setValue(new Shifts(1,"День", "00:00", "00:00", "#fcba03", false));
+                            .setValue(new Shifts(1,activity.getResources().getString(R.string.day_sh), "07:00", "19:00", "#fcba03", false));
                     databaseReference.push()
-                            .setValue(new Shifts(2,"Ночь", "00:00", "00:00", "#0339fc", false));
+                            .setValue(new Shifts(2,activity.getResources().getString(R.string.night_sh), "19:00", "07:00", "#0339fc", false));
                     databaseReference.push()
-                            .setValue(new Shifts(3,"Выходной", "00:00", "00:00", "#00d4d0", true));
+                            .setValue(new Shifts(3,activity.getResources().getString(R.string.offday_sh), "00:00", "00:00", "#00d4d0", true));
                 }
             }
         });

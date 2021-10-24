@@ -82,4 +82,7 @@ dependencies {
     implementation 'com.shobhitpuri.custombuttons:google-signin:1.1.0'
     //Loader
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.github.JeasonWong:Particle:16bbb9f74b'
+
 }

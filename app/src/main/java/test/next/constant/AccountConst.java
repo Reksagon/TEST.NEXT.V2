@@ -11,4 +11,7 @@ public class AccountConst {
     public static ArrayList<Shifts> shiftsArrayList;
     public static Bitmap background;
     public static boolean board = false;
+    public static String text_color_calendar = null;
+    public static String text_color_shift = null;
+    public static boolean days_other = false;
 }

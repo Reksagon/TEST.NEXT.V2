@@ -44,5 +44,10 @@
     <fragment
         android:id="@+id/nav_settings"
         android:name="test.next.ui.settings.SettingsFragment"
-        android:label="Settings" />
+        android:label="@string/settings" />
+    <fragment
+        android:id="@+id/nav_email"
+        android:name="test.next.ui.email.EmailFragment"
+        android:label="@string/email"
+        tools:layout="@layout/fragment_email" />
 </navigation>
