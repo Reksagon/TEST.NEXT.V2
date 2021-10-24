@@ -37,6 +37,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.CubeGrid;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -45,6 +49,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.apache.commons.lang3.SerializationUtils;
@@ -82,7 +87,8 @@ public class Splash extends Fragment {
         View root = binding.getRoot();
         sharedPreferences = getActivity().getSharedPreferences("ShiftSchedulePlus", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-
+        AccountConst.activity = getActivity();
+        AccountConst.LoadAd();
 
         binding.splashText.setVisibility(View.GONE);
         binding.signIn.setVisibility(View.GONE);
@@ -164,6 +170,7 @@ public class Splash extends Fragment {
         return root;
     }
 
+
     private void signIn()
     {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -180,20 +187,7 @@ public class Splash extends Fragment {
         {
             @Override
             protected void onPostExecute(Void unused) {
-                mViewModel.getDataSnapshotMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Task<DataSnapshot>>() {
-                    @Override
-                    public void onChanged(@Nullable Task<DataSnapshot> task) {
-                        dataSnapshotTask = task;
-                    }
-                });
-
-                mViewModel.getOnCompleteListenerMutableLiveData().observe(getViewLifecycleOwner(), new Observer<OnCompleteListener<DataSnapshot>>() {
-                    @Override
-                    public void onChanged(@Nullable OnCompleteListener<DataSnapshot> onCompleteListener) {
-                        dataSnapshotTask.addOnCompleteListener(onCompleteListener);
-                    }
-                });
-
+                LoadShifts();
 
                 FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
@@ -357,6 +351,39 @@ public class Splash extends Fragment {
         {
             System.exit(0);
         }
+    }
+
+    public void LoadShifts()
+    {
+        Task<DataSnapshot> dataSnapshotTask =  FirebaseDatabase
+                .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                .getReference()
+                .child("Users/").get();
+
+        dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                boolean exist = false;
+                for(DataSnapshot child : task.getResult().getChildren())
+                {
+                    if(child.getKey().toString().equals(AccountConst.account.getId()))
+                        exist = true;
+                }
+                if(!exist)
+                {
+                    DatabaseReference databaseReference = FirebaseDatabase
+                            .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getId() + "/Shifts");
+                    databaseReference.push()
+                            .setValue(new Shifts(1,getActivity().getResources().getString(R.string.day_sh), "07:00", "19:00", "#fcba03", false));
+                    databaseReference.push()
+                            .setValue(new Shifts(2,getActivity().getResources().getString(R.string.night_sh), "19:00", "07:00", "#0339fc", false));
+                    databaseReference.push()
+                            .setValue(new Shifts(3,getActivity().getResources().getString(R.string.offday_sh), "00:00", "00:00", "#00d4d0", true));
+                }
+            }
+        });
     }
 
     private void UpdateUI(GoogleSignInAccount account) throws IOException {

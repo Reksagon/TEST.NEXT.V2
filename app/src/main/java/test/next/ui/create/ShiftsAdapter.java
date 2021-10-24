@@ -1,5 +1,6 @@
 package test.next.ui.create;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.skydoves.powerspinner.PowerSpinnerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import test.next.R;
 import test.next.constant.Shifts;
 
@@ -27,9 +29,13 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ShiftsAdap
     List<Integer> selected_day;
     List<PowerSpinnerView> shifts_schedule = new ArrayList<>();
     List<PowerSpinnerView> days_schedule = new ArrayList<>();
+    Activity activity;
 
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
 
-    public ShiftsAdapter(List<Shifts> shifts, List<Integer> selected_shift,List<Integer> selected_day ) {
+    public ShiftsAdapter(List<Shifts> shifts, List<Integer> selected_shift, List<Integer> selected_day ) {
         this.shifts = shifts;
         this.selected_shift = selected_shift;
         this.selected_day = selected_day;
@@ -147,8 +153,20 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ShiftsAdap
             spinner_shift.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener<String>() {
                 @Override
                 public void onItemSelected(int i, @Nullable String s, int i1, String t1) {
-                    selected_shift.remove(position);
-                    selected_shift.add(position, i1);
+                    int ss = 0;
+                    for(PowerSpinnerView powerSpinnerView : shifts_schedule)
+                    {
+                        if(powerSpinnerView.getSelectedIndex() == i1)
+                            ss++;
+                    }
+                    if(ss < 2) {
+                        selected_shift.remove(position);
+                        selected_shift.add(position, i1);
+                    }
+                    else
+                    {
+                        Toasty.warning(activity, activity.getResources().getString(R.string.create_warning), Toasty.LENGTH_SHORT).show();
+                    }
                 }
             });
 

@@ -184,9 +184,12 @@ public class CalendarKD extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AccountConst.ShowAd();
+
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 DayCalendarDialogFragment dayCalendarDialogFragment = DayCalendarDialogFragment.newInstance(day, shifts_s);
                 dayCalendarDialogFragment.show(fm, "fragment_edit_name");
+
             }
         };
     }

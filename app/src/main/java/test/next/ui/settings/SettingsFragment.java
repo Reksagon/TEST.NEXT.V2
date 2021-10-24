@@ -74,7 +74,8 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         Start();
-
+        AccountConst.ShowAd();
+        AccountConst.loadAdView(binding.adView2);
         binding.buttonBackground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -201,7 +202,7 @@ public class SettingsFragment extends Fragment {
         binding.checkBoard.setChecked(AccountConst.board);
         binding.checkDaysOther.setChecked(AccountConst.days_other);
         binding.colorPickText.setBackgroundColor(Color.parseColor(AccountConst.text_color_calendar));
-        binding.colorPickTextShift.setBackgroundColor(Color.parseColor(AccountConst.text_color_shift));
+        binding.colorPickTextShift.setBackgroundColor(Color.parseColor(AccountConst.text_color_shift ));
     }
 
     @Override

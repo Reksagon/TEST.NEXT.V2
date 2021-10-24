@@ -24,6 +24,7 @@ import android.widget.Toolbar;
 
 import es.dmoral.toasty.Toasty;
 import test.next.R;
+import test.next.constant.AccountConst;
 import test.next.databinding.FragmentChangeBinding;
 import test.next.databinding.FragmentEmailBinding;
 
@@ -38,7 +39,8 @@ public class EmailFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         binding = FragmentEmailBinding.inflate(inflater, container, false);
-
+        AccountConst.ShowAd();
+        AccountConst.loadAdView(binding.adView4);
         binding.send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

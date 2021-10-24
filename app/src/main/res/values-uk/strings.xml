@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Графік змін Plus</string>
+    <string name="app_name2">Графік змін</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="firebase">aHR0cHM6Ly90ZXN0LW5leHQtN2VhNDUtZGVmYXVsdC1ydGRiLmZpcmViYXNlaW8uY29tLw==</string>
+
+
+    <string name="day_sh">День</string>
+    <string name="night_sh">Ніч</string>
+    <string name="offday_sh">Вихідний</string>
+    <string name="menu_home">Календар</string>
+    <string name="menu_gallery">Створити</string>
+    <string name="menu_slideshow">Зміни</string>
+    <string name="monday">ПН</string>
+    <string name="tuesday">ВТ</string>
+    <string name="wednesday">СР</string>
+    <string name="thurdsday">ЧТ</string>
+    <string name="friday">ПТ</string>
+    <string name="saturday">СБ</string>
+    <string name="sunday">НД</string>
+    <string name="start_work">З</string>
+    <string name="end_work">До</string>
+    <string name="start_lanch">З</string>
+    <string name="end_lanch">До</string>
+    <string name="color_picker">Виберіть колір</string>
+    <string name="name_shift">Назва зміни</string>
+    <string name="day_off">Вихідний день</string>
+    <string name="add_shift">Додати зміну</string>
+    <string name="add_schedule">Додати графік</string>
+    <string name="choose_color">Виберіть колір</string>
+    <string name="cancel">Відміна</string>
+    <string name="change">Змінити</string>
+    <string name="success_shift">Зміна успішно змінена!</string>
+    <string name="change_fragment">Переключити графік</string>
+    <string name="info_shifts">Повинно бути дві зміни і більше!</string>
+    <string name="info_name_scheduke">Не вказали ім\'я графіка!</string>
+    <string name="schedule_succes">обраний!</string>
+    <string name="juxtapose">Зіставити</string>
+    <string name="select_scheduls">Виберіть графіки:</string>
+    <string name="name_warning">Максимальний розмір ім\'я графіка 15 символів!</string>
+    <string name="jan">Січень</string>
+    <string name="feb">Лютий</string>
+    <string name="march">Березень</string>
+    <string name="april">Квітень</string>
+    <string name="may">Травень</string>
+    <string name="june">Червень</string>
+    <string name="july">Липень</string>
+    <string name="august">Серпень</string>
+    <string name="sep">Вересень</string>
+    <string name="oct">Жовтень</string>
+    <string name="nov">Листопад</string>
+    <string name="dec">Грудень</string>
+    <string name="jux_war">Потрібно вибрати хоча б 1 графік!</string>
+    <string name="statist">Статистика</string>
+    <string name="name_schedule">Iм\'я графіка</string>
+    <string name="success">Змінено!</string>
+    <string name="splash">Для початку роботи увійдіть в свій аккаунт для збереження всіх даних :)</string>
+    <string name="choose_backdround">Вибрати фон календаря</string>
+    <string name="loading">Завантаження</string>
+    <string name="loading_succes">Фон змінений!</string>
+    <string name="settings_board">Межі в календарі</string>
+    <string name="settings_text_color">Колір тексту</string>
+    <string name="settings">Налаштування</string>
+    <string name="settings_days_other">Показувати дні тільки одного місяця</string>
+    <string name="email">Надіслати побажання</string>
+    <string name="email_text">Пишіть сюди свої пропозиції! :)</string>
+    <string name="email_error">Поштові клієнти не встановлені! :(</string>
+    <string name="email_text_au">Додаток розроблений з метою догодити всім користувачам :) Якщо знайшли помилку або у Вас є пропозиції для поліпшення, обов\'язково напишіть мені. І в найближчому оновленні зробимо:)\n\n
+     З питань співпраці так само сюди! Спасибі!</string>
+    <string name="warning_info">Ще немає створених графіків!</string>
+    <string name="settings_color_shift">Колір тексту змін</string>
+    <string name="create_warning">Такая смена уже существует!</string>
+
+
+</resources>

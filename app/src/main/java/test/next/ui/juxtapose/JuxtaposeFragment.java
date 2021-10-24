@@ -48,7 +48,8 @@ public class JuxtaposeFragment extends Fragment implements JuxtaposeDialogFragme
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentJuxtaposeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
+        AccountConst.ShowAd();
+        AccountConst.loadAdView(binding.adView);
         FragmentManager fm = getFragmentManager();
         JuxtaposeDialogFragment juxtaposeDialogFragment = new JuxtaposeDialogFragment();
         juxtaposeDialogFragment.setTargetFragment(JuxtaposeFragment.this, 300);

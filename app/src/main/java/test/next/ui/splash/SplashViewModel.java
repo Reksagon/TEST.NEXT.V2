@@ -37,36 +37,6 @@ public class SplashViewModel extends ViewModel {
         onCompleteListenerMutableLiveData = new MutableLiveData<>();
 
 
-        Task<DataSnapshot> dataSnapshotTask =  FirebaseDatabase
-                .getInstance(new String(Base64.decode(activity.getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                .getReference()
-                .child("Users/").get();
-        dataSnapshotMutableLiveData.setValue(dataSnapshotTask);
-
-        onCompleteListenerMutableLiveData.setValue(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                boolean exist = false;
-                for(DataSnapshot child : task.getResult().getChildren())
-                {
-                    if(child.getKey().toString().equals(AccountConst.account.getId()))
-                        exist = true;
-                }
-                if(!exist)
-                {
-                    DatabaseReference databaseReference = FirebaseDatabase
-                            .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
-                            .getReference()
-                            .child("Users/" + AccountConst.account.getId() + "/Shifts");
-                    databaseReference.push()
-                            .setValue(new Shifts(1,activity.getResources().getString(R.string.day_sh), "07:00", "19:00", "#fcba03", false));
-                    databaseReference.push()
-                            .setValue(new Shifts(2,activity.getResources().getString(R.string.night_sh), "19:00", "07:00", "#0339fc", false));
-                    databaseReference.push()
-                            .setValue(new Shifts(3,activity.getResources().getString(R.string.offday_sh), "00:00", "00:00", "#00d4d0", true));
-                }
-            }
-        });
     }
 
     public SplashViewModel() {

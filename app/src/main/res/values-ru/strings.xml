@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">График смен Plus</string>
+    <string name="app_name2">График смен</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="firebase">aHR0cHM6Ly90ZXN0LW5leHQtN2VhNDUtZGVmYXVsdC1ydGRiLmZpcmViYXNlaW8uY29tLw==</string>
+
+
+    <string name="day_sh">День</string>
+    <string name="night_sh">Ночь</string>
+    <string name="offday_sh">Выходной</string>
+    <string name="menu_home">Календарь</string>
+    <string name="menu_gallery">Создать</string>
+    <string name="menu_slideshow">Смены</string>
+    <string name="monday">ПН</string>
+    <string name="tuesday">ВТ</string>
+    <string name="wednesday">СР</string>
+    <string name="thurdsday">ЧТ</string>
+    <string name="friday">ПТ</string>
+    <string name="saturday">СБ</string>
+    <string name="sunday">ВС</string>
+    <string name="start_work">С</string>
+    <string name="end_work">До</string>
+    <string name="start_lanch">С</string>
+    <string name="end_lanch">До</string>
+    <string name="color_picker">Выберите цвет</string>
+    <string name="name_shift">Название смены</string>
+    <string name="day_off">Выходной день</string>
+    <string name="add_shift">Добавить смену</string>
+    <string name="add_schedule">Добавить график</string>
+    <string name="choose_color">Выберите цвет</string>
+    <string name="cancel">Отмена</string>
+    <string name="change">Изменить</string>
+    <string name="success_shift">Смена успешно изменена!</string>
+    <string name="change_fragment">Переключить график</string>
+    <string name="info_shifts">Должно быть две смены и более!</string>
+    <string name="info_name_scheduke">Не указали имя графика!</string>
+    <string name="schedule_succes">выбран!</string>
+    <string name="juxtapose">Сопоставить</string>
+    <string name="select_scheduls">Выберите графики:</string>
+    <string name="name_warning">Максимальный размер имя графика 15 символов!</string>
+    <string name="jan">Январь</string>
+    <string name="feb">Февраль</string>
+    <string name="march">Март</string>
+    <string name="april">Апрель</string>
+    <string name="may">Май</string>
+    <string name="june">Июнь</string>
+    <string name="july">Июль</string>
+    <string name="august">Август</string>
+    <string name="sep">Сентябрь</string>
+    <string name="oct">Октябрь</string>
+    <string name="nov">Ноябрь</string>
+    <string name="dec">Декабрь</string>
+    <string name="jux_war">Нужно выбрать хотя бы 1 график!</string>
+    <string name="statist">Статистика</string>
+    <string name="name_schedule">Имя графика</string>
+    <string name="success">Изменено!</string>
+    <string name="splash">Для начала работы войдите в свой аккаунт для сохранения всех данных :)</string>
+    <string name="choose_backdround">Выбрать фон календаря</string>
+    <string name="loading">Загрузка</string>
+    <string name="loading_succes">Фон изменен!</string>
+    <string name="settings_board">Границы в календаре</string>
+    <string name="settings_text_color">Цвет текста</string>
+    <string name="settings">Настройки</string>
+    <string name="settings_days_other">Показывать дни только одного месяца</string>
+    <string name="email">Отправить пожелания</string>
+    <string name="email_text">Пишите сюда свои предложения! :)</string>
+    <string name="email_error">Почтовые клиенты не установлены! :(</string>
+    <string name="email_text_au">Приложение разработано с целью угодить всем пользователям :) Если нашли ошибку или у Вас есть предложения для улучшения, обязательно напишите мне. И в ближайшем обновлении сделаем :)\n\n
+    По вопросам сотрудничества так же сюда! Спасибо!</string>
+    <string name="warning_info">Еще нет созданных графиков!</string>
+    <string name="settings_color_shift">Цвет текста смен</string>
+    <string name="create_warning">Такая смена уже существует!</string>
+
+</resources>

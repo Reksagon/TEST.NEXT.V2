@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -110,12 +117,15 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ShiftSchedule", Context.MODE_PRIVATE);
         if(AccountConst.background != null)
             binding.backgroundHome.setImageBitmap(AccountConst.background);
 
+        AccountConst.loadAdView(binding.adView);
+
+
         return root;
     }
+
 
     void setFeedList()
     {

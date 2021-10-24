@@ -65,9 +65,9 @@ public class StatisticsFragment extends Fragment {
 
         binding = FragmentStatisticsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
+        AccountConst.ShowAd();
         // binding.statShiftContent;
-
+        AccountConst.loadAdView(binding.adView3);
         if(HomeFragment.current_schedule >= 0) {
             binding.scheduleStat.setText(HomeFragment.scheduls.get(HomeFragment.current_schedule).getName());
             Task<DataSnapshot> getShiftsTask = FirebaseDatabase

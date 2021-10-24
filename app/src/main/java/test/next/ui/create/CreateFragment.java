@@ -81,7 +81,7 @@ public class CreateFragment extends Fragment {
             editor.putInt("ShiftDay1", -1);
             editor.commit();
         }
-
+        AccountConst.ShowAd();
         binding.date.setClickable(false);
         binding.date.setEnabled(false);
         Calendar cal = Calendar.getInstance();
@@ -139,6 +139,7 @@ public class CreateFragment extends Fragment {
                                 binding.date.setText(sharedPreferences.getString("ShiftCalendar", "none"));
                             }
                             adapter = new ShiftsAdapter(shifts, count_shifts, count_days);
+                            adapter.setActivity(getActivity());
                             adapter.setCount(sharedPreferences.getInt("Count_Shifts", 0));
                             LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
                             linearLayout.setOrientation(RecyclerView.VERTICAL);

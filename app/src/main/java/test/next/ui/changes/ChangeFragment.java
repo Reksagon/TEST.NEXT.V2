@@ -28,6 +28,7 @@ import java.util.Date;
 
 import es.dmoral.toasty.Toasty;
 import test.next.R;
+import test.next.constant.AccountConst;
 import test.next.constant.Schedule;
 import test.next.databinding.FragmentChangeBinding;
 import test.next.databinding.FragmentShiftsBinding;
@@ -49,7 +50,8 @@ public class ChangeFragment extends Fragment {
 
         binding = FragmentChangeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
+        AccountConst.ShowAd();
+        AccountConst.loadAdView(binding.adView6);
         if(HomeFragment.scheduls.size() == 0)
             Toasty.info(getActivity(), getActivity().getResources().getString(R.string.warning_info), Toasty.LENGTH_SHORT).show();
         ArrayList<String> strings = new ArrayList<>();

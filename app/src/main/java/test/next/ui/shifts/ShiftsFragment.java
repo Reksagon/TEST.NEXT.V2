@@ -52,7 +52,8 @@ public class ShiftsFragment extends Fragment {
 
         binding = FragmentShiftsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
+        AccountConst.ShowAd();
+        AccountConst.loadAdView(binding.adView5);
         Task<DataSnapshot> getShiftsTask = FirebaseDatabase
                 .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                 .getReference()
