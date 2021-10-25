@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1079061143725",
+    "firebase_url": "https://test-next-7ea45-default-rtdb.firebaseio.com",
     "project_id": "test-next-7ea45",
     "storage_bucket": "test-next-7ea45.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1079061143725-6estlr4tlijso1q97c6sepcana9h8i6i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "test.next",
+            "certificate_hash": "c05ff57f9bc6fccca8cf7731910f8397f4b736aa"
+          }
+        },
         {
           "client_id": "1079061143725-2ehgnnoa2p2a1bun8otln09qu4g990qc.apps.googleusercontent.com",
           "client_type": 3

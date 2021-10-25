@@ -57,7 +57,7 @@ public class ShiftsFragment extends Fragment {
         Task<DataSnapshot> getShiftsTask = FirebaseDatabase
                 .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                 .getReference()
-                .child("Users/" + AccountConst.account.getId() + "/Shifts").get();
+                .child("Users/" + AccountConst.account.getUid() + "/Shifts").get();
         getShiftsTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {

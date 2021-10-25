@@ -202,7 +202,7 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
                                             Task<DataSnapshot> dataSnapshotTask = FirebaseDatabase
                                                     .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
                                                     .getReference()
-                                                    .child("Users/" + AccountConst.account.getId() + "/Scheduls").get();
+                                                    .child("Users/" + AccountConst.account.getUid() + "/Scheduls").get();
                                             dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -262,7 +262,7 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
             return FirebaseDatabase
                     .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
                     .getReference()
-                    .child("Users/" + AccountConst.account.getId() + "/Shifts").get();
+                    .child("Users/" + AccountConst.account.getUid() + "/Shifts").get();
         }
 
 

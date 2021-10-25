@@ -113,14 +113,14 @@ public class CreateFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 for (DataSnapshot child : task.getResult().getChildren()) {
-                    if (child.getKey().toString().equals(AccountConst.account.getId()))
+                    if (child.getKey().toString().equals(AccountConst.account.getUid()))
                         exist = true;
                 }
                 if (exist) {
                     Task<DataSnapshot> getShiftsTask = FirebaseDatabase
                             .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                             .getReference()
-                            .child("Users/" + AccountConst.account.getId() + "/Shifts").get();
+                            .child("Users/" + AccountConst.account.getUid() + "/Shifts").get();
                     getShiftsTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -238,14 +238,14 @@ public class CreateFragment extends Fragment {
                 DatabaseReference databaseReference = FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
-                        .child("Users/" + AccountConst.account.getId() + "/Scheduls");
+                        .child("Users/" + AccountConst.account.getUid() + "/Scheduls");
                 databaseReference.push()
                         .setValue(scheduleFB);
 
                 FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
-                        .child("Users/" + AccountConst.account.getId() + "/Settings/CurrentScheduls").setValue(HomeFragment.scheduls.size()-1);
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").setValue(HomeFragment.scheduls.size()-1);
 
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.nav_home);

@@ -92,7 +92,7 @@ public class SettingsFragment extends Fragment {
                 FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
-                        .child("Users/" + AccountConst.account.getId() + "/Settings/Board").setValue(String.valueOf(isChecked));
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/Board").setValue(String.valueOf(isChecked));
                 AccountConst.board = isChecked;
             }
         });
@@ -103,7 +103,7 @@ public class SettingsFragment extends Fragment {
                 FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
-                        .child("Users/" + AccountConst.account.getId() + "/Settings/DaysOther").setValue(String.valueOf(isChecked));
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/DaysOther").setValue(String.valueOf(isChecked));
                 AccountConst.days_other = isChecked;
             }
         });
@@ -129,7 +129,7 @@ public class SettingsFragment extends Fragment {
                                 FirebaseDatabase
                                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                                         .getReference()
-                                        .child("Users/" + AccountConst.account.getId() + "/Settings/TextColorShift").setValue(AccountConst.text_color_calendar);
+                                        .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorShift").setValue(AccountConst.text_color_calendar);
                             }
                         })
                         .setNegativeButton(getActivity().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -173,7 +173,7 @@ public class SettingsFragment extends Fragment {
                                 FirebaseDatabase
                                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                                         .getReference()
-                                        .child("Users/" + AccountConst.account.getId() + "/Settings/TextColorCalendar").setValue(AccountConst.text_color_calendar);
+                                        .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorCalendar").setValue(AccountConst.text_color_calendar);
                             }
                         })
                         .setNegativeButton(getActivity().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {

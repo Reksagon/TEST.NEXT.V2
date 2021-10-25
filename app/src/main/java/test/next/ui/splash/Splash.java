@@ -48,6 +48,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -78,6 +83,7 @@ public class Splash extends Fragment {
     private Task<DataSnapshot> dataSnapshotTask;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    private FirebaseAuth mAuth;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -90,6 +96,8 @@ public class Splash extends Fragment {
         AccountConst.activity = getActivity();
         AccountConst.LoadAd();
 
+        mAuth = FirebaseAuth.getInstance();
+
         binding.splashText.setVisibility(View.GONE);
         binding.signIn.setVisibility(View.GONE);
 
@@ -99,10 +107,12 @@ public class Splash extends Fragment {
             public void onAnimationEnd() {
                 if(!sharedPreferences.getString("SignIN", "No").equals("No"))
                 {
+                    FirebaseUser currentUser = mAuth.getCurrentUser();
+                    UpdateUI(currentUser);
                     binding.splashText.setVisibility(View.GONE);
                     binding.signIn.setVisibility(View.GONE);
                     binding.spinKit.setVisibility(View.VISIBLE);
-                    signIn();
+                    //signIn();
                     mViewModel.setSetting(getActivity());
                     getData().execute();
                 }
@@ -174,8 +184,10 @@ public class Splash extends Fragment {
     private void signIn()
     {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
+
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, 123);
@@ -192,7 +204,7 @@ public class Splash extends Fragment {
                 FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
-                        .child("Users/" + AccountConst.account.getId() + "/Shifts").get().addOnCompleteListener(
+                        .child("Users/" + AccountConst.account.getUid() + "/Shifts").get().addOnCompleteListener(
                         new OnCompleteListener<DataSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -207,7 +219,7 @@ public class Splash extends Fragment {
                 FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
-                        .child("Users/" + AccountConst.account.getId() + "/Settings/CurrentScheduls").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -220,7 +232,7 @@ public class Splash extends Fragment {
                 Task<DataSnapshot> databaseReference = FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
-                        .child("Users/" + AccountConst.account.getId() + "/Scheduls").get();
+                        .child("Users/" + AccountConst.account.getUid() + "/Scheduls").get();
                 databaseReference.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -245,7 +257,7 @@ public class Splash extends Fragment {
                 FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
-                        .child("Users/" + AccountConst.account.getId() + "/Settings/Board").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/Board").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         String check = task.getResult().getValue(String.class);
@@ -266,7 +278,7 @@ public class Splash extends Fragment {
                 FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
-                        .child("Users/" + AccountConst.account.getId() + "/Settings/TextColorCalendar").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorCalendar").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -283,7 +295,7 @@ public class Splash extends Fragment {
                 FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
-                        .child("Users/" + AccountConst.account.getId() + "/Settings/DaysOther").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/DaysOther").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         String check = task.getResult().getValue(String.class);
@@ -305,7 +317,7 @@ public class Splash extends Fragment {
                 FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
-                        .child("Users/" + AccountConst.account.getId() + "/Settings/TextColorShift").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorShift").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -343,13 +355,23 @@ public class Splash extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+//        if (requestCode == 123) {
+//            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+//            handleSignInResult(task);
+//        }
+//        else
+//        {
+//            System.exit(0);
+//        }
+
         if (requestCode == 123) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
-        else
-        {
-            System.exit(0);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account.getIdToken());
+            } catch (ApiException e) {
+                Log.d("GoogleSignInAccount", e.toString());
+            }
         }
     }
 
@@ -366,7 +388,7 @@ public class Splash extends Fragment {
                 boolean exist = false;
                 for(DataSnapshot child : task.getResult().getChildren())
                 {
-                    if(child.getKey().toString().equals(AccountConst.account.getId()))
+                    if(child.getKey().toString().equals(AccountConst.account.getUid()))
                         exist = true;
                 }
                 if(!exist)
@@ -374,7 +396,7 @@ public class Splash extends Fragment {
                     DatabaseReference databaseReference = FirebaseDatabase
                             .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
                             .getReference()
-                            .child("Users/" + AccountConst.account.getId() + "/Shifts");
+                            .child("Users/" + AccountConst.account.getUid() + "/Shifts");
                     databaseReference.push()
                             .setValue(new Shifts(1,getActivity().getResources().getString(R.string.day_sh), "07:00", "19:00", "#fcba03", false));
                     databaseReference.push()
@@ -386,9 +408,29 @@ public class Splash extends Fragment {
         });
     }
 
-    private void UpdateUI(GoogleSignInAccount account) throws IOException {
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            UpdateUI(user);
+                            binding.splashText.setVisibility(View.GONE);
+                            binding.signIn.setVisibility(View.GONE);
+                            binding.spinKit.setVisibility(View.VISIBLE);
+                            editor.putString("SignIN", "Yes");
+                            editor.apply();
+                        } else {
+                            UpdateUI(null);
+                        }
+                    }
+                });
+    }
+    private void UpdateUI(FirebaseUser account)  {
         TextView name = getActivity().findViewById(R.id.name_account);
-        name.setText(account.getGivenName());
+        name.setText(account.getDisplayName());
         TextView email = getActivity().findViewById(R.id.email_account);
         email.setText(account.getEmail());
         ImageView imageView = getActivity().findViewById(R.id.photo_account);
@@ -402,26 +444,26 @@ public class Splash extends Fragment {
     }
 
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            //Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
-            if(account != null)
-            {
-                binding.splashText.setVisibility(View.GONE);
-                binding.signIn.setVisibility(View.GONE);
-                binding.spinKit.setVisibility(View.VISIBLE);
-                editor.putString("SignIN", "Yes");
-                editor.apply();
-                UpdateUI(account);
-            }
-
-        } catch (ApiException | FileNotFoundException e) {
-            Log.d("EROOR", e.toString());
-            //System.exit(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+//        try {
+//            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+//            //Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+//            if(account != null)
+//            {
+//                binding.splashText.setVisibility(View.GONE);
+//                binding.signIn.setVisibility(View.GONE);
+//                binding.spinKit.setVisibility(View.VISIBLE);
+//                editor.putString("SignIN", "Yes");
+//                editor.apply();
+//                UpdateUI(account);
+//            }
+//
+//        } catch (ApiException | FileNotFoundException e) {
+//            Log.d("EROOR", e.toString());
+//            //System.exit(0);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

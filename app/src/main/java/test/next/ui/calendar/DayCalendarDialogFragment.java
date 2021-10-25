@@ -177,7 +177,7 @@ public class DayCalendarDialogFragment extends DialogFragment {
                 FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
-                        .child("Users/" + AccountConst.account.getId() + "/Scheduls").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        .child("Users/" + AccountConst.account.getUid() + "/Scheduls").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         for(DataSnapshot item : task.getResult().getChildren())

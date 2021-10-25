@@ -12,11 +12,12 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
 public class AccountConst {
-    public static GoogleSignInAccount account;
+    public static FirebaseUser account;
     public static ArrayList<Shifts> shiftsArrayList;
     public static Bitmap background;
     public static boolean board = false;

@@ -75,7 +75,7 @@ public class ChangeAdapter extends RecyclerView.Adapter<ChangeAdapter.ChangeAdap
                     FirebaseDatabase
                             .getInstance(new String(Base64.decode(activity.getResources().getString(R.string.firebase), Base64.DEFAULT)))
                             .getReference()
-                            .child("Users/" + AccountConst.account.getId() + "/Settings/CurrentScheduls").setValue(HomeFragment.current_schedule);
+                            .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").setValue(HomeFragment.current_schedule);
                     fitButton.setIcon(activity.getResources().getDrawable(R.drawable.check));
                     for(int i = 0; i < fitButtons.size(); i++)
                     {
