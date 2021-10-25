@@ -49,12 +49,12 @@ public class AccountConst {
 
     public static void ShowAd()
     {
-//        if (AccountConst.mInterstitialAd != null) {
-//            AccountConst.mInterstitialAd.show(activity);
-//            LoadAd();
-//        } else {
-//            Log.d("TAG", "The interstitial ad wasn't ready yet.");
-//        }
+        if (AccountConst.mInterstitialAd != null) {
+            AccountConst.mInterstitialAd.show(activity);
+            LoadAd();
+        } else {
+            Log.d("TAG", "The interstitial ad wasn't ready yet.");
+        }
     }
 
     public static void loadAdView(AdView adView)

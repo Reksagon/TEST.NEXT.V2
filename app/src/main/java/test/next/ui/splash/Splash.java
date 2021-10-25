@@ -64,6 +64,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import es.dmoral.toasty.Toasty;
 import me.wangyuwei.particleview.ParticleView;
 import test.next.MainActivity;
 import test.next.R;
@@ -355,22 +356,14 @@ public class Splash extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-//        if (requestCode == 123) {
-//            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-//            handleSignInResult(task);
-//        }
-//        else
-//        {
-//            System.exit(0);
-//        }
-
         if (requestCode == 123) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
-                Log.d("GoogleSignInAccount", e.toString());
+                Toasty.error(getActivity(), e.toString(), Toasty.LENGTH_SHORT).show();
+                Log.d("GoogleSignInAccount", e.getMessage());
             }
         }
     }
@@ -394,7 +387,7 @@ public class Splash extends Fragment {
                 if(!exist)
                 {
                     DatabaseReference databaseReference = FirebaseDatabase
-                            .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                             .getReference()
                             .child("Users/" + AccountConst.account.getUid() + "/Shifts");
                     databaseReference.push()
@@ -444,26 +437,6 @@ public class Splash extends Fragment {
     }
 
 
-//    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-//        try {
-//            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-//            //Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
-//            if(account != null)
-//            {
-//                binding.splashText.setVisibility(View.GONE);
-//                binding.signIn.setVisibility(View.GONE);
-//                binding.spinKit.setVisibility(View.VISIBLE);
-//                editor.putString("SignIN", "Yes");
-//                editor.apply();
-//                UpdateUI(account);
-//            }
-//
-//        } catch (ApiException | FileNotFoundException e) {
-//            Log.d("EROOR", e.toString());
-//            //System.exit(0);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+
 
 }

@@ -29,6 +29,7 @@
         pv:pv_text_anim_time="500"
         pv:pv_text_color="#FFF" />
 
+
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/spin_kit"
         style="@style/SpinKitView.Large.Circle"

@@ -78,5 +78,5 @@
     <string name = "warning_info">Nie utworzono jeszcze wykresów!</string>
     <string name = "settings_color_shift">Przesuń kolor tekstu</string>
     <string name = "create_warning">Ta zmiana już istnieje!</string>
-
+    <string name="server_client_id">293885726954-i9g19qhiom1u0led81ov1fspsf5jfmh2.apps.googleusercontent.com</string>
 </resources>

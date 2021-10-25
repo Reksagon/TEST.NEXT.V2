@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         drawable = DrawableCompat.wrap(drawable);
         DrawableCompat.setTint(drawable, Color.WHITE);
         getSupportActionBar().setHomeAsUpIndicator(drawable);
+
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 

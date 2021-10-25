@@ -9,7 +9,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="firebase">aHR0cHM6Ly90ZXN0LW5leHQtN2VhNDUtZGVmYXVsdC1ydGRiLmZpcmViYXNlaW8uY29tLw==</string>
-
+    <string name="server_client_id">293885726954-i9g19qhiom1u0led81ov1fspsf5jfmh2.apps.googleusercontent.com</string>
 
     <string name="day_sh">Day</string>
     <string name="night_sh">Night</string>

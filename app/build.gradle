@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -10,7 +11,7 @@ android {
         applicationId "test.next"
         minSdk 23
         targetSdk 31
-        versionCode 10
+        versionCode 11
         versionName "2.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -49,6 +50,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:20.4.0'
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:28.4.1')
+    implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-core:19.0.2'
     implementation 'com.google.firebase:firebase-appcheck-debug:16.0.0-beta03'
