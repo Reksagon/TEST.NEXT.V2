@@ -124,7 +124,7 @@ public class SettingsFragment extends Fragment {
                         .setPositiveButton("OK", new ColorPickerClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-                                binding.colorPickText.setBackgroundColor(selectedColor);
+                                binding.colorPickTextShift.setBackgroundColor(selectedColor);
                                 AccountConst.text_color_shift = String.format("#%06X", (0xFFFFFF & selectedColor));
                                 FirebaseDatabase
                                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
@@ -253,23 +253,7 @@ public class SettingsFragment extends Fragment {
 
                 }
         }
-//        if (requestCode == 777 && resultCode == RESULT_OK && null != data) {
-//            Uri selectedImage = data.getData();
-//            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-//
-//            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-//                    filePathColumn, null, null, null);
-//            cursor.moveToFirst();
-//
-//            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//            String picturePath = cursor.getString(columnIndex);
-//            cursor.close();
-//
-//            Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-//            Drawable d = new BitmapDrawable(getResources(), bitmap);
-//            binding.settingsContent.setBackground(d);
-//
-//        }
+
     }
 
 }
