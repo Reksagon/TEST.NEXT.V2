@@ -11,8 +11,8 @@ android {
         applicationId "test.next"
         minSdk 23
         targetSdk 31
-        versionCode 13
-        versionName "2.0.1"
+        versionCode 14
+        versionName "2.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
