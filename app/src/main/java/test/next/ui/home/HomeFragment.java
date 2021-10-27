@@ -52,6 +52,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import test.next.MainActivity;
 import test.next.R;
 import test.next.constant.AccountConst;
 import test.next.constant.Schedule;
@@ -117,11 +118,13 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        if(MainActivity.binding.appBarMain.toolbar.getVisibility() == View.GONE)
+            MainActivity.binding.appBarMain.toolbar.setVisibility(View.VISIBLE);
         if(AccountConst.background != null)
             binding.backgroundHome.setImageBitmap(AccountConst.background);
 
         AccountConst.loadAdView(binding.adView);
-
+        AccountConst.ShowAd();
 
         return root;
     }

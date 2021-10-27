@@ -2,6 +2,7 @@ package test.next.constant;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class AccountConst {
     public static FirebaseUser account;
@@ -51,7 +53,24 @@ public class AccountConst {
     {
         if (AccountConst.mInterstitialAd != null) {
             AccountConst.mInterstitialAd.show(activity);
-            LoadAd();
+            new AsyncTask<Void, Void, Void>()
+            {
+                @Override
+                protected void onPostExecute(Void unused) {
+                    LoadAd();
+                    super.onPostExecute(unused);
+                }
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    try {
+                        TimeUnit.SECONDS.sleep(20);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            }.execute();
         } else {
             Log.d("TAG", "The interstitial ad wasn't ready yet.");
         }

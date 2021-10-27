@@ -39,6 +39,14 @@
           }
         },
         {
+          "client_id": "1079061143725-e71vdsrk53vuheuf3fgqbqqjg5ugcnt0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "test.next",
+            "certificate_hash": "c05ff57f9bc6fccca8cf7731910f8397f4b736aa"
+          }
+        },
+        {
           "client_id": "1079061143725-2ehgnnoa2p2a1bun8otln09qu4g990qc.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -57,7 +65,8 @@
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-4885903693260597~4859315521"
     }
   ],
   "configuration_version": "1"

@@ -251,7 +251,6 @@ public class Splash extends Fragment {
                         }
                         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                         navController.navigate(R.id.nav_home);
-                        MainActivity.binding.appBarMain.toolbar.setVisibility(View.VISIBLE);
                     }
                 });
 
