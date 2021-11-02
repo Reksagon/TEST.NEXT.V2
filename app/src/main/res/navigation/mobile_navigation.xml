@@ -50,4 +50,9 @@
         android:name="test.next.ui.email.EmailFragment"
         android:label="@string/email"
         tools:layout="@layout/fragment_email" />
+    <fragment
+        android:id="@+id/nav_correct"
+        android:name="test.next.ui.correct.CorrectFragment"
+        android:label="@string/correct"
+        tools:layout="@layout/fragment_correct" />
 </navigation>

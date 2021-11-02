@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
@@ -10,9 +11,9 @@
         android:layout_height="58dp"
         android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_weight="1"
+        android:layout_weight="0.3"
         android:enabled="true"
         android:gravity="center_vertical"
         app:fb_backgroundColor="@color/colorPrimaryVariant"
@@ -32,5 +33,31 @@
         app:fb_text="@string/change"
         app:fb_textColor="#FFFFFF"
         app:fb_textPaddingStart="16dp" />
+
+    <com.github.nikartm.button.FitButton
+        android:id="@+id/button_delete"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:enabled="true"
+        android:gravity="center_vertical"
+        app:fb_backgroundColor="#D50000"
+        app:fb_cornerRadius="2dp"
+        app:fb_divColor="#00DF0000"
+        app:fb_divWidth="1dp"
+        app:fb_icon="@drawable/delete"
+        app:fb_iconColor="#FFF"
+        app:fb_iconHeight="28dp"
+        app:fb_iconMarginEnd="16dp"
+        app:fb_iconMarginStart="20dp"
+        app:fb_iconPosition="center"
+        app:fb_iconWidth="28dp"
+        app:fb_rippleColor="#FBE9E7"
+        app:fb_shape="rectangle"
+        app:fb_textColor="#FFFFFF"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </LinearLayout>

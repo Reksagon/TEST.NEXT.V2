@@ -75,7 +75,7 @@ public class CreateFragment extends Fragment {
         View root = binding.getRoot();
         sharedPreferences = getActivity().getSharedPreferences("ShiftSchedulePlus", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        if(sharedPreferences.getInt("Count_Shifts", 0) == 0) {
+        if (sharedPreferences.getInt("Count_Shifts", 0) == 0) {
             editor.putInt("Count_Shifts", 1);
             editor.putInt("Shift1", -1);
             editor.putInt("ShiftDay1", -1);
@@ -90,7 +90,6 @@ public class CreateFragment extends Fragment {
         binding.date.setText(formatted);
 
         createViewModel.CreateView();
-        startSet();
 
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu, null);
         drawable = DrawableCompat.wrap(drawable);
@@ -105,71 +104,40 @@ public class CreateFragment extends Fragment {
         });
 
 
-        Task<DataSnapshot> dataSnapshotTask =  FirebaseDatabase
-                .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                .getReference()
-                .child("Users/").get();
-        dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        shifts = AccountConst.shiftsArrayList;
+        for (int i = 1; i <= sharedPreferences.getInt("Count_Shifts", 0); i++) {
+            count_shifts.add(sharedPreferences.getInt("Shift" + String.valueOf(i), -1));
+            count_days.add(sharedPreferences.getInt("ShiftDay" + String.valueOf(i), -1));
+        }
+        if (!sharedPreferences.getString("ShiftCalendar", "none").equals("none")) {
+            binding.date.setText(sharedPreferences.getString("ShiftCalendar", "none"));
+        }
+
+        adapter = new ShiftsAdapter(shifts, count_shifts, count_days);
+        adapter.setActivity(getActivity());
+        adapter.setCount(sharedPreferences.getInt("Count_Shifts", 0));
+        LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
+        linearLayout.setOrientation(RecyclerView.VERTICAL);
+        binding.shiftsView.setLayoutManager(linearLayout);
+        binding.shiftsView.setAdapter(adapter);
+
+        binding.plus.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                for (DataSnapshot child : task.getResult().getChildren()) {
-                    if (child.getKey().toString().equals(AccountConst.account.getUid()))
-                        exist = true;
+            public void onClick(View v) {
+                adapter.AddShift(-1);
+                adapter.AddDay(-1);
+                adapter.setCount(adapter.getCount() + 1);
+            }
+        });
+
+        binding.minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (adapter.getCount() != 1) {
+                    adapter.RemoveShift();
+                    adapter.RemoveDay();
+                    adapter.setCount(adapter.getCount() - 1);
                 }
-                if (exist) {
-                    Task<DataSnapshot> getShiftsTask = FirebaseDatabase
-                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                            .getReference()
-                            .child("Users/" + AccountConst.account.getUid() + "/Shifts").get();
-                    getShiftsTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            shifts = new ArrayList<>();
-                            for (DataSnapshot child : task.getResult().getChildren()) {
-                                Shifts str1 = child.getValue(Shifts.class);
-                                shifts.add(str1);
-                            }
-                            for(int i = 1; i <= sharedPreferences.getInt("Count_Shifts", 0); i++)
-                            {
-                                count_shifts.add(sharedPreferences.getInt("Shift" + String.valueOf(i), -1));
-                                count_days.add(sharedPreferences.getInt("ShiftDay" + String.valueOf(i), -1));
-                            }
-                            if(!sharedPreferences.getString("ShiftCalendar", "none").equals("none"))
-                            {
-                                binding.date.setText(sharedPreferences.getString("ShiftCalendar", "none"));
-                            }
-                            adapter = new ShiftsAdapter(shifts, count_shifts, count_days);
-                            adapter.setActivity(getActivity());
-                            adapter.setCount(sharedPreferences.getInt("Count_Shifts", 0));
-                            LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
-                            linearLayout.setOrientation(RecyclerView.VERTICAL);
-                            binding.shiftsView.setLayoutManager(linearLayout);
-                            binding.shiftsView.setAdapter(adapter);
-
-                            binding.plus.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    adapter.AddShift(-1);
-                                    adapter.AddDay(-1);
-                                    adapter.setCount(adapter.getCount()+1);
-                                }
-                            });
-
-                            binding.minus.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if(adapter.getCount() != 1) {
-                                        adapter.RemoveShift();
-                                        adapter.RemoveDay();
-                                        adapter.setCount(adapter.getCount() - 1);
-                                    }
-                                }
-                            });
-                        }
-                    });
-
-                }
-
             }
         });
 
@@ -180,40 +148,34 @@ public class CreateFragment extends Fragment {
                 ArrayList<Shifts> shifts_send = new ArrayList<>();
                 ArrayList<Integer> days_send = new ArrayList<>();
 
-                if(binding.nameSchedule.getText().toString().length() > 15)
-                {
+                if (binding.nameSchedule.getText().toString().length() > 15) {
                     Toasty.warning(getActivity(), getActivity().getResources().getString(R.string.name_warning),
                             Toasty.LENGTH_SHORT).show();
                     return;
                 }
-                for(PowerSpinnerView view1 : adapter.getShifts_schedule())
-                {
-                    if(view1.getSelectedIndex() != -1)
+                for (PowerSpinnerView view1 : adapter.getShifts_schedule()) {
+                    if (view1.getSelectedIndex() != -1)
                         shifts_send.add(shifts.get(view1.getSelectedIndex()));
                 }
 
-                for(PowerSpinnerView view1 : adapter.getDays_schedule())
-                {
-                    if(view1.getSelectedIndex() != -1)
+                for (PowerSpinnerView view1 : adapter.getDays_schedule()) {
+                    if (view1.getSelectedIndex() != -1)
                         days_send.add(view1.getSelectedIndex() + 1);
                 }
 
-                if(shifts_send.size() < 2 || days_send.size() < 2)
-                {
+                if (shifts_send.size() < 2 || days_send.size() < 2) {
                     Toasty.warning(getActivity(), getActivity().getResources().getString(R.string.info_shifts), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(binding.nameSchedule.getText().equals("") || binding.nameSchedule.getText() == null)
-                {
+                if (binding.nameSchedule.getText().equals("") || binding.nameSchedule.getText() == null) {
                     Toasty.warning(getActivity(), getActivity().getResources().getString(R.string.info_name_scheduke), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 editor.putInt("Count_Shifts", adapter.selected_shift.size());
-                for(int i = 1; i <= adapter.selected_shift.size(); i++)
-                {
-                    editor.putInt("Shift" + String.valueOf(i), adapter.selected_shift.get(i-1));
-                    editor.putInt("ShiftDay" + String.valueOf(i), adapter.selected_day.get(i-1));
+                for (int i = 1; i <= adapter.selected_shift.size(); i++) {
+                    editor.putInt("Shift" + String.valueOf(i), adapter.selected_shift.get(i - 1));
+                    editor.putInt("ShiftDay" + String.valueOf(i), adapter.selected_day.get(i - 1));
                     editor.commit();
                 }
 
@@ -223,10 +185,10 @@ public class CreateFragment extends Fragment {
                 String[] split = binding.date.getText().split("/");
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.YEAR, Integer.parseInt(split[0]));
-                calendar.set(Calendar.MONTH, Integer.parseInt(split[1])-1);
+                calendar.set(Calendar.MONTH, Integer.parseInt(split[1]) - 1);
                 calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(split[2]));
 
-                Schedule schedule = new Schedule(HomeFragment.scheduls.size() + 1, shifts_send, days_send,calendar, binding.nameSchedule.getText());
+                Schedule schedule = new Schedule(HomeFragment.scheduls.size() + 1, shifts_send, days_send, calendar, binding.nameSchedule.getText());
                 HomeFragment.scheduls.add(schedule);
                 HomeFragment.current_schedule = HomeFragment.scheduls.size() - 1;
 
@@ -245,7 +207,7 @@ public class CreateFragment extends Fragment {
                 FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
-                        .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").setValue(HomeFragment.scheduls.size()-1);
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").setValue(HomeFragment.scheduls.size() - 1);
 
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.nav_home);
@@ -253,7 +215,7 @@ public class CreateFragment extends Fragment {
         });
 
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true ) {
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             @MainThread
             public void handleOnBackPressed() {
@@ -265,9 +227,6 @@ public class CreateFragment extends Fragment {
         return root;
     }
 
-    private void startSet() {
-
-    }
 
 
     @Override

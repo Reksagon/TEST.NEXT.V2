@@ -42,7 +42,6 @@ public class ShiftsFragment extends Fragment {
 
     private ShiftsViewModel slideshowViewModel;
     private FragmentShiftsBinding binding;
-    private ArrayList<Shifts> shifts;
     private ShiftsSettingsAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -54,30 +53,15 @@ public class ShiftsFragment extends Fragment {
         View root = binding.getRoot();
         AccountConst.ShowAd();
         AccountConst.loadAdView(binding.adView5);
-        Task<DataSnapshot> getShiftsTask = FirebaseDatabase
-                .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                .getReference()
-                .child("Users/" + AccountConst.account.getUid() + "/Shifts").get();
-        getShiftsTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                shifts = new ArrayList<>();
-                for(DataSnapshot child : task.getResult().getChildren())
-                {
-                    Shifts str1 = child.getValue(Shifts.class);
-                    shifts.add(str1);
-                }
 
-                adapter = new ShiftsSettingsAdapter(shifts, getActivity());
-                LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
-                linearLayout.setOrientation(RecyclerView.VERTICAL);
-                binding.shiftsRecycler.setLayoutManager(linearLayout);
-                binding.shiftsRecycler.setAdapter(adapter);
-            }
-        });
+        adapter = new ShiftsSettingsAdapter(AccountConst.shiftsArrayList, getActivity());
+        LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
+        linearLayout.setOrientation(RecyclerView.VERTICAL);
+        binding.shiftsRecycler.setLayoutManager(linearLayout);
+        binding.shiftsRecycler.setAdapter(adapter);
 
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true ) {
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             @MainThread
             public void handleOnBackPressed() {

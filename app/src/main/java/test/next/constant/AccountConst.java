@@ -3,9 +3,15 @@ package test.next.constant;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -13,10 +19,21 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+
+import es.dmoral.toasty.Toasty;
+import test.next.R;
+import test.next.ui.changes.ChangeAdapter;
+import test.next.ui.home.HomeFragment;
 
 public class AccountConst {
     public static FirebaseUser account;
@@ -80,5 +97,51 @@ public class AccountConst {
     {
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+    }
+
+    public static void deleteSchedule(int id, ChangeAdapter adapter)
+    {
+        Task<DataSnapshot> databaseReference = FirebaseDatabase
+                .getInstance(new String(Base64.decode(activity.getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                .getReference()
+                .child("Users/" + AccountConst.account.getUid() + "/Scheduls").get();
+        databaseReference.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                for(DataSnapshot child : task.getResult().getChildren())
+                {
+                    ScheduleFB scheduleFB = child.getValue(ScheduleFB.class);
+                    String data = null;
+                    if (scheduleFB != null)
+                        data = scheduleFB.getData();
+
+                    byte[] data2 = Base64.decode(data, Base64.DEFAULT);
+                    Schedule schedule = SerializationUtils.deserialize(data2);
+                    schedule.getScheduleDayArrayList();
+
+                    if(schedule.getId() == id)
+                    {
+                        child.getRef().setValue(null);
+                        adapter.deleteId(id);
+                        Toasty.success(activity, activity.getResources().getString(R.string.delete_success), Toast.LENGTH_SHORT).show();
+                        HomeFragment.scheduls.remove(id-1);
+                        if(HomeFragment.current_schedule >= HomeFragment.scheduls.size()) {
+                            HomeFragment.current_schedule = HomeFragment.scheduls.size() - 1;
+                            FirebaseDatabase
+                                    .getInstance(new String(Base64.decode(activity.getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                                    .getReference()
+                                    .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @RequiresApi(api = Build.VERSION_CODES.N)
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    task.getResult().getRef().setValue(HomeFragment.current_schedule);
+                                }
+                            });
+                        }
+                    }
+
+                }
+            }
+        });
     }
 }

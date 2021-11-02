@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.awesomedialog.AwesomeDialog;
 import com.github.nikartm.button.FitButton;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -32,6 +33,11 @@ public class ChangeAdapter extends RecyclerView.Adapter<ChangeAdapter.ChangeAdap
         data = strings;
     }
 
+    public void deleteId(int id)
+    {
+        data.remove(id-1);
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public ChangeAdapter.ChangeAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -55,12 +61,13 @@ public class ChangeAdapter extends RecyclerView.Adapter<ChangeAdapter.ChangeAdap
 
     public class ChangeAdapterViewHolder extends RecyclerView.ViewHolder
     {
-        FitButton fitButton;
+        FitButton fitButton, detelte;
 
         public ChangeAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             fitButton = itemView.findViewById(R.id.button_change);
             fitButtons.add(fitButton);
+            detelte = itemView.findViewById(R.id.button_delete);
         }
 
         public void bind(String string, boolean b, int num)
@@ -84,6 +91,14 @@ public class ChangeAdapter extends RecyclerView.Adapter<ChangeAdapter.ChangeAdap
                     }
                     Toasty.success(activity, fitButton.getText() + ", "
                             + activity.getResources().getString(R.string.schedule_succes), Toast.LENGTH_SHORT).show();
+
+
+                }
+            });
+            detelte.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DialogDelete.Companion.getDialog(activity, string, HomeFragment.scheduls.get(num).getId(), ChangeAdapter.this);
                 }
             });
         }

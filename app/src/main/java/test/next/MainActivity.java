@@ -6,9 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -30,6 +28,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import test.next.BuildConfig;
 
 import test.next.databinding.ActivityMainBinding;
 
@@ -45,13 +44,15 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        TextView version = findViewById(R.id.version_code);
+        version.setText("v" + BuildConfig.VERSION_NAME);
         setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.toolbar.setVisibility(View.GONE);
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_create, R.id.nav_shifts, R.id.nav_email, R.id.nav_change, R.id.nav_settings, R.id.nav_change,
-                R.id.nav_jextapose, R.id.nav_statistics)
+                R.id.nav_jextapose, R.id.nav_statistics, R.id.nav_correct)
                 .setOpenableLayout(drawer)
                 .build();
         FirebaseApp.initializeApp(this);

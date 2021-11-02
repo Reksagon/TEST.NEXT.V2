@@ -72,10 +72,20 @@
     <string name="email_text">Пишіть сюди свої пропозиції! :)</string>
     <string name="email_error">Поштові клієнти не встановлені! :(</string>
     <string name="email_text_au">Додаток розроблений з метою догодити всім користувачам :) Якщо знайшли помилку або у Вас є пропозиції для поліпшення, обов\'язково напишіть мені. І в найближчому оновленні зробимо:)\n\n
-     З питань співпраці так само сюди! Спасибі!</string>
+     З питань співпраці так само сюди! Дякую!</string>
     <string name="warning_info">Ще немає створених графіків!</string>
     <string name="settings_color_shift">Колір тексту змін</string>
     <string name="create_warning">Такая смена уже существует!</string>
     <string name="server_client_id">293885726954-i9g19qhiom1u0led81ov1fspsf5jfmh2.apps.googleusercontent.com</string>
+
+    <string name="delete">Удалить график</string>
+    <string name="delete_usually">Удалить</string>
+    <string name="delete_success">График успешно удалён!</string>
+    <string name="currect_date_start">Начало даты изменения</string>
+    <string name="currect_date_end">Конец даты изменения</string>
+    <string name="correct">Изменить</string>
+    <string name="correct_schedule">Изменить график</string>
+    <string name="warn_correct">Для изменения нужно выбрать две даты!</string>
+    <string name="warn_correct_date2">Вначале выберите дату старта изменений</string>
 
 </resources>

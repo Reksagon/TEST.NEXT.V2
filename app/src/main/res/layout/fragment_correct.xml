@@ -6,18 +6,18 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:fitsSystemWindows="true"
-    tools:context=".ui.create.CreateFragment">
+    tools:context=".ui.correct.CorrectFragment">
 
     <com.tomlonghurst.expandablehinttext.ExpandableHintText
-        android:id="@+id/name_schedule"
+        android:id="@+id/correct_date_start"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
-        android:hint="@string/name_schedule"
+        android:hint="@string/currect_date_start"
         android:textColor="@color/white_update"
         app:floatingLabelColor="@color/colorPrimaryVariant"
-        app:image="@drawable/icon_name"
+        app:image="@drawable/calendar"
         app:imageColor="#1c242f"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,11 +27,12 @@
         app:textBoxColor="#801C242F" />
 
     <com.tomlonghurst.expandablehinttext.ExpandableHintText
-        android:id="@+id/date"
+        android:id="@+id/correct_date_end"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
+        android:hint="@string/currect_date_end"
         android:textColor="@color/white_update"
         app:floatingLabelColor="@color/colorPrimaryVariant"
         app:image="@drawable/calendar"
@@ -39,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_schedule"
+        app:layout_constraintTop_toBottomOf="@+id/correct_date_start"
         app:layout_constraintVertical_bias="0.0"
         app:textBoxColor="#801C242F">
 
@@ -77,8 +78,8 @@
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toStartOf="@+id/minus"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/date"
-        app:layout_constraintTop_toBottomOf="@+id/date"
+        app:layout_constraintStart_toStartOf="@+id/correct_date_end"
+        app:layout_constraintTop_toBottomOf="@+id/correct_date_end"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -89,10 +90,10 @@
         android:scaleType="fitCenter"
         android:src="@drawable/minus"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/date"
+        app:layout_constraintEnd_toEndOf="@+id/correct_date_end"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/date"
-        app:layout_constraintTop_toBottomOf="@+id/date"
+        app:layout_constraintStart_toStartOf="@+id/correct_date_end"
+        app:layout_constraintTop_toBottomOf="@+id/correct_date_end"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -109,7 +110,7 @@
         app:fb_divColor="#fff"
         app:fb_divHeight="40dp"
         app:fb_divWidth="1dp"
-        app:fb_icon="@drawable/add_ic"
+        app:fb_icon="@drawable/icon_correct"
         app:fb_iconColor="#FFF"
         app:fb_iconHeight="28dp"
         app:fb_iconMarginEnd="16dp"
@@ -118,14 +119,14 @@
         app:fb_iconWidth="28dp"
         app:fb_rippleColor="#FBE9E7"
         app:fb_shape="rectangle"
-        app:fb_text="@string/add_schedule"
+        app:fb_text="@string/correct_schedule"
         app:fb_textColor="#FFF"
         app:fb_textPaddingStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/name_schedule"
+        app:layout_constraintTop_toTopOf="@+id/correct_date_start"
         app:layout_constraintVertical_bias="0.98" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,6 +25,18 @@
         app:headerLayout="@layout/nav_header_main"
         app:itemIconTint="#1c242f"
         app:itemTextColor="#1c242f"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer" >
+
+        <TextView
+            android:id="@+id/version_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="15dp"
+            android:text="TextView"
+            android:textColor="@color/colorPrimaryVariant"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

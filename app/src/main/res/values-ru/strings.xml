@@ -77,4 +77,13 @@
     <string name="settings_color_shift">Цвет текста смен</string>
     <string name="create_warning">Такая смена уже существует!</string>
 
+    <string name="delete">Удалить график</string>
+    <string name="delete_usually">Удалить</string>
+    <string name="delete_success">График успешно удалён!</string>
+    <string name="currect_date_start">Начало даты изменения</string>
+    <string name="currect_date_end">Конец даты изменения</string>
+    <string name="correct">Изменить</string>
+    <string name="correct_schedule">Изменить график</string>
+    <string name="warn_correct">Для изменения нужно выбрать две даты!</string>
+    <string name="warn_correct_date2">Вначале выберите дату старта изменений</string>
 </resources>

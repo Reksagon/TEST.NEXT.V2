@@ -189,9 +189,16 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
                                     str1.setColor(color_pick.getText());
                                     child.getRef().setValue(str1);
                                     content.setBackgroundColor(Color.parseColor(color_pick.getText()));
-                                    Toasty.success(activity, activity.getResources().getString(R.string.success_shift), Toast.LENGTH_SHORT, true).show();
                                     button.setText(str1.getName());
 
+                                    for(int i = 0; i < AccountConst.shiftsArrayList.size(); i++)
+                                    {
+                                        if(AccountConst.shiftsArrayList.get(i).getId() == str1.getId())
+                                        {
+                                            AccountConst.shiftsArrayList.remove(i);
+                                            AccountConst.shiftsArrayList.add(i, str1);
+                                        }
+                                    }
                                     if(HomeFragment.scheduls.size() > 0) {
                                         for(Schedule schedule : HomeFragment.scheduls) {
                                             schedule.changeShift(str1);
@@ -212,7 +219,7 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
                                                         if (scheduleFB.getId().equals(scheduleFB_new.getId())) {
                                                             dataSnapshot.getRef().setValue(scheduleFB_new);
                                                         }
-
+                                                        Toasty.success(activity, activity.getResources().getString(R.string.success_shift), Toast.LENGTH_SHORT, true).show();
                                                     }
                                                 }
                                             });
