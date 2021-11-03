@@ -113,6 +113,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View view) {
                 ColorPickerDialogBuilder
                         .with(getActivity())
+                        .initialColor(Color.parseColor(AccountConst.text_color_shift))
                         .setTitle(getActivity().getResources().getString(R.string.choose_color))
                         .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
                         .density(12)
@@ -142,6 +143,42 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        binding.colorBorderPick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ColorPickerDialogBuilder
+                        .with(getActivity())
+                        .initialColor(Color.parseColor(AccountConst.color_Border))
+                        .setTitle(getActivity().getResources().getString(R.string.choose_color))
+                        .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                        .density(12)
+                        .setOnColorSelectedListener(new OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int selectedColor) {
+                            }
+                        })
+                        .setPositiveButton("OK", new ColorPickerClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                                binding.colorBorderPick.setBackgroundColor(selectedColor);
+                                AccountConst.color_Border = String.format("#%06X", (0xFFFFFF & selectedColor));
+                                FirebaseDatabase
+                                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                                        .getReference()
+                                        .child("Users/" + AccountConst.account.getUid() + "/Settings/ColorBorder").setValue(AccountConst.color_Border);
+                            }
+                        })
+                        .setNegativeButton(getActivity().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .build()
+                        .show();
+            }
+        });
+
+
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true ) {
             @Override
             @MainThread
@@ -157,6 +194,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View view) {
                 ColorPickerDialogBuilder
                         .with(getActivity())
+                        .initialColor(Color.parseColor(AccountConst.text_color_calendar))
                         .setTitle(getActivity().getResources().getString(R.string.choose_color))
                         .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
                         .density(12)
@@ -203,6 +241,7 @@ public class SettingsFragment extends Fragment {
         binding.checkDaysOther.setChecked(AccountConst.days_other);
         binding.colorPickText.setBackgroundColor(Color.parseColor(AccountConst.text_color_calendar));
         binding.colorPickTextShift.setBackgroundColor(Color.parseColor(AccountConst.text_color_shift ));
+        binding.colorBorderPick.setBackgroundColor(Color.parseColor(AccountConst.color_Border ));
     }
 
     @Override

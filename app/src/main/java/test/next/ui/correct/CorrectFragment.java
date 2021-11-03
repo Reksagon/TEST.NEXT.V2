@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -24,6 +25,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.ozcanalasalvar.library.utils.DateUtils;
@@ -92,22 +96,26 @@ public class CorrectFragment extends Fragment {
                 if(split[0].equals(""))
                 {
                     split = new String[3];
-                    split[0] = String.valueOf(start_year);
-                    split[1] = String.valueOf(start_month+1);
-                    split[2] = String.valueOf(start_day);
+                    split[0] = String.valueOf(calendar.get(Calendar.YEAR));
+                    split[1] = String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                    split[2] = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
                 }
                 DatePickerPopup datePickerPopup = new DatePickerPopup.Builder()
                         .from(getActivity())
                         .offset(3)
                         .pickerMode(DatePicker.MONTH_ON_FIRST)
                         .textSize(19)
-                        .startDate(DateUtils.getTimeMiles(start_year, start_month, start_day))
+                        .startDate(DateUtils.getTimeMiles(start_year, start_month, 1))
                         .endDate(DateUtils.getTimeMiles(end_year, end_month, end_day))
                         .currentDate(DateUtils.getTimeMiles(Integer.parseInt(split[0]), Integer.parseInt(split[1])-1, Integer.parseInt(split[2])))
                         .listener(new DatePickerPopup.OnDateSelectListener() {
                             @Override
                             public void onDateSelected(DatePicker dp, long date, int day, int month, int year) {
                                 int m = month + 1;
+                                if(start_year == year && start_month == month && day < start_day) {
+                                    Toasty.error(getActivity(), getActivity().getResources().getString(R.string.error_date_correct), Toasty.LENGTH_SHORT).show();
+                                    return;
+                                }
                                 binding.correctDateStart.setText(year + "/" + m + "/" + day);
                             }
                         })
@@ -121,23 +129,42 @@ public class CorrectFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String[] split = binding.correctDateStart.getText().split("/");
+                String[] split2 = null;
                 if(split[0].equals(""))
                 {
                     Toasty.info(getActivity(), getActivity().getResources().getString(R.string.warn_correct_date2), Toasty.LENGTH_SHORT).show();
                     return;
                 }
+                else
+                {
+                    split2 = binding.correctDateEnd.getText().split("/");
+                    if(split2[0].equals(""))
+                    {
+                        split2 = new String[3];
+                        split2[0] = split[0];
+                        split2[1] = split[1];
+                        split2[2] = split[2];
+                    }
+                }
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(end_year, end_month, end_day);
                 DatePickerPopup datePickerPopup = new DatePickerPopup.Builder()
                         .from(getActivity())
                         .offset(3)
                         .pickerMode(DatePicker.MONTH_ON_FIRST)
                         .textSize(19)
-                        .startDate(DateUtils.getTimeMiles(Integer.parseInt(split[0]), Integer.parseInt(split[1])-1, Integer.parseInt(split[2])))
-                        .endDate(DateUtils.getTimeMiles(end_year, end_month, end_day))
-                        .currentDate(DateUtils.getTimeMiles(Integer.parseInt(split[0]), Integer.parseInt(split[1])-1, Integer.parseInt(split[2])))
+                        .startDate(DateUtils.getTimeMiles(Integer.parseInt(split[0]), Integer.parseInt(split[1])-1, 1))
+                        .endDate(DateUtils.getTimeMiles(end_year, 11, 31))
+                        .currentDate(DateUtils.getTimeMiles(Integer.parseInt(split2[0]), Integer.parseInt(split2[1])-1, Integer.parseInt(split2[2])))
                         .listener(new DatePickerPopup.OnDateSelectListener() {
                             @Override
                             public void onDateSelected(DatePicker dp, long date, int day, int month, int year) {
                                 int m = month + 1;
+                                if(end_year == year && ((end_month < month && day > end_day) || (end_month <= month && day > end_day) )) {
+                                    Toasty.error(getActivity(), getActivity().getResources().getString(R.string.error_date_correct), Toasty.LENGTH_SHORT).show();
+                                    return;
+                                }
                                 binding.correctDateEnd.setText(year + "/" + m + "/" + day);
                             }
                         })
@@ -179,72 +206,102 @@ public class CorrectFragment extends Fragment {
         });
 
 
-//        binding.button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                ArrayList<Shifts> shifts_send = new ArrayList<>();
-//                ArrayList<Integer> days_send = new ArrayList<>();
-//
-//                for (PowerSpinnerView view1 : adapter.getShifts_schedule()) {
-//                    if (view1.getSelectedIndex() != -1)
-//                        shifts_send.add(shifts.get(view1.getSelectedIndex()));
-//                }
-//
-//                for (PowerSpinnerView view1 : adapter.getDays_schedule()) {
-//                    if (view1.getSelectedIndex() != -1)
-//                        days_send.add(view1.getSelectedIndex() + 1);
-//                }
-//
-//                if (shifts_send.size() < 2 || days_send.size() < 2) {
-//                    Toasty.warning(getActivity(), getActivity().getResources().getString(R.string.info_shifts), Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                if (binding.correctDateStart.getText().equals("") || binding.correctDateEnd.getText().equals("")) {
-//                    Toasty.warning(getActivity(), getActivity().getResources().getString(R.string.info_name_scheduke), Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//                editor.putInt("Count_Shifts", adapter.selected_shift.size());
-//                for (int i = 1; i <= adapter.selected_shift.size(); i++) {
-//                    editor.putInt("Shift" + String.valueOf(i), adapter.selected_shift.get(i - 1));
-//                    editor.putInt("ShiftDay" + String.valueOf(i), adapter.selected_day.get(i - 1));
-//                    editor.commit();
-//                }
-//
-//                editor.putString("ShiftCalendar", binding.date.getText());
-//                editor.commit();
-//
-//                String[] split = binding.date.getText().split("/");
-//                Calendar calendar = Calendar.getInstance();
-//                calendar.set(Calendar.YEAR, Integer.parseInt(split[0]));
-//                calendar.set(Calendar.MONTH, Integer.parseInt(split[1]) - 1);
-//                calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(split[2]));
-//
-//                Schedule schedule = new Schedule(HomeFragment.scheduls.size() + 1, shifts_send, days_send, calendar, binding.nameSchedule.getText());
-//                HomeFragment.scheduls.add(schedule);
-//                HomeFragment.current_schedule = HomeFragment.scheduls.size() - 1;
-//
-//                byte[] data = SerializationUtils.serialize(schedule);
-//                String base64 = Base64.encodeToString(data, Base64.DEFAULT);
-//
-//                ScheduleFB scheduleFB = new ScheduleFB(String.valueOf(HomeFragment.scheduls.get(HomeFragment.current_schedule).getId()), base64);
-//
-//                DatabaseReference databaseReference = FirebaseDatabase
-//                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-//                        .getReference()
-//                        .child("Users/" + AccountConst.account.getUid() + "/Scheduls");
-//                databaseReference.push()
-//                        .setValue(scheduleFB);
-//
-//                FirebaseDatabase
-//                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-//                        .getReference()
-//                        .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").setValue(HomeFragment.scheduls.size() - 1);
-//
-//                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-//                navController.navigate(R.id.nav_home);
-//            }
-//        });
+        binding.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (HomeFragment.scheduls.size() > 0) {
+                    ArrayList<Shifts> shifts_send = new ArrayList<>();
+                    ArrayList<Integer> days_send = new ArrayList<>();
+
+                    for (PowerSpinnerView view1 : adapter.getShifts_schedule()) {
+                        if (view1.getSelectedIndex() != -1)
+                            shifts_send.add(shifts.get(view1.getSelectedIndex()));
+                    }
+
+                    for (PowerSpinnerView view1 : adapter.getDays_schedule()) {
+                        if (view1.getSelectedIndex() != -1)
+                            days_send.add(view1.getSelectedIndex() + 1);
+                    }
+
+                    if (shifts_send.size() < 2 || days_send.size() < 2) {
+                        Toasty.warning(getActivity(), getActivity().getResources().getString(R.string.info_shifts), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (binding.correctDateStart.getText().equals("") || binding.correctDateEnd.getText().equals("")) {
+                        Toasty.warning(getActivity(), getActivity().getResources().getString(R.string.info_name_scheduke), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+
+                    editor.putInt("Count_Shifts", adapter.getSelected_shift().size());
+                    for (int i = 1; i <= adapter.getSelected_shift().size(); i++) {
+                        editor.putInt("Shift" + String.valueOf(i), adapter.getSelected_shift().get(i - 1));
+                        editor.putInt("ShiftDay" + String.valueOf(i), adapter.getSelected_day().get(i - 1));
+                        editor.commit();
+                    }
+
+                    editor.commit();
+
+                    String[] split_start = binding.correctDateStart.getText().split("/");
+                    Calendar calendar_start = Calendar.getInstance();
+                    calendar_start.set(Calendar.YEAR, Integer.parseInt(split_start[0]));
+                    calendar_start.set(Calendar.MONTH, Integer.parseInt(split_start[1]) - 1);
+                    calendar_start.set(Calendar.DAY_OF_MONTH, Integer.parseInt(split_start[2]));
+
+                    String[] split_end = binding.correctDateEnd.getText().split("/");
+                    Calendar calendar_end = Calendar.getInstance();
+                    calendar_end.set(Calendar.YEAR, Integer.parseInt(split_end[0]));
+                    calendar_end.set(Calendar.MONTH, Integer.parseInt(split_end[1]) - 1);
+                    calendar_end.set(Calendar.DAY_OF_MONTH, Integer.parseInt(split_end[2]));
+
+
+                    ArrayList<ScheduleDay> scheduleDayArrayList = HomeFragment.scheduls.get(HomeFragment.current_schedule).getScheduleDayArrayList();
+                    ArrayList<ScheduleDay> tmp = AccountConst.newSchedule(shifts_send, days_send, calendar_start, calendar_end);
+
+                    for (int i1 = 0, i2 = 0; i1 < scheduleDayArrayList.size(); i1++) {
+                        ScheduleDay scheduleDay = scheduleDayArrayList.get(i1);
+                        if (scheduleDay.getDay() == tmp.get(i2).getDay()
+                                && scheduleDay.getMonth() == tmp.get(i2).getMonth()
+                                && scheduleDay.getYear() == tmp.get(i2).getYear()) {
+                            scheduleDayArrayList.get(i1).setShift(tmp.get(i2).getShift());
+                            i2++;
+                        }
+
+                        if (i2 == tmp.size())
+                            break;
+                    }
+
+                    HomeFragment.scheduls.get(HomeFragment.current_schedule).setScheduleDayArrayList(scheduleDayArrayList);
+
+
+                    byte[] data = SerializationUtils.serialize(HomeFragment.scheduls.get(HomeFragment.current_schedule));
+                    String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+
+                    ScheduleFB scheduleFB_new = new ScheduleFB(String.valueOf(HomeFragment.scheduls.get(HomeFragment.current_schedule).getId()), base64);
+
+
+                    Task<DataSnapshot> dataSnapshotTask = FirebaseDatabase
+                            .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Scheduls").get();
+                    dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
+                                ScheduleFB scheduleFB = dataSnapshot.getValue(ScheduleFB.class);
+                                if (scheduleFB.getId().equals(scheduleFB_new.getId())) {
+                                    dataSnapshot.getRef().setValue(scheduleFB_new);
+                                }
+                                Toasty.success(getActivity(), getActivity().getResources().getString(R.string.correct_success), Toast.LENGTH_SHORT).show();
+                                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                                navController.navigate(R.id.nav_home);
+                            }
+                        }
+                    });
+                }
+            }
+
+        });
 
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {

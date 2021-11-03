@@ -50,15 +50,17 @@ public class JuxtaposeRecyclerAdapter extends RecyclerView.Adapter<JuxtaposeRecy
 
     public class JuxtaposeViewHolder extends RecyclerView.ViewHolder {
 
-        FitButton fitButton;
+        FitButton fitButton, delete;
         boolean check = false;
 
         public JuxtaposeViewHolder(@NonNull View itemView) {
             super(itemView);
             fitButton = itemView.findViewById(R.id.button_change);
+            delete = itemView.findViewById(R.id.button_delete);
         }
 
         public void bind(String string, int num) {
+            delete.setVisibility(View.GONE);
             fitButton.setText(string);
             fitButton.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -1,6 +1,9 @@
 package test.next.ui.calendar;
 
+import android.app.ActionBar;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -12,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -27,6 +31,7 @@ import java.util.Date;
 
 import test.next.R;
 import test.next.constant.AccountConst;
+import test.next.constant.LinearLayoutOutlined;
 import test.next.constant.Schedule;
 import test.next.constant.ScheduleDay;
 import test.next.constant.Shifts;
@@ -37,7 +42,7 @@ public class CalendarKD extends Fragment {
     private CalendarViewModel mViewModel;
     CalendarFragmentBinding binding;
     TextView[] days, shifts;
-    LinearLayout[] linearLayouts;
+    LinearLayoutOutlined[] linearLayouts;
     Calendar calendar;
     public int m, y;
     ArrayList<ScheduleDay> dayArrayList = null;
@@ -93,6 +98,8 @@ public class CalendarKD extends Fragment {
         y = calendar.get(Calendar.YEAR);
 
 
+
+
         return root;
     }
 
@@ -106,7 +113,7 @@ public class CalendarKD extends Fragment {
 
     void findLiner()
     {
-        LinearLayout[] linearLayouts = {binding.day1, binding.day2, binding.day3, binding.day4,
+        LinearLayoutOutlined[] linearLayouts = {binding.day1, binding.day2, binding.day3, binding.day4,
                 binding.day5, binding.day6, binding.day7, binding.day8, binding.day9,
                 binding.day10, binding.day11, binding.day12, binding.day13, binding.day14,
                 binding.day15, binding.day16, binding.day17, binding.day18, binding.day19,
@@ -115,11 +122,6 @@ public class CalendarKD extends Fragment {
                 binding.day30, binding.day31, binding.day32, binding.day33,binding.day34,
                 binding.day35, binding.day36, binding.day37, binding.day38, binding.day39,
                 binding.day40, binding.day41, binding.day42 };
-        if(!AccountConst.board) {
-            for (int i = 0; i < linearLayouts.length; i++) {
-                linearLayouts[i].setBackground(null);
-            }
-        }
         this.linearLayouts = linearLayouts;
     }
     void findDays()
@@ -150,9 +152,12 @@ public class CalendarKD extends Fragment {
                 binding.dayShift30, binding.dayShift31, binding.dayShift32, binding.dayShift33,binding.dayShift34,
                 binding.dayShift35, binding.dayShift36, binding.dayShift37, binding.dayShift38, binding.dayShift39,
                 binding.dayShift40, binding.dayShift41, binding.dayShift42 };
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(2,0,2,0);
         for(TextView textView : shifts)
         {
             textView.setTextColor(Color.parseColor(AccountConst.text_color_shift));
+            textView.setLayoutParams(layoutParams);
         }
         this.shifts = shifts;
     }

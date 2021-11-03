@@ -70,7 +70,6 @@
     <string name = "settings_text_color">Kolor tekstu</string>
     <string name = "settings"> Ustawienia</string>
     <string name = "settings_days_other"> Pokaż dni tylko jednego miesiąca </string>
-    <string name = "email"> Wyślij życzenia </string>
     <string name = "email_text">Wpisz tutaj swoje sugestie! :)</string>
     <string name = "email_error">Nie zainstalowano klientów poczty e-mail! :(</string>
     <string name = "email_text_au">Aplikacja została zaprojektowana tak, aby zadowolić wszystkich użytkowników :) Jeśli znajdziesz błąd lub masz sugestie dotyczące poprawy, napisz do mnie. A w następnej aktualizacji zrobimy :)\n\n
@@ -89,4 +88,10 @@
     <string name="correct_schedule">Изменить график</string>
     <string name="warn_correct">Для изменения нужно выбрать две даты!</string>
     <string name="warn_correct_date2">Вначале выберите дату старта изменений</string>
+    <string name="error_date_correct">Дата выходит за пределы графика!</string>
+    <string name="email">Обратная связь</string>
+    <string name="correct_success">График успешно изменён!</string>
+    <string name="delete_shift">Удалить смену</string>
+    <string name="delete_success_shift">Смена успешно удалена!</string>
+    <string name="color_border">Цвет границ</string>
 </resources>

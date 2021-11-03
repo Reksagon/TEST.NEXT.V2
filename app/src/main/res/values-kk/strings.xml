@@ -68,7 +68,6 @@
     <string name="settings_text_color">Мәтін түсі</string>
     <string name="settings">Параметрлер</string>
     <string name="settings_days_other">Тек бір айлық күндерді көрсетіңіз</string>
-    <string name="email">Тілектер жіберу</string>
     <string name="email_text">Ұсыныстарыңызды осында жазыңыз! :)</string>
     <string name="email_error">Пошта клиенттері орнатылмаған! :(</string>
     <string name="email_text_au">Қолданба барлық пайдаланушылардың көңілінен шығуға арналған :) Егер сізде қате табылса немесе оны жақсарту бойынша ұсыныстарыңыз болса, маған міндетті түрде жазыңыз. Ал келесі жаңартуда біз жасаймыз :)\n\n
@@ -87,4 +86,10 @@
     <string name="correct_schedule">Изменить график</string>
     <string name="warn_correct">Для изменения нужно выбрать две даты!</string>
     <string name="warn_correct_date2">Вначале выберите дату старта изменений</string>
+    <string name="error_date_correct">Дата выходит за пределы графика!</string>
+    <string name="email">Обратная связь</string>
+    <string name="correct_success">График успешно изменён!</string>
+    <string name="delete_shift">Удалить смену</string>
+    <string name="delete_success_shift">Смена успешно удалена!</string>
+    <string name="color_border">Цвет рамок дней</string>
 </resources>

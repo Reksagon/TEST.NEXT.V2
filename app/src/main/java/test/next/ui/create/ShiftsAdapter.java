@@ -41,6 +41,13 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ShiftsAdap
         this.selected_day = selected_day;
     }
 
+    public List<Integer> getSelected_shift() {
+        return selected_shift;
+    }
+
+    public List<Integer> getSelected_day() {
+        return selected_day;
+    }
 
     public List<PowerSpinnerView> getShifts_schedule() {
         return shifts_schedule;

@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import es.dmoral.toasty.Toasty;
@@ -45,6 +46,7 @@ public class AccountConst {
     public static boolean days_other = false;
     public static InterstitialAd mInterstitialAd;
     public static Activity activity;
+    public static String color_Border = null;
 
     public static void LoadAd()
     {
@@ -144,4 +146,34 @@ public class AccountConst {
             }
         });
     }
+
+
+    public static ArrayList<ScheduleDay> newSchedule(ArrayList<Shifts> shifts, ArrayList<Integer> days, Calendar day_start, Calendar day_end)
+    {
+        ArrayList<ScheduleDay> scheduleDayArrayList = new ArrayList<>();
+        for(int i = 0; i < 730; i++)
+        {
+            for(int j = 0; j < days.size(); j++)
+            {
+                for(int g = 0; g < days.get(j); g++)
+                {
+                    scheduleDayArrayList.add(new ScheduleDay(day_start.get(Calendar.DAY_OF_MONTH),
+                            day_start.get(Calendar.MONTH),
+                            day_start.get(Calendar.YEAR), shifts.get(j)));
+                    if(day_start.get(Calendar.DAY_OF_MONTH) == day_end.get(Calendar.DAY_OF_MONTH) &&
+                            day_start.get(Calendar.MONTH) == day_end.get(Calendar.MONTH) &&
+                            day_start.get(Calendar.YEAR) == day_end.get(Calendar.YEAR))
+                    {
+                        return scheduleDayArrayList ;
+                    }
+                    day_start.set(Calendar.DAY_OF_MONTH, day_start.get(Calendar.DAY_OF_MONTH) + 1);
+                    i++;
+                }
+
+            }
+        }
+
+        return scheduleDayArrayList;
+    }
+
 }

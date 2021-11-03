@@ -44,12 +44,17 @@ import test.next.ui.home.HomeFragment;
 public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAdapter.ShiftsSettingsAdapterVH> {
     ArrayList<Shifts> shifts;
     Activity activity;
+    private static boolean first = false;
 
     public ShiftsSettingsAdapter(ArrayList<Shifts> shifts, Activity activity) {
         this.shifts = shifts;
         this.activity = activity;
-        Shifts shifts1 = new Shifts(shifts.size()+1,activity.getResources().getString(R.string.add_shift), "00:00", "00:00", "#ffffff", false);
-        this.shifts.add(shifts1);
+        if(!first) {
+            Shifts shifts1 = new Shifts(shifts.size() + 1, activity.getResources().getString(R.string.add_shift), "00:00", "00:00", "#ffffff", false);
+            this.shifts.add(shifts1);
+            first = true;
+        }
+
     }
 
 
@@ -92,7 +97,7 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
         TextView button;
         LinearLayout content;
         CustomCheckBox checkBox;
-        FitButton fbtn;
+        FitButton fbtn, delete;
 
         public ShiftsSettingsAdapterVH(@NonNull View itemView) {
             super(itemView);
@@ -107,6 +112,7 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
             button = itemView.findViewById(R.id.expand_button);
             checkBox = itemView.findViewById(R.id.day_off);
             fbtn = itemView.findViewById(R.id.button_change);
+            delete = itemView.findViewById(R.id.button_delete_shift);
         }
 
         public void bind(Shifts shift) {
@@ -231,7 +237,47 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
                     });
                 }
             });
+            if(shift.getId() > 3) {
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
+                        for (int i = 0; i < AccountConst.shiftsArrayList.size(); i++) {
+                            if (AccountConst.shiftsArrayList.get(i).getId() == shift.getId()) {
+                                shifts.remove(i);
+                                ShiftsSettingsAdapter.this.notifyDataSetChanged();
+                                Task<DataSnapshot> dataSnapshotTask = FirebaseDatabase
+                                        .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                                        .getReference()
+                                        .child("Users/" + AccountConst.account.getUid() + "/Shifts").get();
+                                dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        for (DataSnapshot dataSnapshot : task.getResult().getChildren())
+                                        {
+                                            Shifts shifts_fb = dataSnapshot.getValue(Shifts.class);
+                                            if (shifts_fb.getId() == shift.getId()) {
+                                                dataSnapshot.getRef().setValue(null);
+                                                Toasty.success(activity, activity.getResources().getString(R.string.delete_success_shift), Toast.LENGTH_SHORT, true).show();
+                                                break;
+                                            }
+
+                                        }
+                                    }
+                                });
+                                break;
+
+                            }
+                        }
+
+
+                    }
+                });
+            }
+            else
+            {
+                delete.setVisibility(View.GONE);
+            }
 
             color_pick.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -311,7 +357,8 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
         {
             fbtn.setIcon(activity.getResources().getDrawable(R.drawable.add_ic));
             fbtn.setText(activity.getResources().getString(R.string.add_shift));
-            expandableLayout.expand();
+            //expandableLayout.expand();
+            delete.setVisibility(View.GONE);
             content.setBackgroundColor(activity.getResources().getColor(R.color.colorText));
             button.setText(shift.getName());
             button.setOnClickListener(new View.OnClickListener() {

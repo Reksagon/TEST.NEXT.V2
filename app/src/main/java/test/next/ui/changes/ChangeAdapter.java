@@ -26,11 +26,12 @@ public class ChangeAdapter extends RecyclerView.Adapter<ChangeAdapter.ChangeAdap
     ArrayList<String> data;
     Activity activity;
     ArrayList<FitButton> fitButtons = new ArrayList<>();
-
-    public ChangeAdapter(Activity activity, ArrayList<String> strings)
+    private boolean delete_b = false;
+    public ChangeAdapter(Activity activity, ArrayList<String> strings, boolean delete)
     {
         this.activity = activity;
         data = strings;
+        delete_b = delete;
     }
 
     public void deleteId(int id)
@@ -95,12 +96,18 @@ public class ChangeAdapter extends RecyclerView.Adapter<ChangeAdapter.ChangeAdap
 
                 }
             });
-            detelte.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    DialogDelete.Companion.getDialog(activity, string, HomeFragment.scheduls.get(num).getId(), ChangeAdapter.this);
-                }
-            });
+            if(delete_b) {
+                detelte.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DialogDelete.Companion.getDialog(activity, string, HomeFragment.scheduls.get(num).getId(), ChangeAdapter.this);
+                    }
+                });
+            }
+            else
+            {
+                detelte.setVisibility(View.GONE);
+            }
         }
     }
 }

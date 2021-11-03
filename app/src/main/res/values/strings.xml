@@ -70,7 +70,6 @@
     <string name="settings_text_color">Text color</string>
     <string name="settings">Settings</string>
     <string name="settings_days_other">Show days of only one month</string>
-    <string name="email">Send wishes</string>
     <string name="email_text">Write your suggestions here! :)</string>
     <string name="email_error">No email clients installed! :(</string>
 
@@ -90,4 +89,10 @@
     <string name="correct_schedule">Изменить график</string>
     <string name="warn_correct">Для изменения нужно выбрать две даты!</string>
     <string name="warn_correct_date2">Вначале выберите дату старта изменений</string>
+    <string name="error_date_correct">Дата выходит за пределы графика!</string>
+    <string name="email">Обратная связь</string>
+    <string name="correct_success">График успешно изменён!</string>
+    <string name="delete_shift">Удалить смену</string>
+    <string name="delete_success_shift">Смена успешно удалена!</string>
+    <string name="color_border">Цвет границ</string>
 </resources>

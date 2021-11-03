@@ -60,7 +60,7 @@ public class ChangeFragment extends Fragment {
             strings.add(schedule.getName());
         }
 
-        adapter = new ChangeAdapter(getActivity(), strings);
+        adapter = new ChangeAdapter(getActivity(), strings, true);
         LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
         linearLayout.setOrientation(RecyclerView.VERTICAL);
         binding.changeContent.setLayoutManager(linearLayout);

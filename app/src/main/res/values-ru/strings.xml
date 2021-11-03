@@ -68,7 +68,7 @@
     <string name="settings_text_color">Цвет текста</string>
     <string name="settings">Настройки</string>
     <string name="settings_days_other">Показывать дни только одного месяца</string>
-    <string name="email">Отправить пожелания</string>
+
     <string name="email_text">Пишите сюда свои предложения! :)</string>
     <string name="email_error">Почтовые клиенты не установлены! :(</string>
     <string name="email_text_au">Приложение разработано с целью угодить всем пользователям :) Если нашли ошибку или у Вас есть предложения для улучшения, обязательно напишите мне. И в ближайшем обновлении сделаем :)\n\n
@@ -86,4 +86,10 @@
     <string name="correct_schedule">Изменить график</string>
     <string name="warn_correct">Для изменения нужно выбрать две даты!</string>
     <string name="warn_correct_date2">Вначале выберите дату старта изменений</string>
+    <string name="error_date_correct">Дата выходит за пределы графика!</string>
+    <string name="email">Обратная связь</string>
+    <string name="correct_success">График успешно изменён!</string>
+    <string name="delete_shift">Удалить смену</string>
+    <string name="delete_success_shift">Смена успешно удалена!</string>
+    <string name="color_border">Цвет границ</string>
 </resources>

@@ -295,6 +295,23 @@ public class Splash extends Fragment {
                 FirebaseDatabase
                         .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
                         .getReference()
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/ColorBorder").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        String color = task.getResult().getValue(String.class);
+                        if(color != null)
+                            AccountConst.color_Border = color;
+                        else {
+                            task.getResult().getRef().setValue("#FFDDDDDD");
+                            AccountConst.color_Border = "#FFDDDDDD";
+                        }
+                    }
+                });
+
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
                         .child("Users/" + AccountConst.account.getUid() + "/Settings/DaysOther").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
