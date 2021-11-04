@@ -80,23 +80,23 @@
     <string name="create_warning">This change already exists!</string>
 
 
-    <string name="delete">Удалить график</string>
-    <string name="delete_usually">Удалить</string>
-    <string name="delete_success">График успешно удалён!</string>
-    <string name="currect_date_start">Начало даты изменения</string>
-    <string name="currect_date_end">Конец даты изменения</string>
-    <string name="correct">Изменить</string>
-    <string name="correct_schedule">Изменить график</string>
-    <string name="warn_correct">Для изменения нужно выбрать две даты!</string>
-    <string name="warn_correct_date2">Вначале выберите дату старта изменений</string>
-    <string name="error_date_correct">Дата выходит за пределы графика!</string>
-    <string name="email">Обратная связь</string>
-    <string name="correct_success">График успешно изменён!</string>
-    <string name="delete_shift">Удалить смену</string>
-    <string name="delete_success_shift">Смена успешно удалена!</string>
-    <string name="color_border">Цвет границ</string>
-    <string name="size_text_shfift">Размер текста смен в календаре</string>
-    <string name="small">маленький</string>
-    <string name="medium">средний</string>
-    <string name="big">большой</string>
+    <string name = "delete">Delete schedule</string>
+    <string name = "delete_usually">Delete</string>
+    <string name = "delete_success">Schedule deleted successfully!</string>
+    <string name = "currect_date_start">Start of modified date</string>
+    <string name = "currect_date_end">End modified date</string>
+    <string name = "correct">Change</string>
+    <string name = "correct_schedule">Change Schedule</string>
+    <string name = "warn_correct">You must select two dates to change!</string>
+    <string name = "warn_correct_date2">First, select the start date for changes</string>
+    <string name = "error_date_correct">Date is out of chart!</string>
+    <string name = "email">Feedback</string>
+    <string name = "correct_success">Schedule changed successfully!</string>
+    <string name = "delete_shift">Delete shift</string>
+    <string name = "delete_success_shift">Change was successfully deleted!</string>
+    <string name = "color_border">Border color</string>
+    <string name = "size_text_shfift">Shift text size in the calendar</string>
+    <string name = "small">small</string>
+    <string name = "medium">medium</string>
+    <string name = "big">big</string>
 </resources>
