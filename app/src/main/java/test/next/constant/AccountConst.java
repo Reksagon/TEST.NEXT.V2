@@ -47,6 +47,7 @@ public class AccountConst {
     public static InterstitialAd mInterstitialAd;
     public static Activity activity;
     public static String color_Border = null;
+    public static int size_text_shift = 14;
 
     public static void LoadAd()
     {

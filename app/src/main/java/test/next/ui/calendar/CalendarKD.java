@@ -158,6 +158,7 @@ public class CalendarKD extends Fragment {
         {
             textView.setTextColor(Color.parseColor(AccountConst.text_color_shift));
             textView.setLayoutParams(layoutParams);
+            textView.setTextSize(AccountConst.size_text_shift);
         }
         this.shifts = shifts;
     }

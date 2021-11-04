@@ -113,7 +113,6 @@ public class Splash extends Fragment {
                     binding.splashText.setVisibility(View.GONE);
                     binding.signIn.setVisibility(View.GONE);
                     binding.spinKit.setVisibility(View.VISIBLE);
-                    //signIn();
                     mViewModel.setSetting(getActivity());
                     getData().execute();
                 }
@@ -200,153 +199,171 @@ public class Splash extends Fragment {
         {
             @Override
             protected void onPostExecute(Void unused) {
-                LoadShifts();
+                try {
 
-                FirebaseDatabase
-                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                        .getReference()
-                        .child("Users/" + AccountConst.account.getUid() + "/Shifts").get().addOnCompleteListener(
-                        new OnCompleteListener<DataSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                AccountConst.shiftsArrayList = new ArrayList<>();
-                                for (DataSnapshot child : task.getResult().getChildren()) {
-                                    Shifts str1 = child.getValue(Shifts.class);
-                                    AccountConst.shiftsArrayList.add(str1);
+
+                    LoadShifts();
+
+                    FirebaseDatabase
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Shifts").get().addOnCompleteListener(
+                            new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    AccountConst.shiftsArrayList = new ArrayList<>();
+                                    for (DataSnapshot child : task.getResult().getChildren()) {
+                                        Shifts str1 = child.getValue(Shifts.class);
+                                        AccountConst.shiftsArrayList.add(str1);
+                                    }
                                 }
+                            });
+
+                    FirebaseDatabase
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            Long num = task.getResult().getValue(Long.class);
+                            if (num != null)
+                                HomeFragment.current_schedule = Math.toIntExact(num);
+                        }
+                    });
+
+                    Task<DataSnapshot> databaseReference = FirebaseDatabase
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Scheduls").get();
+                    databaseReference.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            for (DataSnapshot child : task.getResult().getChildren()) {
+                                ScheduleFB scheduleFB = child.getValue(ScheduleFB.class);
+                                String data = null;
+                                if (scheduleFB != null)
+                                    data = scheduleFB.getData();
+
+                                byte[] data2 = Base64.decode(data, Base64.DEFAULT);
+                                Schedule schedule = SerializationUtils.deserialize(data2);
+                                schedule.getScheduleDayArrayList();
+                                HomeFragment.scheduls.add(schedule);
                             }
-                        });
-
-                FirebaseDatabase
-                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                        .getReference()
-                        .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        Long num = task.getResult().getValue(Long.class);
-                        if(num != null)
-                            HomeFragment.current_schedule = Math.toIntExact(num);
-                    }
-                });
-
-                Task<DataSnapshot> databaseReference = FirebaseDatabase
-                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                        .getReference()
-                        .child("Users/" + AccountConst.account.getUid() + "/Scheduls").get();
-                databaseReference.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        for(DataSnapshot child : task.getResult().getChildren())
-                        {
-                            ScheduleFB scheduleFB = child.getValue(ScheduleFB.class);
-                            String data = null;
-                            if (scheduleFB != null)
-                                data = scheduleFB.getData();
-
-                            byte[] data2 = Base64.decode(data, Base64.DEFAULT);
-                            Schedule schedule = SerializationUtils.deserialize(data2);
-                            schedule.getScheduleDayArrayList();
-                            HomeFragment.scheduls.add(schedule);
+                            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                            navController.navigate(R.id.nav_home);
                         }
-                        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-                        navController.navigate(R.id.nav_home);
-                    }
-                });
+                    });
 
-                FirebaseDatabase
-                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                        .getReference()
-                        .child("Users/" + AccountConst.account.getUid() + "/Settings/Board").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        String check = task.getResult().getValue(String.class);
-                        if(check != null)
-                        {
-                            if(check.equals("true"))
+                    FirebaseDatabase
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Settings/Board").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            String check = task.getResult().getValue(String.class);
+                            if (check != null) {
+                                if (check.equals("true"))
+                                    AccountConst.board = true;
+                                else
+                                    AccountConst.board = false;
+                            } else {
+                                task.getResult().getRef().setValue("true");
                                 AccountConst.board = true;
-                            else
-                                AccountConst.board = false;
+                            }
                         }
-                        else {
-                            task.getResult().getRef().setValue("true");
-                            AccountConst.board = true;
-                        }
-                    }
-                });
+                    });
 
-                FirebaseDatabase
-                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                        .getReference()
-                        .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorCalendar").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        String color = task.getResult().getValue(String.class);
-                        if(color != null)
-                            AccountConst.text_color_calendar = color;
-                        else {
-                            task.getResult().getRef().setValue("#FF000000");
-                            AccountConst.text_color_calendar = "#FF000000";
+                    FirebaseDatabase
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorCalendar").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            String color = task.getResult().getValue(String.class);
+                            if (color != null)
+                                AccountConst.text_color_calendar = color;
+                            else {
+                                task.getResult().getRef().setValue("#FF000000");
+                                AccountConst.text_color_calendar = "#FF000000";
+                            }
                         }
-                    }
-                });
+                    });
 
-                FirebaseDatabase
-                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                        .getReference()
-                        .child("Users/" + AccountConst.account.getUid() + "/Settings/ColorBorder").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        String color = task.getResult().getValue(String.class);
-                        if(color != null)
-                            AccountConst.color_Border = color;
-                        else {
-                            task.getResult().getRef().setValue("#FFDDDDDD");
-                            AccountConst.color_Border = "#FFDDDDDD";
+                    FirebaseDatabase
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Settings/ColorBorder").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            String color = task.getResult().getValue(String.class);
+                            if (color != null)
+                                AccountConst.color_Border = color;
+                            else {
+                                task.getResult().getRef().setValue("#FFDDDDDD");
+                                AccountConst.color_Border = "#FFDDDDDD";
+                            }
                         }
-                    }
-                });
+                    });
 
-                FirebaseDatabase
-                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                        .getReference()
-                        .child("Users/" + AccountConst.account.getUid() + "/Settings/DaysOther").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        String check = task.getResult().getValue(String.class);
-                        if(check != null)
-                        {
-                            if(check.equals("true"))
-                                AccountConst.days_other = true;
-                            else
+                    FirebaseDatabase
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Settings/DaysOther").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            String check = task.getResult().getValue(String.class);
+                            if (check != null) {
+                                if (check.equals("true"))
+                                    AccountConst.days_other = true;
+                                else
+                                    AccountConst.days_other = false;
+                            } else {
+                                task.getResult().getRef().setValue("false");
                                 AccountConst.days_other = false;
+                            }
                         }
-                        else {
-                            task.getResult().getRef().setValue("false");
-                            AccountConst.days_other = false;
-                        }
-                    }
-                });
+                    });
 
 
-                FirebaseDatabase
-                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                        .getReference()
-                        .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorShift").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        String color = task.getResult().getValue(String.class);
-                        if(color != null)
-                            AccountConst.text_color_shift = color;
-                        else {
-                            task.getResult().getRef().setValue("#FFFFFFFF");
-                            AccountConst.text_color_shift = "#FFFFFFFF";
+                    FirebaseDatabase
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorShift").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            String color = task.getResult().getValue(String.class);
+                            if (color != null)
+                                AccountConst.text_color_shift = color;
+                            else {
+                                task.getResult().getRef().setValue("#FFFFFFFF");
+                                AccountConst.text_color_shift = "#FFFFFFFF";
+                            }
                         }
-                    }
-                });
+                    });
+
+                    FirebaseDatabase
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Settings/SizeTextShift").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            Long num = task.getResult().getValue(Long.class);
+                            if (num != null)
+                                AccountConst.size_text_shift = Math.toIntExact(num);
+                            else
+                                task.getResult().getRef().setValue(14);
+                        }
+                    });
+                }
+                catch (Exception exception)
+                {
+                    Toasty.error(getActivity(), exception.getMessage(), Toasty.LENGTH_SHORT).show();
+                }
                 super.onPostExecute(unused);
             }
 
@@ -379,7 +396,6 @@ public class Splash extends Fragment {
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 Toasty.error(getActivity(), e.toString(), Toasty.LENGTH_SHORT).show();
-                Log.d("GoogleSignInAccount", e.getMessage());
             }
         }
     }

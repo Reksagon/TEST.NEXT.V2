@@ -48,6 +48,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
+import com.skydoves.powerspinner.OnSpinnerItemSelectedListener;
 
 import net.igenius.customcheckbox.CustomCheckBox;
 
@@ -56,6 +57,7 @@ import org.apache.commons.lang3.SerializationUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 import es.dmoral.toasty.Toasty;
 import test.next.R;
@@ -178,6 +180,23 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        binding.textSizeShift.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener<String>() {
+            @Override
+            public void onItemSelected(int i, @Nullable String s, int i1, String t1) {
+                switch (i1)
+                {
+                    case 0: AccountConst.size_text_shift = 11; break;
+                    case 1: AccountConst.size_text_shift = 14; break;
+                    case 2: AccountConst.size_text_shift = 17; break;
+
+                }
+
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/SizeTextShift").setValue(AccountConst.size_text_shift);
+            }
+        });
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true ) {
             @Override
@@ -242,6 +261,11 @@ public class SettingsFragment extends Fragment {
         binding.colorPickText.setBackgroundColor(Color.parseColor(AccountConst.text_color_calendar));
         binding.colorPickTextShift.setBackgroundColor(Color.parseColor(AccountConst.text_color_shift ));
         binding.colorBorderPick.setBackgroundColor(Color.parseColor(AccountConst.color_Border ));
+        ArrayList<String> text_size = new ArrayList<>();
+        text_size.add(getActivity().getResources().getString(R.string.small));
+        text_size.add(getActivity().getResources().getString(R.string.medium));
+        text_size.add(getActivity().getResources().getString(R.string.big));
+        binding.textSizeShift.setItems(text_size);
     }
 
     @Override

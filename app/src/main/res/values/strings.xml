@@ -95,4 +95,8 @@
     <string name="delete_shift">Удалить смену</string>
     <string name="delete_success_shift">Смена успешно удалена!</string>
     <string name="color_border">Цвет границ</string>
+    <string name="size_text_shfift">Размер текста смен в календаре</string>
+    <string name="small">маленький</string>
+    <string name="medium">средний</string>
+    <string name="big">большой</string>
 </resources>
