@@ -97,4 +97,7 @@
     <string name="small">маленькі</string>
     <string name="medium">сярэдні</string>
     <string name="big">вялікі</string>
+
+    <string name="shift">Змена</string>
+    <string name="days">Дзён</string>
 </resources>

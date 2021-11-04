@@ -96,4 +96,7 @@
     <string name = "small">кішкентай</string>
     <string name = "medium">орта</string>
     <string name = "big">үлкен</string>
+
+    <string name = "shift"> Өзгерту </string>
+    <string name = "days"> Күндер </string>
 </resources>

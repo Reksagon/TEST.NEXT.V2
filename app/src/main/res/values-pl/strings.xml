@@ -98,4 +98,7 @@
     <string name = "small"> mały </string>
     <string name = "medium"> średnie </string>
     <string name = "big"> duży </string>
+
+    <string name = "shift"> Przesunięcie </string>
+    <string name = "days"> Dni </string>
 </resources>

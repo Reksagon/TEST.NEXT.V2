@@ -99,4 +99,7 @@
     <string name = "small">small</string>
     <string name = "medium">medium</string>
     <string name = "big">big</string>
+
+    <string name = "shift">Shift</string>
+    <string name = "days">Days</string>
 </resources>
