@@ -91,22 +91,33 @@ public class SettingsFragment extends Fragment {
         binding.checkBoard.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
-                FirebaseDatabase
-                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                        .getReference()
-                        .child("Users/" + AccountConst.account.getUid() + "/Settings/Board").setValue(String.valueOf(isChecked));
-                AccountConst.board = isChecked;
+                try {
+
+                    FirebaseDatabase
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Settings/Board").setValue(String.valueOf(isChecked));
+                    AccountConst.board = isChecked;
+                }catch (Exception ex)
+                {
+                    Toasty.error(getActivity(), getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
+                }
             }
         });
 
         binding.checkDaysOther.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
-                FirebaseDatabase
-                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                        .getReference()
-                        .child("Users/" + AccountConst.account.getUid() + "/Settings/DaysOther").setValue(String.valueOf(isChecked));
-                AccountConst.days_other = isChecked;
+                try {
+                    FirebaseDatabase
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Settings/DaysOther").setValue(String.valueOf(isChecked));
+                    AccountConst.days_other = isChecked;
+                }catch (Exception ex)
+                {
+                    Toasty.error(getActivity(), getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -127,12 +138,17 @@ public class SettingsFragment extends Fragment {
                         .setPositiveButton("OK", new ColorPickerClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-                                binding.colorPickTextShift.setBackgroundColor(selectedColor);
-                                AccountConst.text_color_shift = String.format("#%06X", (0xFFFFFF & selectedColor));
-                                FirebaseDatabase
-                                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                                        .getReference()
-                                        .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorShift").setValue(AccountConst.text_color_shift);
+                                try {
+                                    binding.colorPickTextShift.setBackgroundColor(selectedColor);
+                                    AccountConst.text_color_shift = String.format("#%06X", (0xFFFFFF & selectedColor));
+                                    FirebaseDatabase
+                                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                                            .getReference()
+                                            .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorShift").setValue(AccountConst.text_color_shift);
+                                }catch (Exception ex)
+                                {
+                                    Toasty.error(getActivity(), getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
+                                }
                             }
                         })
                         .setNegativeButton(getActivity().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -162,12 +178,17 @@ public class SettingsFragment extends Fragment {
                         .setPositiveButton("OK", new ColorPickerClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-                                binding.colorBorderPick.setBackgroundColor(selectedColor);
-                                AccountConst.color_Border = String.format("#%06X", (0xFFFFFF & selectedColor));
-                                FirebaseDatabase
-                                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                                        .getReference()
-                                        .child("Users/" + AccountConst.account.getUid() + "/Settings/ColorBorder").setValue(AccountConst.color_Border);
+                                try {
+                                    binding.colorBorderPick.setBackgroundColor(selectedColor);
+                                    AccountConst.color_Border = String.format("#%06X", (0xFFFFFF & selectedColor));
+                                    FirebaseDatabase
+                                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                                            .getReference()
+                                            .child("Users/" + AccountConst.account.getUid() + "/Settings/ColorBorder").setValue(AccountConst.color_Border);
+                                }catch (Exception ex)
+                                {
+                                    Toasty.error(getActivity(), getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
+                                }
                             }
                         })
                         .setNegativeButton(getActivity().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -183,18 +204,27 @@ public class SettingsFragment extends Fragment {
         binding.textSizeShift.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener<String>() {
             @Override
             public void onItemSelected(int i, @Nullable String s, int i1, String t1) {
-                switch (i1)
+                try {
+                    switch (i1) {
+                        case 0:
+                            AccountConst.size_text_shift = 11;
+                            break;
+                        case 1:
+                            AccountConst.size_text_shift = 14;
+                            break;
+                        case 2:
+                            AccountConst.size_text_shift = 17;
+                            break;
+
+                    }
+                    FirebaseDatabase
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Settings/SizeTextShift").setValue(AccountConst.size_text_shift);
+                }catch (Exception ex)
                 {
-                    case 0: AccountConst.size_text_shift = 11; break;
-                    case 1: AccountConst.size_text_shift = 14; break;
-                    case 2: AccountConst.size_text_shift = 17; break;
-
+                    Toasty.error(getActivity(), getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
                 }
-
-                FirebaseDatabase
-                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                        .getReference()
-                        .child("Users/" + AccountConst.account.getUid() + "/Settings/SizeTextShift").setValue(AccountConst.size_text_shift);
             }
         });
 
@@ -225,12 +255,17 @@ public class SettingsFragment extends Fragment {
                         .setPositiveButton("OK", new ColorPickerClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-                                binding.colorPickText.setBackgroundColor(selectedColor);
-                                AccountConst.text_color_calendar = String.format("#%06X", (0xFFFFFF & selectedColor));
-                                FirebaseDatabase
-                                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                                        .getReference()
-                                        .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorCalendar").setValue(AccountConst.text_color_calendar);
+                                try {
+                                    binding.colorPickText.setBackgroundColor(selectedColor);
+                                    AccountConst.text_color_calendar = String.format("#%06X", (0xFFFFFF & selectedColor));
+                                    FirebaseDatabase
+                                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                                            .getReference()
+                                            .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorCalendar").setValue(AccountConst.text_color_calendar);
+                                } catch (Exception ex)
+                                {
+                                    Toasty.error(getActivity(), getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
+                                }
                             }
                         })
                         .setNegativeButton(getActivity().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {

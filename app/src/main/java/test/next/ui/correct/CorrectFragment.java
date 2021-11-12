@@ -287,14 +287,20 @@ public class CorrectFragment extends Fragment {
                     dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
-                                ScheduleFB scheduleFB = dataSnapshot.getValue(ScheduleFB.class);
-                                if (scheduleFB.getId().equals(scheduleFB_new.getId())) {
-                                    dataSnapshot.getRef().setValue(scheduleFB_new);
+                            try {
+
+                                for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
+                                    ScheduleFB scheduleFB = dataSnapshot.getValue(ScheduleFB.class);
+                                    if (scheduleFB.getId().equals(scheduleFB_new.getId())) {
+                                        dataSnapshot.getRef().setValue(scheduleFB_new);
+                                    }
+                                    Toasty.success(getActivity(), getActivity().getResources().getString(R.string.correct_success), Toast.LENGTH_SHORT).show();
+                                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                                    navController.navigate(R.id.nav_home);
                                 }
-                                Toasty.success(getActivity(), getActivity().getResources().getString(R.string.correct_success), Toast.LENGTH_SHORT).show();
-                                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-                                navController.navigate(R.id.nav_home);
+                            } catch (Exception ex)
+                            {
+                                Toasty.error(getActivity(), getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
                             }
                         }
                     });

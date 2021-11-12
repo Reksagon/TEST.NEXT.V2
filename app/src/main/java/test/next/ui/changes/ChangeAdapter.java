@@ -1,6 +1,8 @@
 package test.next.ui.changes;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.awesomedialog.AwesomeDialog;
 import com.github.nikartm.button.FitButton;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.ArrayList;
 
@@ -80,19 +84,29 @@ public class ChangeAdapter extends RecyclerView.Adapter<ChangeAdapter.ChangeAdap
                 @Override
                 public void onClick(View view) {
                     HomeFragment.current_schedule = num;
-                    FirebaseDatabase
-                            .getInstance(new String(Base64.decode(activity.getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                            .getReference()
-                            .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").setValue(HomeFragment.current_schedule);
-                    fitButton.setIcon(activity.getResources().getDrawable(R.drawable.check));
-                    for(int i = 0; i < fitButtons.size(); i++)
-                    {
-                        if(i != num)
-                            fitButtons.get(i).setIcon(activity.getResources().getDrawable(R.drawable.unchecked));
-                    }
-                    Toasty.success(activity, fitButton.getText() + ", "
-                            + activity.getResources().getString(R.string.schedule_succes), Toast.LENGTH_SHORT).show();
+                    SharedPreferences sharedPreferences = activity.getSharedPreferences("ShiftSchedulePlus", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    byte[] data = SerializationUtils.serialize(HomeFragment.scheduls.get(HomeFragment.current_schedule));
+                    String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+                    editor.putString("Schedule", base64);
+                    editor.apply();
 
+                    try {
+                        FirebaseDatabase
+                                .getInstance(new String(Base64.decode(activity.getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                                .getReference()
+                                .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").setValue(HomeFragment.current_schedule);
+                        fitButton.setIcon(activity.getResources().getDrawable(R.drawable.check));
+                        for (int i = 0; i < fitButtons.size(); i++) {
+                            if (i != num)
+                                fitButtons.get(i).setIcon(activity.getResources().getDrawable(R.drawable.unchecked));
+                        }
+                        Toasty.success(activity, fitButton.getText() + ", "
+                                + activity.getResources().getString(R.string.schedule_succes), Toast.LENGTH_SHORT).show();
+                    }catch (Exception ex)
+                    {
+                        Toasty.error(activity, activity.getResources().getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
+                    }
 
                 }
             });

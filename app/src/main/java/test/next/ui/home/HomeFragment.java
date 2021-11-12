@@ -22,11 +22,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.gms.ads.AdError;
@@ -74,7 +76,24 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
+        String data = null;
+        byte[] data2 = null;
+        if(AccountConst.offline)
+        {
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ShiftSchedulePlus", Context.MODE_PRIVATE);
+            data = sharedPreferences.getString("Schedule", null);
+            data2 = Base64.decode(data, Base64.DEFAULT);
+            Schedule schedule = SerializationUtils.deserialize(data2);
+            HomeFragment.scheduls.add(schedule);
+            HomeFragment.current_schedule = 0;
+            AccountConst.board = sharedPreferences.getBoolean("Board", true);
+            AccountConst.days_other = sharedPreferences.getBoolean("DaysOther", true);
+            AccountConst.text_color_calendar = sharedPreferences.getString("TextColorCalendar", "#FF000000");
+            AccountConst.text_color_shift = sharedPreferences.getString("TextColorShift", "#FFFFFFFF");
+            AccountConst.color_Border = sharedPreferences.getString("ColorBorder", "#FFDDDDDD");
+            DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
 
         calendarStateAdapter = new CalendarStateAdapter(getActivity().getSupportFragmentManager(), getLifecycle());
         calendarStateAdapter.feedsList = new ArrayList<>();
@@ -160,7 +179,10 @@ public class HomeFragment extends Fragment {
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu, null);
         drawable = DrawableCompat.wrap(drawable);
         DrawableCompat.setTint(drawable, Color.WHITE);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(drawable);
+        if(!AccountConst.offline)
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(drawable);
+        else
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     String setTitle(int month, int year)

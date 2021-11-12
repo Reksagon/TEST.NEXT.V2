@@ -52,7 +52,6 @@ public class StatisticsFragment extends Fragment {
 
     private StatisticsViewModel mViewModel;
     private FragmentStatisticsBinding binding;
-    public static ArrayList<Shifts> shifts;
     StatisticsStateAdapter adapter;
     public static StatisticsFragment newInstance() {
         return new StatisticsFragment();
@@ -70,57 +69,43 @@ public class StatisticsFragment extends Fragment {
         AccountConst.loadAdView(binding.adView3);
         if(HomeFragment.current_schedule >= 0) {
             binding.scheduleStat.setText(HomeFragment.scheduls.get(HomeFragment.current_schedule).getName());
-            Task<DataSnapshot> getShiftsTask = FirebaseDatabase
-                    .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                    .getReference()
-                    .child("Users/" + AccountConst.account.getUid() + "/Shifts").get();
-            getShiftsTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    shifts = new ArrayList<>();
-                    for (DataSnapshot child : task.getResult().getChildren()) {
-                        Shifts str1 = child.getValue(Shifts.class);
-                        shifts.add(str1);
-                    }
-
-                    adapter = new StatisticsStateAdapter(getActivity().getSupportFragmentManager(), getLifecycle());
-                    binding.statContent.setAdapter(adapter);
-
-                    Calendar calendar_start = Calendar.getInstance();
-                    Calendar calendar_end = Calendar.getInstance();
-
-                    int current_month = calendar_end.get(Calendar.MONTH);
-                    int currnet_year = calendar_end.get(Calendar.YEAR);
 
 
-                    Schedule schedule = HomeFragment.scheduls.get(HomeFragment.current_schedule);
-                    int start_month = schedule.getScheduleDayArrayList().get(0).getMonth();
-                    int start_year = schedule.getScheduleDayArrayList().get(0).getYear();
+            adapter = new StatisticsStateAdapter(getActivity().getSupportFragmentManager(), getLifecycle());
+            binding.statContent.setAdapter(adapter);
 
-                    int end_month = schedule.getScheduleDayArrayList().get(schedule.getScheduleDayArrayList().size() - 1).getMonth();
-                    int end_year = schedule.getScheduleDayArrayList().get(schedule.getScheduleDayArrayList().size() - 1).getYear();
+            Calendar calendar_start = Calendar.getInstance();
+            Calendar calendar_end = Calendar.getInstance();
 
-                    calendar_start.set(Calendar.MONTH, start_month);
-                    calendar_start.set(Calendar.YEAR, start_year);
+            int current_month = calendar_end.get(Calendar.MONTH);
+            int currnet_year = calendar_end.get(Calendar.YEAR);
 
-                    calendar_end.set(Calendar.MONTH, end_month);
-                    calendar_end.set(Calendar.YEAR, end_year);
 
-                    int i = 0, j = 0;
-                    while (calendar_start.before(calendar_end)) {
-                        adapter.Add(calendar_start.get(Calendar.MONTH), calendar_start.get(Calendar.YEAR));
-                        if (calendar_start.get(Calendar.MONTH) == current_month
-                                && calendar_start.get(Calendar.YEAR) == currnet_year) {
-                            i = j;
-                        }
-                        calendar_start.set(Calendar.MONTH, calendar_start.get(Calendar.MONTH) + 1);
-                        j++;
-                    }
-                    binding.statContent.setCurrentItem(i, false);
+            Schedule schedule = HomeFragment.scheduls.get(HomeFragment.current_schedule);
+            int start_month = schedule.getScheduleDayArrayList().get(0).getMonth();
+            int start_year = schedule.getScheduleDayArrayList().get(0).getYear();
 
+            int end_month = schedule.getScheduleDayArrayList().get(schedule.getScheduleDayArrayList().size() - 1).getMonth();
+            int end_year = schedule.getScheduleDayArrayList().get(schedule.getScheduleDayArrayList().size() - 1).getYear();
+
+            calendar_start.set(Calendar.MONTH, start_month);
+            calendar_start.set(Calendar.YEAR, start_year);
+
+            calendar_end.set(Calendar.MONTH, end_month);
+            calendar_end.set(Calendar.YEAR, end_year);
+
+            int i = 0, j = 0;
+            while (calendar_start.before(calendar_end)) {
+                adapter.Add(calendar_start.get(Calendar.MONTH), calendar_start.get(Calendar.YEAR));
+                if (calendar_start.get(Calendar.MONTH) == current_month
+                        && calendar_start.get(Calendar.YEAR) == currnet_year) {
+                    i = j;
                 }
+                calendar_start.set(Calendar.MONTH, calendar_start.get(Calendar.MONTH) + 1);
+                j++;
+            }
+            binding.statContent.setCurrentItem(i, false);
 
-            });
         }
         else
         {

@@ -99,4 +99,9 @@
 
     <string name="shift">Смена</string>
     <string name="days">Дней</string>
+
+    <string name="error_load">Упс, что-то пошло не так. Попробуйте снова.</string>
+    <string name="repeat">Подключиться</string>
+    <string name="offline">Автономный режим</string>
+    <string name="warning_offline">Редактирование доступно в онлайн версии.</string>
 </resources>

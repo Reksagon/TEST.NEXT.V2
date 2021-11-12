@@ -48,6 +48,7 @@ public class AccountConst {
     public static Activity activity;
     public static String color_Border = null;
     public static int size_text_shift = 14;
+    public static boolean offline = false;
 
     public static void LoadAd()
     {
@@ -111,38 +112,41 @@ public class AccountConst {
         databaseReference.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                for(DataSnapshot child : task.getResult().getChildren())
-                {
-                    ScheduleFB scheduleFB = child.getValue(ScheduleFB.class);
-                    String data = null;
-                    if (scheduleFB != null)
-                        data = scheduleFB.getData();
+                try {
+                    for (DataSnapshot child : task.getResult().getChildren()) {
+                        ScheduleFB scheduleFB = child.getValue(ScheduleFB.class);
+                        String data = null;
+                        if (scheduleFB != null)
+                            data = scheduleFB.getData();
 
-                    byte[] data2 = Base64.decode(data, Base64.DEFAULT);
-                    Schedule schedule = SerializationUtils.deserialize(data2);
-                    schedule.getScheduleDayArrayList();
+                        byte[] data2 = Base64.decode(data, Base64.DEFAULT);
+                        Schedule schedule = SerializationUtils.deserialize(data2);
+                        schedule.getScheduleDayArrayList();
 
-                    if(schedule.getId() == id)
-                    {
-                        child.getRef().setValue(null);
-                        adapter.deleteId(id);
-                        Toasty.success(activity, activity.getResources().getString(R.string.delete_success), Toast.LENGTH_SHORT).show();
-                        HomeFragment.scheduls.remove(id-1);
-                        if(HomeFragment.current_schedule >= HomeFragment.scheduls.size()) {
-                            HomeFragment.current_schedule = HomeFragment.scheduls.size() - 1;
-                            FirebaseDatabase
-                                    .getInstance(new String(Base64.decode(activity.getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                                    .getReference()
-                                    .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                @RequiresApi(api = Build.VERSION_CODES.N)
-                                @Override
-                                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                    task.getResult().getRef().setValue(HomeFragment.current_schedule);
-                                }
-                            });
+                        if (schedule.getId() == id) {
+                            child.getRef().setValue(null);
+                            adapter.deleteId(id);
+                            Toasty.success(activity, activity.getResources().getString(R.string.delete_success), Toast.LENGTH_SHORT).show();
+                            HomeFragment.scheduls.remove(id - 1);
+                            if (HomeFragment.current_schedule >= HomeFragment.scheduls.size()) {
+                                HomeFragment.current_schedule = HomeFragment.scheduls.size() - 1;
+                                FirebaseDatabase
+                                        .getInstance(new String(Base64.decode(activity.getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                                        .getReference()
+                                        .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @RequiresApi(api = Build.VERSION_CODES.N)
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        task.getResult().getRef().setValue(HomeFragment.current_schedule);
+                                    }
+                                });
+                            }
                         }
-                    }
 
+                    }
+                }catch (Exception ex)
+                {
+                    Toasty.error(activity, activity.getResources().getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
                 }
             }
         });

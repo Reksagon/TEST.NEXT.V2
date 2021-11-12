@@ -102,4 +102,9 @@
 
     <string name = "shift">Shift</string>
     <string name = "days">Days</string>
+
+    <string name = "error_load">Oops, something went wrong. Please try again.</string>
+    <string name = "repeat">Connect</string>
+    <string name = "offline">Offline</string>
+    <string name = "warning_offline">Editing is available online.</string>
 </resources>

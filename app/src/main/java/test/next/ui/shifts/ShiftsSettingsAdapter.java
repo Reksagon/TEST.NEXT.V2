@@ -182,56 +182,61 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
                     getFBTask().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            for(DataSnapshot child : task.getResult().getChildren())
-                            {
-                                Shifts str1 = child.getValue(Shifts.class);
-                                if(str1.getId() == shift.getId()) {
-                                    str1.setName(name.getText());
-                                    str1.setStart(start_work.getText());
-                                    str1.setEnd(end_work.getText());
-                                    str1.setStart_lanch(start_lanch.getText());
-                                    str1.setEnd_lanch(end_lanch.getText());
-                                    str1.setOffday(checkBox.isChecked());
-                                    str1.setColor(color_pick.getText());
-                                    child.getRef().setValue(str1);
-                                    content.setBackgroundColor(Color.parseColor(color_pick.getText()));
-                                    button.setText(str1.getName());
+                            try {
+                                for (DataSnapshot child : task.getResult().getChildren()) {
+                                    Shifts str1 = child.getValue(Shifts.class);
+                                    if (str1.getId() == shift.getId()) {
+                                        str1.setName(name.getText());
+                                        str1.setStart(start_work.getText());
+                                        str1.setEnd(end_work.getText());
+                                        str1.setStart_lanch(start_lanch.getText());
+                                        str1.setEnd_lanch(end_lanch.getText());
+                                        str1.setOffday(checkBox.isChecked());
+                                        str1.setColor(color_pick.getText());
+                                        child.getRef().setValue(str1);
+                                        content.setBackgroundColor(Color.parseColor(color_pick.getText()));
+                                        button.setText(str1.getName());
 
-                                    for(int i = 0; i < AccountConst.shiftsArrayList.size(); i++)
-                                    {
-                                        if(AccountConst.shiftsArrayList.get(i).getId() == str1.getId())
-                                        {
-                                            AccountConst.shiftsArrayList.remove(i);
-                                            AccountConst.shiftsArrayList.add(i, str1);
+                                        for (int i = 0; i < AccountConst.shiftsArrayList.size(); i++) {
+                                            if (AccountConst.shiftsArrayList.get(i).getId() == str1.getId()) {
+                                                AccountConst.shiftsArrayList.remove(i);
+                                                AccountConst.shiftsArrayList.add(i, str1);
+                                            }
                                         }
-                                    }
-                                    if(HomeFragment.scheduls.size() > 0) {
-                                        for(Schedule schedule : HomeFragment.scheduls) {
-                                            schedule.changeShift(str1);
-                                            byte[] data = SerializationUtils.serialize(schedule);
-                                            String base64 = Base64.encodeToString(data, Base64.DEFAULT);
-                                            ScheduleFB scheduleFB_new = new ScheduleFB(String.valueOf(schedule.getId()), base64);
+                                        if (HomeFragment.scheduls.size() > 0) {
+                                            for (Schedule schedule : HomeFragment.scheduls) {
+                                                schedule.changeShift(str1);
+                                                byte[] data = SerializationUtils.serialize(schedule);
+                                                String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+                                                ScheduleFB scheduleFB_new = new ScheduleFB(String.valueOf(schedule.getId()), base64);
 
-                                            Task<DataSnapshot> dataSnapshotTask = FirebaseDatabase
-                                                    .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
-                                                    .getReference()
-                                                    .child("Users/" + AccountConst.account.getUid() + "/Scheduls").get();
-                                            dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                                    for (DataSnapshot dataSnapshot : task.getResult().getChildren())
-                                                    {
-                                                        ScheduleFB scheduleFB = dataSnapshot.getValue(ScheduleFB.class);
-                                                        if (scheduleFB.getId().equals(scheduleFB_new.getId())) {
-                                                            dataSnapshot.getRef().setValue(scheduleFB_new);
+                                                Task<DataSnapshot> dataSnapshotTask = FirebaseDatabase
+                                                        .getInstance("https://test-next-7ea45-default-rtdb.firebaseio.com/")
+                                                        .getReference()
+                                                        .child("Users/" + AccountConst.account.getUid() + "/Scheduls").get();
+                                                dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                                        try {
+                                                            for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
+                                                                ScheduleFB scheduleFB = dataSnapshot.getValue(ScheduleFB.class);
+                                                                if (scheduleFB.getId().equals(scheduleFB_new.getId())) {
+                                                                    dataSnapshot.getRef().setValue(scheduleFB_new);
+                                                                }
+                                                                Toasty.success(activity, activity.getResources().getString(R.string.success_shift), Toast.LENGTH_SHORT, true).show();
+                                                            }
+                                                        } catch (Exception ex) {
+                                                            Toasty.error(activity, activity.getResources().getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
                                                         }
-                                                        Toasty.success(activity, activity.getResources().getString(R.string.success_shift), Toast.LENGTH_SHORT, true).show();
                                                     }
-                                                }
-                                            });
+                                                });
+                                            }
                                         }
                                     }
                                 }
+                            }catch (Exception ex)
+                            {
+                                Toasty.error(activity, activity.getResources().getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -241,7 +246,6 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         for (int i = 0; i < AccountConst.shiftsArrayList.size(); i++) {
                             if (AccountConst.shiftsArrayList.get(i).getId() == shift.getId()) {
                                 shifts.remove(i);
@@ -253,15 +257,19 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
                                 dataSnapshotTask.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                        for (DataSnapshot dataSnapshot : task.getResult().getChildren())
-                                        {
-                                            Shifts shifts_fb = dataSnapshot.getValue(Shifts.class);
-                                            if (shifts_fb.getId() == shift.getId()) {
-                                                dataSnapshot.getRef().setValue(null);
-                                                Toasty.success(activity, activity.getResources().getString(R.string.delete_success_shift), Toast.LENGTH_SHORT, true).show();
-                                                break;
-                                            }
+                                        try {
+                                            for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
+                                                Shifts shifts_fb = dataSnapshot.getValue(Shifts.class);
+                                                if (shifts_fb.getId() == shift.getId()) {
+                                                    dataSnapshot.getRef().setValue(null);
+                                                    Toasty.success(activity, activity.getResources().getString(R.string.delete_success_shift), Toast.LENGTH_SHORT, true).show();
+                                                    break;
+                                                }
 
+                                            }
+                                        } catch (Exception ex)
+                                        {
+                                            Toasty.error(activity, activity.getResources().getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
                                         }
                                     }
                                 });

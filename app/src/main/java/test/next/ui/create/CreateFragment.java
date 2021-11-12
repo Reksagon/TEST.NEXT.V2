@@ -197,20 +197,26 @@ public class CreateFragment extends Fragment {
 
                 ScheduleFB scheduleFB = new ScheduleFB(String.valueOf(HomeFragment.scheduls.get(HomeFragment.current_schedule).getId()), base64);
 
-                DatabaseReference databaseReference = FirebaseDatabase
-                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                        .getReference()
-                        .child("Users/" + AccountConst.account.getUid() + "/Scheduls");
-                databaseReference.push()
-                        .setValue(scheduleFB);
+                try {
 
-                FirebaseDatabase
-                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                        .getReference()
-                        .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").setValue(HomeFragment.scheduls.size() - 1);
+                    DatabaseReference databaseReference = FirebaseDatabase
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Scheduls");
+                    databaseReference.push()
+                            .setValue(scheduleFB);
 
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-                navController.navigate(R.id.nav_home);
+                    FirebaseDatabase
+                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                            .getReference()
+                            .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").setValue(HomeFragment.scheduls.size() - 1);
+
+                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                    navController.navigate(R.id.nav_home);
+                }catch (Exception ex)
+                {
+                    Toasty.error(getActivity(), getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
+                }
             }
         });
 

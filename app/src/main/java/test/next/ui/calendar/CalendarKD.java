@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import es.dmoral.toasty.Toasty;
 import test.next.R;
 import test.next.constant.AccountConst;
 import test.next.constant.LinearLayoutOutlined;
@@ -190,11 +191,17 @@ public class CalendarKD extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AccountConst.ShowAd();
+                if(!AccountConst.offline) {
+                    AccountConst.ShowAd();
 
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                DayCalendarDialogFragment dayCalendarDialogFragment = DayCalendarDialogFragment.newInstance(day, shifts_s);
-                dayCalendarDialogFragment.show(fm, "fragment_edit_name");
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    DayCalendarDialogFragment dayCalendarDialogFragment = DayCalendarDialogFragment.newInstance(day, shifts_s, getActivity());
+                    dayCalendarDialogFragment.show(fm, "fragment_edit_name");
+                }
+                else
+                {
+                    Toasty.warning(getActivity(), getActivity().getResources().getString(R.string.warning_offline), Toasty.LENGTH_SHORT).show();
+                }
 
             }
         };

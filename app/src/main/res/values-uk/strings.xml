@@ -99,4 +99,9 @@
 
     <string name="shift">Зміна</string>
     <string name="days">Днів</string>
+
+    <string name="error_load">Упс, щось пішло не так. Спробуйте ще раз.</string>
+    <string name="repeat">Підключитися</string>
+    <string name="offline">Автономний режим</string>
+    <string name="warning_offline">Редагування доступне в онлайн версії.</string>
 </resources>

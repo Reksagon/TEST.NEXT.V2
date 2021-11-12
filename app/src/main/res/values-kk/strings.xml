@@ -99,4 +99,9 @@
 
     <string name = "shift"> Өзгерту </string>
     <string name = "days"> Күндер </string>
+
+    <string name = "error_load">Ой, бірдеңе дұрыс болмады. Қайталап көріңіз.</string>
+    <string name = "repeat"> Қосылу </string>
+    <string name = "offline">Офлайн</string>
+    <string name = "warning_offline">Өңдеу желіде қолжетімді.</string>
 </resources>

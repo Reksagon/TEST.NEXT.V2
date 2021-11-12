@@ -1,5 +1,6 @@
 package test.next.ui.calendar;
 
+import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
 
@@ -49,14 +50,16 @@ public class DayCalendarDialogFragment extends DialogFragment {
     private ScheduleDay scheduleDay;
     private ArrayList<Shifts> shifts;
     private Shifts shift_current;
+    private Activity activity;
 
-    public DayCalendarDialogFragment(ScheduleDay scheduleDay, ArrayList<Shifts> shifts)
+    public DayCalendarDialogFragment(ScheduleDay scheduleDay, ArrayList<Shifts> shifts, Activity activity)
     {
         this.scheduleDay = scheduleDay;
         this.shifts = shifts;
+        this.activity = activity;
     }
-    public static DayCalendarDialogFragment newInstance(ScheduleDay scheduleDay, ArrayList<Shifts> shifts) {
-        DayCalendarDialogFragment fragment = new DayCalendarDialogFragment(scheduleDay, shifts);
+    public static DayCalendarDialogFragment newInstance(ScheduleDay scheduleDay, ArrayList<Shifts> shifts, Activity activity) {
+        DayCalendarDialogFragment fragment = new DayCalendarDialogFragment(scheduleDay, shifts, activity);
 
         return fragment;
     }
@@ -167,8 +170,6 @@ public class DayCalendarDialogFragment extends DialogFragment {
                         break;
                     }
                 }
-                Toasty.success(getActivity(), getActivity().getResources().getString(R.string.success), Toasty.LENGTH_SHORT).show();
-
                 byte[] data = SerializationUtils.serialize(HomeFragment.scheduls.get(HomeFragment.current_schedule));
                 String base64 = Base64.encodeToString(data, Base64.DEFAULT);
 
@@ -180,11 +181,17 @@ public class DayCalendarDialogFragment extends DialogFragment {
                         .child("Users/" + AccountConst.account.getUid() + "/Scheduls").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        for(DataSnapshot item : task.getResult().getChildren())
+                        try {
+                            for (DataSnapshot item : task.getResult().getChildren()) {
+                                ScheduleFB tmp = item.getValue(ScheduleFB.class);
+                                if (tmp.getId().equals(scheduleFB.getId())) {
+                                    item.getRef().setValue(scheduleFB);
+                                    Toasty.success(getActivity(), getActivity().getResources().getString(R.string.success), Toasty.LENGTH_SHORT).show();
+                                }
+                            }
+                        }catch (Exception ex)
                         {
-                            ScheduleFB tmp = item.getValue(ScheduleFB.class);
-                            if(tmp.getId().equals(scheduleFB.getId()))
-                                item.getRef().setValue(scheduleFB);
+                            Toasty.error(activity, activity.getResources().getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
                         }
 
                     }

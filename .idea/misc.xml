@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.1828125" />
         <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/drawable-v21/textlines_sch.xml" value="0.2703125" />
         <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/drawable-v24/textlines_bottom.xml" value="0.2703125" />
         <entry key="..\:/Users/Denys/AndroidStudioProjects/TEST.NEXT.V2/app/src/main/res/drawable-v24/textlines_sch.xml" value="0.2703125" />
@@ -63,10 +64,16 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/ShiftSchedulePlus/app/src/main/res/layout/nav_header_main.xml" value="0.3921875" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ShiftSchedulePlus/app/src/main/res/menu/activity_main_drawer.xml" value="0.22239583333333332" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ShiftSchedulePlus/app/src/main/res/menu/main.xml" value="0.22239583333333332" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1983695652173913" />
+        <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.1983695652173913" />
+        <entry key="app/src/main/res/layout/calendar_fragment.xml" value="0.20697463768115942" />
+        <entry key="app/src/main/res/layout/fragment_create.xml" value="0.20697463768115942" />
+        <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_statistics.xml" value="0.1983695652173913" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -85,6 +85,7 @@ public class Splash extends Fragment {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     private FirebaseAuth mAuth;
+    private boolean error = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -101,85 +102,73 @@ public class Splash extends Fragment {
 
         binding.splashText.setVisibility(View.GONE);
         binding.signIn.setVisibility(View.GONE);
+        binding.buttonRepeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                error = false;
+                LoadData();
+                binding.buttonRepeat.setVisibility(View.GONE);
+                binding.buttonOffline.setVisibility(View.GONE);
 
+            }
+        });
         binding.splash.startAnim();
         binding.splash.setOnParticleAnimListener(new ParticleView.ParticleAnimListener() {
             @Override
             public void onAnimationEnd() {
-                if(!sharedPreferences.getString("SignIN", "No").equals("No"))
-                {
-                    FirebaseUser currentUser = mAuth.getCurrentUser();
-                    UpdateUI(currentUser);
-                    binding.splashText.setVisibility(View.GONE);
-                    binding.signIn.setVisibility(View.GONE);
-                    binding.spinKit.setVisibility(View.VISIBLE);
-                    mViewModel.setSetting(getActivity());
-                    getData().execute();
-                }
-                else
-                {
-                    binding.splashText.setVisibility(View.VISIBLE);
-                    binding.signIn.setVisibility(View.VISIBLE);
-                }
-
-                if(!sharedPreferences.getString("Background", "default").equals("default"))
-                {
-                    String base64Str = sharedPreferences.getString("Background", "default");
-                    byte[] decodedBytes = Base64.decode(
-                            base64Str.substring(base64Str.indexOf(",")  + 1),
-                            Base64.DEFAULT
-                    );
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                    AccountConst.background = bitmap;
-                }
+                LoadData();
             }
         });
 
         Sprite doubleBounce = new CubeGrid();
         binding.spinKit.setIndeterminateDrawable(doubleBounce);
 
-
-
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-        getActivity().registerReceiver(new BroadcastReceiver() {
-            public boolean check;
-            ConnectivityManager manager;
-            NetworkInfo info;
+        binding.signIn.setOnClickListener(new View.OnClickListener() {
             @Override
-
-            public void onReceive(Context context, Intent intent) {
-                Manager();
-                Info();
-                check = info != null && info.isConnectedOrConnecting();
-                if (check && AccountConst.account == null) {
-                    binding.signIn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            signIn();
-                            mViewModel.setSetting(getActivity());
-                            getData().execute();
-                        }
-                    });
-
-                } else {
-                    Toast.makeText(getActivity(), "No internet connection!", Toast.LENGTH_SHORT).show();
-                }
+            public void onClick(View view) {
+                signIn();
+                mViewModel.setSetting(getActivity());
+                getData().execute();
             }
+        });
 
-            void Manager() {
-                manager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        binding.buttonOffline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AccountConst.offline = true;
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                navController.navigate(R.id.nav_home);
             }
-
-            void Info() {
-                info = manager.getActiveNetworkInfo();
-            }
-        }, intentFilter);
+        });
 
 
         return root;
     }
 
+    private void LoadData() {
+        if (!sharedPreferences.getString("SignIN", "No").equals("No")) {
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            UpdateUI(currentUser);
+            binding.splashText.setVisibility(View.GONE);
+            binding.signIn.setVisibility(View.GONE);
+            binding.spinKit.setVisibility(View.VISIBLE);
+            mViewModel.setSetting(getActivity());
+            getData().execute();
+        } else {
+            binding.splashText.setVisibility(View.VISIBLE);
+            binding.signIn.setVisibility(View.VISIBLE);
+        }
+
+        if (!sharedPreferences.getString("Background", "default").equals("default")) {
+            String base64Str = sharedPreferences.getString("Background", "default");
+            byte[] decodedBytes = Base64.decode(
+                    base64Str.substring(base64Str.indexOf(",") + 1),
+                    Base64.DEFAULT
+            );
+            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+            AccountConst.background = bitmap;
+        }
+    }
 
     private void signIn()
     {
@@ -193,52 +182,75 @@ public class Splash extends Fragment {
         startActivityForResult(signInIntent, 123);
     }
 
+    private void ErrorLoad()
+    {
+        if(!error)
+        {
+            Toasty.error(getActivity(), getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
+            error = true;
+            binding.buttonRepeat.setVisibility(View.VISIBLE);
+            binding.spinKit.setVisibility(View.GONE);
+            binding.splashText.setVisibility(View.GONE);
+            binding.buttonOffline.setVisibility(View.VISIBLE);
+        }
+    }
+
     private AsyncTask<Void, Void, Void> getData()
     {
         return new AsyncTask<Void, Void, Void>()
         {
             @Override
             protected void onPostExecute(Void unused) {
-                try {
+                LoadShifts();
 
 
-                    LoadShifts();
-
-                    FirebaseDatabase
-                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                            .getReference()
-                            .child("Users/" + AccountConst.account.getUid() + "/Shifts").get().addOnCompleteListener(
-                            new OnCompleteListener<DataSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getUid() + "/Shifts").get().addOnCompleteListener(
+                        new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                try {
                                     AccountConst.shiftsArrayList = new ArrayList<>();
                                     for (DataSnapshot child : task.getResult().getChildren()) {
                                         Shifts str1 = child.getValue(Shifts.class);
                                         AccountConst.shiftsArrayList.add(str1);
                                     }
+                                } catch (Exception ex)
+                                {
+                                    ErrorLoad();
                                 }
-                            });
+                            }
+                        });
 
-                    FirebaseDatabase
-                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                            .getReference()
-                            .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @RequiresApi(api = Build.VERSION_CODES.N)
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/CurrentScheduls").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        try {
                             Long num = task.getResult().getValue(Long.class);
                             if (num != null)
                                 HomeFragment.current_schedule = Math.toIntExact(num);
                         }
-                    });
+                        catch (Exception ex)
+                        {
+                            ErrorLoad();
+                        }
+                    }
+                });
 
-                    Task<DataSnapshot> databaseReference = FirebaseDatabase
-                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                            .getReference()
-                            .child("Users/" + AccountConst.account.getUid() + "/Scheduls").get();
-                    databaseReference.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                Task<DataSnapshot> databaseReference = FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getUid() + "/Scheduls").get();
+                databaseReference.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        try {
                             for (DataSnapshot child : task.getResult().getChildren()) {
                                 ScheduleFB scheduleFB = child.getValue(ScheduleFB.class);
                                 String data = null;
@@ -250,120 +262,191 @@ public class Splash extends Fragment {
                                 schedule.getScheduleDayArrayList();
                                 HomeFragment.scheduls.add(schedule);
                             }
+                            byte[] data = SerializationUtils.serialize(HomeFragment.scheduls.get(HomeFragment.current_schedule));
+                            String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+                            editor.putString("Schedule", base64);
+                            editor.apply();
                             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                             navController.navigate(R.id.nav_home);
                         }
-                    });
+                        catch (Exception ex)
+                        {
+                            ErrorLoad();
+                        }
+                    }
+                });
 
-                    FirebaseDatabase
-                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                            .getReference()
-                            .child("Users/" + AccountConst.account.getUid() + "/Settings/Board").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/Board").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        try {
                             String check = task.getResult().getValue(String.class);
                             if (check != null) {
                                 if (check.equals("true"))
+                                {
                                     AccountConst.board = true;
-                                else
+                                    editor.putBoolean("Board", true);
+                                    editor.apply();
+                                }
+                                else {
                                     AccountConst.board = false;
+                                    editor.putBoolean("Board", false);
+                                    editor.apply();
+                                }
                             } else {
                                 task.getResult().getRef().setValue("true");
                                 AccountConst.board = true;
+                                editor.putBoolean("Board", true);
+                                editor.apply();
                             }
                         }
-                    });
+                        catch (Exception ex)
+                        {
+                            ErrorLoad();
+                        }
+                    }
+                });
 
-                    FirebaseDatabase
-                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                            .getReference()
-                            .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorCalendar").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @RequiresApi(api = Build.VERSION_CODES.N)
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorCalendar").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        try {
                             String color = task.getResult().getValue(String.class);
-                            if (color != null)
+                            if (color != null) {
                                 AccountConst.text_color_calendar = color;
+                                editor.putString("TextColorCalendar", color);
+                                editor.apply();
+                            }
                             else {
                                 task.getResult().getRef().setValue("#FF000000");
                                 AccountConst.text_color_calendar = "#FF000000";
+                                editor.putString("TextColorCalendar", "#FF000000");
+                                editor.apply();
                             }
                         }
-                    });
+                        catch (Exception ex)
+                        {
+                            ErrorLoad();
+                        }
+                    }
+                });
 
-                    FirebaseDatabase
-                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                            .getReference()
-                            .child("Users/" + AccountConst.account.getUid() + "/Settings/ColorBorder").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @RequiresApi(api = Build.VERSION_CODES.N)
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/ColorBorder").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        try {
+
+
                             String color = task.getResult().getValue(String.class);
-                            if (color != null)
+                            if (color != null) {
                                 AccountConst.color_Border = color;
+                                editor.putString("ColorBorder", color);
+                                editor.apply();
+                            }
                             else {
                                 task.getResult().getRef().setValue("#FFDDDDDD");
                                 AccountConst.color_Border = "#FFDDDDDD";
+                                editor.putString("ColorBorder", "#FFDDDDDD");
+                                editor.apply();
                             }
+                        }catch (Exception ex)
+                        {
+                            ErrorLoad();
                         }
-                    });
+                    }
+                });
 
-                    FirebaseDatabase
-                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                            .getReference()
-                            .child("Users/" + AccountConst.account.getUid() + "/Settings/DaysOther").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/DaysOther").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        try {
                             String check = task.getResult().getValue(String.class);
                             if (check != null) {
-                                if (check.equals("true"))
+                                if (check.equals("true")) {
                                     AccountConst.days_other = true;
-                                else
+                                    editor.putBoolean("DaysOther", true);
+                                    editor.apply();
+                                } else {
                                     AccountConst.days_other = false;
+                                }
                             } else {
                                 task.getResult().getRef().setValue("false");
                                 AccountConst.days_other = false;
+                                editor.putBoolean("DaysOther", false);
+                                editor.apply();
                             }
+                        }catch (Exception ex)
+                        {
+                            ErrorLoad();
                         }
-                    });
+                    }
+                });
 
 
-                    FirebaseDatabase
-                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                            .getReference()
-                            .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorShift").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @RequiresApi(api = Build.VERSION_CODES.N)
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/TextColorShift").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        try {
                             String color = task.getResult().getValue(String.class);
-                            if (color != null)
+                            if (color != null) {
                                 AccountConst.text_color_shift = color;
+                                editor.putString("TextColorShift", color);
+                                editor.apply();
+                            }
                             else {
                                 task.getResult().getRef().setValue("#FFFFFFFF");
                                 AccountConst.text_color_shift = "#FFFFFFFF";
+                                editor.putString("TextColorShift", "#FFFFFFFF");
+                                editor.apply();
                             }
                         }
-                    });
+                        catch (Exception ex)
+                        {
+                            ErrorLoad();
+                        }
+                    }
+                });
 
-                    FirebaseDatabase
-                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                            .getReference()
-                            .child("Users/" + AccountConst.account.getUid() + "/Settings/SizeTextShift").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @RequiresApi(api = Build.VERSION_CODES.N)
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                FirebaseDatabase
+                        .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                        .getReference()
+                        .child("Users/" + AccountConst.account.getUid() + "/Settings/SizeTextShift").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        try {
                             Long num = task.getResult().getValue(Long.class);
                             if (num != null)
                                 AccountConst.size_text_shift = Math.toIntExact(num);
                             else
                                 task.getResult().getRef().setValue(14);
+                        }catch (Exception ex)
+                        {
+                            ErrorLoad();
                         }
-                    });
-                }
-                catch (Exception exception)
-                {
-                    Toasty.error(getActivity(), exception.getMessage(), Toasty.LENGTH_SHORT).show();
-                }
+                    }
+                });
+
+
+
                 super.onPostExecute(unused);
             }
 
@@ -411,23 +494,27 @@ public class Splash extends Fragment {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 boolean exist = false;
-                for(DataSnapshot child : task.getResult().getChildren())
-                {
-                    if(child.getKey().toString().equals(AccountConst.account.getUid()))
-                        exist = true;
+                try {
+                    for (DataSnapshot child : task.getResult().getChildren()) {
+                        if (child.getKey().toString().equals(AccountConst.account.getUid()))
+                            exist = true;
+                    }
+                    if (!exist) {
+                        DatabaseReference databaseReference = FirebaseDatabase
+                                .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
+                                .getReference()
+                                .child("Users/" + AccountConst.account.getUid() + "/Shifts");
+                        databaseReference.push()
+                                .setValue(new Shifts(1, getActivity().getResources().getString(R.string.day_sh), "07:00", "19:00", "#fcba03", false));
+                        databaseReference.push()
+                                .setValue(new Shifts(2, getActivity().getResources().getString(R.string.night_sh), "19:00", "07:00", "#0339fc", false));
+                        databaseReference.push()
+                                .setValue(new Shifts(3, getActivity().getResources().getString(R.string.offday_sh), "00:00", "00:00", "#00d4d0", true));
+                    }
                 }
-                if(!exist)
+                catch (Exception ex)
                 {
-                    DatabaseReference databaseReference = FirebaseDatabase
-                            .getInstance(new String(Base64.decode(getActivity().getResources().getString(R.string.firebase), Base64.DEFAULT)))
-                            .getReference()
-                            .child("Users/" + AccountConst.account.getUid() + "/Shifts");
-                    databaseReference.push()
-                            .setValue(new Shifts(1,getActivity().getResources().getString(R.string.day_sh), "07:00", "19:00", "#fcba03", false));
-                    databaseReference.push()
-                            .setValue(new Shifts(2,getActivity().getResources().getString(R.string.night_sh), "19:00", "07:00", "#0339fc", false));
-                    databaseReference.push()
-                            .setValue(new Shifts(3,getActivity().getResources().getString(R.string.offday_sh), "00:00", "00:00", "#00d4d0", true));
+                    ErrorLoad();
                 }
             }
         });

@@ -100,4 +100,9 @@
 
     <string name="shift">Змена</string>
     <string name="days">Дзён</string>
+
+    <string name="error_load">Упс, што нешта пайшло не так. Паспрабуйце зноў.</string>
+    <string name="repeat">Падключыцца</string>
+    <string name="offline">Аўтаномны рэжым</string>
+    <string name="warning_offline">Рэдагаванне даступна ў анлайн версіі.</string>
 </resources>

@@ -101,4 +101,9 @@
 
     <string name = "shift"> Przesunięcie </string>
     <string name = "days"> Dni </string>
+
+    <string name = "error_load">Ups, coś poszło nie tak. Spróbuj ponownie.</string>
+    <string name = "repeat">Połącz</string>
+    <string name = "offline">Offline</string>
+    <string name = "warning_offline">Edycja jest dostępna online.</string>
 </resources>
