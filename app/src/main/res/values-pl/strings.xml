@@ -106,6 +106,5 @@
     <string name = "repeat">Połącz</string>
     <string name = "offline">Offline</string>
     <string name = "warning_offline">Edycja jest dostępna online.</string>
-
-    <string name="rate">Оценить приложение</string>
+    <string name="rate">Oceń aplikację</string>
 </resources>
