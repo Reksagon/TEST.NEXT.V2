@@ -93,7 +93,12 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        getReviewInfo();
+        binding.textRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getReviewInfo();
+            }
+        });
         binding.checkBoard.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
@@ -313,12 +318,12 @@ public class SettingsFragment extends Fragment {
             flow.addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    //Toasty.error(getActivity(), "Success", Toasty.LENGTH_SHORT).show();
+                    Toasty.success(getActivity(), "Thank's!", Toasty.LENGTH_SHORT).show();
                 }
             });
         }
         else {
-            //Toasty.error(getActivity(), "In App Rating failed", Toasty.LENGTH_SHORT).show();
+            Toasty.error(getActivity(), "In App Rating failed", Toasty.LENGTH_SHORT).show();
         }
     }
 

@@ -108,4 +108,5 @@
     <string name = "offline">Offline</string>
     <string name = "warning_offline">Editing is available online.</string>
 
+    <string name="rate">Оценить приложение</string>
 </resources>

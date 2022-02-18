@@ -104,4 +104,6 @@
     <string name="repeat">Підключитися</string>
     <string name="offline">Автономний режим</string>
     <string name="warning_offline">Редагування доступне в онлайн версії.</string>
+
+    <string name="rate">Оценить приложение</string>
 </resources>
