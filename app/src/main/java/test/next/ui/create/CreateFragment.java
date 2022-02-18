@@ -133,7 +133,7 @@ public class CreateFragment extends Fragment {
         binding.minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (adapter.getCount() != 1) {
+                if (adapter.getCount() != 2) {
                     adapter.RemoveShift();
                     adapter.RemoveDay();
                     adapter.setCount(adapter.getCount() - 1);

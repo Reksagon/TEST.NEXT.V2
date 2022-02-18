@@ -67,6 +67,11 @@ public class CorrectFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentCorrectBinding.inflate(inflater, container, false);
         int start_year, start_month, start_day, end_year, end_month, end_day;
+        if(HomeFragment.scheduls.size() == 0)
+        {
+            Toasty.error(getActivity(), getActivity().getResources().getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
+            return binding.getRoot();
+        }
         ArrayList<ScheduleDay> arrayList = HomeFragment.scheduls.get(HomeFragment.current_schedule).getScheduleDayArrayList();
 
         start_year = arrayList.get(0).getYear();

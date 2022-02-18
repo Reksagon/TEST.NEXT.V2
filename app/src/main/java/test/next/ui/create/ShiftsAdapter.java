@@ -92,16 +92,28 @@ public class ShiftsAdapter extends RecyclerView.Adapter<ShiftsAdapter.ShiftsAdap
 
     public void RemoveShift()
     {
-        selected_shift.remove(selected_shift.size()-1);
-        shifts_schedule.remove(shifts_schedule.size()-1);
-        notifyDataSetChanged();
+        try {
+            selected_shift.remove(selected_shift.size() - 1);
+            shifts_schedule.remove(shifts_schedule.size() - 1);
+            notifyDataSetChanged();
+        }
+        catch (Exception ex)
+        {
+
+        }
     }
 
     public void RemoveDay()
     {
-        selected_day.remove(selected_day.size()-1);
-        days_schedule.remove(days_schedule.size()-1);
-        notifyDataSetChanged();
+        try {
+            selected_day.remove(selected_day.size() - 1);
+            days_schedule.remove(days_schedule.size() - 1);
+            notifyDataSetChanged();
+        }
+        catch (Exception ex)
+        {
+
+        }
     }
 
     @Override

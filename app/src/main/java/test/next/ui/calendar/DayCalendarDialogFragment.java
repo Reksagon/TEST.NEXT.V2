@@ -186,7 +186,7 @@ public class DayCalendarDialogFragment extends DialogFragment {
                                 ScheduleFB tmp = item.getValue(ScheduleFB.class);
                                 if (tmp.getId().equals(scheduleFB.getId())) {
                                     item.getRef().setValue(scheduleFB);
-                                    Toasty.success(getActivity(), getActivity().getResources().getString(R.string.success), Toasty.LENGTH_SHORT).show();
+                                    Toasty.success(activity, activity.getResources().getString(R.string.success), Toasty.LENGTH_SHORT).show();
                                 }
                             }
                         }catch (Exception ex)

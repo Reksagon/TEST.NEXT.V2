@@ -27,6 +27,8 @@ import android.view.ViewGroup;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.Task;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
@@ -45,7 +47,8 @@ import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.skydoves.powerspinner.OnSpinnerItemSelectedListener;
@@ -69,6 +72,8 @@ import test.next.ui.home.HomeFragment;
 public class SettingsFragment extends Fragment {
 
     private FragmentSettingsBinding binding;
+    ReviewManager reviewManager;
+    ReviewInfo reviewInfo = null;
 
     @Nullable
     @Override
@@ -88,6 +93,8 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        getReviewInfo();
+        startReviewFlow();
         binding.checkBoard.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
@@ -287,6 +294,28 @@ public class SettingsFragment extends Fragment {
         drawable = DrawableCompat.wrap(drawable);
         DrawableCompat.setTint(drawable, Color.WHITE);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(drawable);
+    }
+
+    private void getReviewInfo() {
+        reviewManager = ReviewManagerFactory.create(getActivity());
+        Task<ReviewInfo> manager = reviewManager.requestReviewFlow();
+        manager.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                reviewInfo = task.getResult();
+            }
+        });
+    }
+
+    public void startReviewFlow()
+    {
+        if (reviewInfo != null) {
+            Task<Void> flow = reviewManager.launchReviewFlow(getActivity(), reviewInfo);
+        }
+        else {
+
+            //Toasty.error(getActivity(), "In App Rating failed", Toasty.LENGTH_SHORT).show();
+
+        }
     }
 
     private void Start()
