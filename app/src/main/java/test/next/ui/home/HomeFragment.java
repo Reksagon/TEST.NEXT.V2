@@ -82,10 +82,12 @@ public class HomeFragment extends Fragment {
         {
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ShiftSchedulePlus", Context.MODE_PRIVATE);
             data = sharedPreferences.getString("Schedule", null);
-            data2 = Base64.decode(data, Base64.DEFAULT);
-            Schedule schedule = SerializationUtils.deserialize(data2);
-            HomeFragment.scheduls.add(schedule);
-            HomeFragment.current_schedule = 0;
+            if(data != null) {
+                data2 = Base64.decode(data, Base64.DEFAULT);
+                Schedule schedule = SerializationUtils.deserialize(data2);
+                HomeFragment.scheduls.add(schedule);
+                HomeFragment.current_schedule = 0;
+            }
             AccountConst.board = sharedPreferences.getBoolean("Board", true);
             AccountConst.days_other = sharedPreferences.getBoolean("DaysOther", true);
             AccountConst.text_color_calendar = sharedPreferences.getString("TextColorCalendar", "#FF000000");

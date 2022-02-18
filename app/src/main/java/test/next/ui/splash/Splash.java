@@ -262,10 +262,12 @@ public class Splash extends Fragment {
                                 schedule.getScheduleDayArrayList();
                                 HomeFragment.scheduls.add(schedule);
                             }
-                            byte[] data = SerializationUtils.serialize(HomeFragment.scheduls.get(HomeFragment.current_schedule));
-                            String base64 = Base64.encodeToString(data, Base64.DEFAULT);
-                            editor.putString("Schedule", base64);
-                            editor.apply();
+                            if(HomeFragment.scheduls.size() > 0) {
+                                byte[] data = SerializationUtils.serialize(HomeFragment.scheduls.get(HomeFragment.current_schedule));
+                                String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+                                editor.putString("Schedule", base64);
+                                editor.apply();
+                            }
                             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                             navController.navigate(R.id.nav_home);
                         }
@@ -541,18 +543,20 @@ public class Splash extends Fragment {
                 });
     }
     private void UpdateUI(FirebaseUser account)  {
-        TextView name = getActivity().findViewById(R.id.name_account);
-        name.setText(account.getDisplayName());
-        TextView email = getActivity().findViewById(R.id.email_account);
-        email.setText(account.getEmail());
-        ImageView imageView = getActivity().findViewById(R.id.photo_account);
-        if(account.getPhotoUrl() != null) {
-            Glide.with(getActivity()).load(account.getPhotoUrl().toString())
-                    .thumbnail(0.5f)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(imageView);
+        if(account != null) {
+            TextView name = getActivity().findViewById(R.id.name_account);
+            name.setText(account.getDisplayName());
+            TextView email = getActivity().findViewById(R.id.email_account);
+            email.setText(account.getEmail());
+            ImageView imageView = getActivity().findViewById(R.id.photo_account);
+            if (account.getPhotoUrl() != null) {
+                Glide.with(getActivity()).load(account.getPhotoUrl().toString())
+                        .thumbnail(0.5f)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(imageView);
+            }
+            AccountConst.account = account;
         }
-        AccountConst.account = account;
     }
 
 
