@@ -222,8 +222,8 @@ public class ShiftsSettingsAdapter extends RecyclerView.Adapter<ShiftsSettingsAd
                                                                 ScheduleFB scheduleFB = dataSnapshot.getValue(ScheduleFB.class);
                                                                 if (scheduleFB.getId().equals(scheduleFB_new.getId())) {
                                                                     dataSnapshot.getRef().setValue(scheduleFB_new);
+                                                                    Toasty.success(activity, activity.getResources().getString(R.string.success_shift), Toast.LENGTH_SHORT, true).show();
                                                                 }
-                                                                Toasty.success(activity, activity.getResources().getString(R.string.success_shift), Toast.LENGTH_SHORT, true).show();
                                                             }
                                                         } catch (Exception ex) {
                                                             Toasty.error(activity, activity.getResources().getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
