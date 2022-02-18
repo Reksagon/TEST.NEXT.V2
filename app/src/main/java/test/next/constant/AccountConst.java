@@ -85,7 +85,7 @@ public class AccountConst {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     try {
-                        TimeUnit.SECONDS.sleep(20);
+                        TimeUnit.SECONDS.sleep(50);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
