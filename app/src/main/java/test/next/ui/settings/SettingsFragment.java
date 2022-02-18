@@ -28,6 +28,7 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.OnCompleteListener;
 import com.google.android.play.core.tasks.Task;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.MainThread;
@@ -46,7 +47,6 @@ import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.firebase.database.DataSnapshot;
@@ -94,7 +94,6 @@ public class SettingsFragment extends Fragment {
         });
 
         getReviewInfo();
-        startReviewFlow();
         binding.checkBoard.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
@@ -302,6 +301,7 @@ public class SettingsFragment extends Fragment {
         manager.addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 reviewInfo = task.getResult();
+                startReviewFlow();
             }
         });
     }
@@ -310,11 +310,15 @@ public class SettingsFragment extends Fragment {
     {
         if (reviewInfo != null) {
             Task<Void> flow = reviewManager.launchReviewFlow(getActivity(), reviewInfo);
+            flow.addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    //Toasty.error(getActivity(), "Success", Toasty.LENGTH_SHORT).show();
+                }
+            });
         }
         else {
-
             //Toasty.error(getActivity(), "In App Rating failed", Toasty.LENGTH_SHORT).show();
-
         }
     }
 

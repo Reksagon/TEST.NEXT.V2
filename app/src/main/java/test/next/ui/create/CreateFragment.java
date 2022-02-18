@@ -172,6 +172,11 @@ public class CreateFragment extends Fragment {
                     return;
                 }
 
+                if(days_send.size() != shifts_send.size())
+                {
+                    Toasty.error(getActivity(), getString(R.string.error_load), Toasty.LENGTH_SHORT).show();
+                    return;
+                }
                 editor.putInt("Count_Shifts", adapter.selected_shift.size());
                 for (int i = 1; i <= adapter.selected_shift.size(); i++) {
                     editor.putInt("Shift" + String.valueOf(i), adapter.selected_shift.get(i - 1));
